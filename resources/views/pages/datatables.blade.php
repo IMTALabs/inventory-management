@@ -130,7 +130,7 @@
               <tr>
                 <td class="text-center">{{ $i }}</td>
                 <td class="fw-semibold">
-                  <a href="javascript:void(0)">John Smith</a>
+                  <a href="javascript:void(0)">{{ Auth::user()->name }}</a>
                 </td>
                 <td class="d-none d-sm-table-cell">
                   client{{ $i }}<span class="text-muted">@example.com</span>
