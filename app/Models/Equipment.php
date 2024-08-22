@@ -33,4 +33,5 @@ class Equipment extends Model
         'depreciation_value',
         'notes',
     ];
+
 }

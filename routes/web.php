@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +23,11 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('/users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('users.index');
+    });
+    Route::prefix('equipments')->group(function () {
+        Route::get('/', [EquipmentController::class, 'index'])->name('equipments.index');
+//        Route::get('/', [UserController::class, 'index'])->name('users.index');
+//        Route::get('/', [UserController::class, 'index'])->name('users.index');
+//        Route::get('/', [UserController::class, 'index'])->name('users.index');
     });
 });
