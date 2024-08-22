@@ -37,14 +37,14 @@ class pageTablesDatatables {
       }
     });
 
-    // Override buttons default classes
-    jQuery.extend(true, DataTable.Buttons.defaults, {
-      dom: {
-        button: {
-          className: 'btn btn-sm btn-primary'
-        },
-      }
-    });
+    // // Override buttons default classes
+    // jQuery.extend(true, DataTable.Buttons.defaults, {
+    //   dom: {
+    //     button: {
+    //       className: 'btn btn-sm btn-primary'
+    //     },
+    //   }
+    // });
 
 		// Init full DataTable
     jQuery('.js-dataTable-full').DataTable({

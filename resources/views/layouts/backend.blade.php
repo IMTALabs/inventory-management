@@ -230,7 +230,7 @@
                         </li>
                         <li class="nav-main-heading">Management</li>
                         <li class="nav-main-item open">
-                            <a class="nav-main-link" href="/">
+                            <a class="nav-main-link" href="{{ route('users.index') }}">
                                 <i class="nav-main-link-icon si si-users"></i>
                                 <span class="nav-main-link-name">Users</span>
                             </a>
@@ -473,7 +473,7 @@
                                                                                    target="_blank">pixelcave</a>
                     </div>
                     <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
-                        <a class="fw-semibold" href="https://pixelcave.com/products/oneui" target="_blank">OneUI</a>
+                        <a class="fw-semibold" href="{{ route('dashboard') }}">{{ config('app.name') }}</a>
                         &copy; <span data-toggle="year-copy"></span>
                     </div>
                 </div>
