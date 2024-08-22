@@ -23,8 +23,28 @@ class UserController extends Controller
                 fn ($orQuery) => $orQuery->where('name', 'like', "%$q%")->orWhere('email', 'like', "%$q%")
             ))
             ->when($role, fn ($query, $role) => $query->where('role', $role))
+            ->orderBy('id', 'desc')
             ->paginate(5)->withQueryString();
 
         return view('users.index', compact('users', 'q', 'role'));
+    }
+
+    public function create()
+    {
+        return view('users.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8',
+            'role' => 'required|in:' . implode(',', array_column(RoleEnum::cases(), 'value')),
+        ]);
+
+        User::create($request->only('name', 'email', 'password', 'role'));
+
+        return redirect()->route('users.index')->with('status', 'User created successfully.');
     }
 }

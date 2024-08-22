@@ -2,12 +2,6 @@
 
 @section('title', __('Users'))
 
-@section('js')
-    <script>
-
-    </script>
-@endsection
-
 @section('content')
     <!-- Hero -->
     <div class="bg-body-light">
@@ -38,10 +32,30 @@
 
     <!-- Page Content -->
     <div class="content">
+        @session('status')
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <div class="flex-shrink-0">
+                <i class="fa fa-fw fa-check"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <p class="mb-0">
+                    {{ session('status') }}
+                </p>
+            </div>
+        </div>
+        @endsession
+
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
             <div class="block-header block-header-default">
                 <h3 class="block-title">All Users</h3>
+                <div class="block-options">
+                    <a href="{{ route('users.create') }}">
+                        <button type="button" class="btn btn-alt-primary btn-sm">
+                            <i class="si si-plus"></i> Add User
+                        </button>
+                    </a>
+                </div>
             </div>
             <div class="block-content block-content-full">
                 <form class="row g-2 align-items-center mb-3" action="{{ route('users.index') }}" method="get">
@@ -49,7 +63,8 @@
                         <select class="form-select form-control-alt" name="role">
                             <option value="">All roles</option>
                             @foreach(\App\Enums\RoleEnum::cases() as $availableRole)
-                                <option value="{{ $availableRole->value }}" @if($role === $availableRole->value) selected @endif>
+                                <option value="{{ $availableRole->value }}"
+                                        @if($role === $availableRole->value) selected @endif>
                                     {{ ucfirst($availableRole->value) }}
                                 </option>
                             @endforeach
