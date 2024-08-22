@@ -31,7 +31,9 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        $user = null;
+        $readOnly = false;
+        return view('users.create', compact('user', 'readOnly'));
     }
 
     public function store(Request $request)
@@ -46,5 +48,11 @@ class UserController extends Controller
         User::create($request->only('name', 'email', 'password', 'role'));
 
         return redirect()->route('users.index')->with('status', 'User created successfully.');
+    }
+
+    public function show(User $user)
+    {
+        $readOnly = true;
+        return view('users.create', compact('user', 'readOnly'));
     }
 }

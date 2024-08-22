@@ -101,7 +101,7 @@
                                 @endif
                             </td>
                             <td class="fw-semibold">
-                                <a href="javascript:void(0)">{{ $user->name }}</a>
+                                <a href="{{ route('users.show', ['user' => $user]) }}">{{ $user->name }}</a>
                             </td>
                             <td class="d-none d-sm-table-cell">
                                 {{ $user->email }}

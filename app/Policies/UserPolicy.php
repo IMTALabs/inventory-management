@@ -21,9 +21,9 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): Response
+    public function view(User $user, ?User $model = null): Response
     {
-        return $user->role === RoleEnum::ADMIN || $user->id === $model->id
+        return $user->role === RoleEnum::ADMIN || $user->id === $model?->id
             ? Response::allow()
             : Response::deny('You are not authorized to view this user.');
     }
