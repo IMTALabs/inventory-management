@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\RoleEnum;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
@@ -18,9 +19,11 @@ use Illuminate\Notifications\Notifiable;
  * @property string $password
  * @property string $remember_token
  * @property Carbon $email_verified_at
+ * @property RoleEnum $role
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property string $avatar
+ * @property bool $is_admin
  */
 class User extends Authenticatable implements CanResetPassword
 {
@@ -35,6 +38,7 @@ class User extends Authenticatable implements CanResetPassword
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -57,6 +61,7 @@ class User extends Authenticatable implements CanResetPassword
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => RoleEnum::class,
         ];
     }
 
@@ -64,6 +69,13 @@ class User extends Authenticatable implements CanResetPassword
     {
         return Attribute::make(
             get: fn () => 'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=' . urlencode($this->name),
+        );
+    }
+
+    protected function isAdmin(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->role === RoleEnum::ADMIN,
         );
     }
 }

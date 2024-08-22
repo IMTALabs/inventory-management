@@ -195,7 +195,7 @@
                 <div class="content-side">
                     <ul class="nav-main">
                         <li class="nav-main-item">
-                            <a class="nav-main-link{{ request()->is('dashboard') ? ' active' : '' }}" href="/dashboard">
+                            <a class="nav-main-link{{ request()->is('/') ? ' active' : '' }}" href="{{ route('dashboard') }}">
                                 <i class="nav-main-link-icon si si-cursor"></i>
                                 <span class="nav-main-link-name">Dashboard</span>
                             </a>
@@ -229,11 +229,20 @@
                             </ul>
                         </li>
                         <li class="nav-main-heading">Management</li>
-                        <li class="nav-main-item open">
-                            <a class="nav-main-link" href="{{ route('users.index') }}">
+                        <li class="nav-main-item{{ request()->routeIs('users.*') ? ' open' : '' }}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                               aria-expanded="true" href="#">
                                 <i class="nav-main-link-icon si si-users"></i>
                                 <span class="nav-main-link-name">Users</span>
                             </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->is('users') ? ' active' : '' }}"
+                                       href="{{ route('users.index') }}">
+                                        <span class="nav-main-link-name">List</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

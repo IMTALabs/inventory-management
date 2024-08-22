@@ -2,20 +2,10 @@
 
 @section('title', __('Users'))
 
-@section('css')
-    <link rel="stylesheet" href="{{ asset('js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css') }}">
-@endsection
-
 @section('js')
-    <!-- jQuery (required for DataTables plugin) -->
-    <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
+    <script>
 
-    <!-- Page JS Plugins -->
-    <script src="{{ asset('js/plugins/datatables/dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
-
-    <!-- Page JS Code -->
-    @vite(['resources/js/pages/datatables.js'])
+    </script>
 @endsection
 
 @section('content')
@@ -50,30 +40,73 @@
     <div class="content">
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
+            <div class="block-header block-header-default">
+                <h3 class="block-title">All Users</h3>
+            </div>
             <div class="block-content block-content-full">
+                <form class="row g-2 align-items-center mb-3" action="{{ route('users.index') }}" method="get">
+                    <div class="col-3">
+                        <select class="form-select form-control-alt" name="role">
+                            <option value="">All roles</option>
+                            @foreach(\App\Enums\RoleEnum::cases() as $availableRole)
+                                <option value="{{ $availableRole->value }}" @if($role === $availableRole->value) selected @endif>
+                                    {{ ucfirst($availableRole->value) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-7">
+                        <input type="text" class="form-control form-control-alt" name="q" placeholder="Name or Email"
+                               value="{{ $q }}">
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-dark w-100">Filter</button>
+                    </div>
+                </form>
                 <!-- DataTables init on table by adding .js-dataTable-full class, functionality is initialized in js/pages/tables_datatables.js -->
-                <table class="table table-bordered table-striped table-vcenter js-dataTable-full fs-sm">
+                <table class="table table-striped table-vcenter fs-sm">
                     <thead>
                     <tr>
                         <th class="text-center" style="width: 80px;">#</th>
+                        <th class="text-center" style="width: 80px;">Role</th>
                         <th>Name</th>
                         <th class="d-none d-sm-table-cell" style="width: 30%;">Email</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($users as $i => $user)
                         <tr>
                             <td class="text-center">{{ $i + 1 }}</td>
+                            <td class="text-center">
+                                @if ($user->is_admin)
+                                    <span class="badge bg-success">Admin</span>
+                                @else
+                                    <span class="badge bg-info">Staff</span>
+                                @endif
+                            </td>
                             <td class="fw-semibold">
                                 <a href="javascript:void(0)">{{ $user->name }}</a>
                             </td>
                             <td class="d-none d-sm-table-cell">
                                 {{ $user->email }}
                             </td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-alt-warning">
+                                        <i class="fa fa-fw fa-pencil-alt"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-alt-danger">
+                                        <i class="fa fa-fw fa-times"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+
+                {{ $users->onEachSide(5)->links() }}
             </div>
         </div>
         <!-- END Dynamic Table Full -->
