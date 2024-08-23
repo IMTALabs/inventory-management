@@ -84,7 +84,7 @@
                                     name="role">
                                 @foreach(\App\Enums\RoleEnum::cases() as $availableRole)
                                     <option value="{{ $availableRole->value }}"
-                                            @if(old('role') === $availableRole->value) selected @endif>
+                                            @if($user->role->value === $availableRole->value) selected @endif>
                                         {{ ucfirst($availableRole->value) }}
                                     </option>
                                 @endforeach
