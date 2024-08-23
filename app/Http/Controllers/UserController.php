@@ -43,9 +43,9 @@ class UserController extends Controller
             'role' => 'required|in:' . implode(',', array_column(RoleEnum::cases(), 'value')),
         ]);
 
-        User::create($request->only('name', 'email', 'password', 'role'));
+        $user = User::create($request->only('name', 'email', 'password', 'role'));
 
-        return redirect()->route('users.index')->with('status', 'User created successfully.');
+        return redirect()->route('users.show', ['user' => $user])->with('status', 'User created successfully.');
     }
 
     public function show(User $user)
@@ -69,5 +69,12 @@ class UserController extends Controller
         $user->update($request->only('name', 'email', 'role'));
 
         return redirect()->route('users.show', ['user' => $user])->with('status', 'User updated successfully.');
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect()->back()->with('status', 'User deleted successfully.');
     }
 }

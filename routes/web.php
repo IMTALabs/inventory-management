@@ -28,5 +28,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/{user}', [UserController::class, 'show'])->name('users.show')->can('view', 'user');
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit')->can('update', 'user');
         Route::put('/{user}', [UserController::class, 'update'])->name('users.update')->can('update', 'user');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy')->can('delete', 'user');
     });
 });

@@ -2,6 +2,18 @@
 
 @section('title', __('Users'))
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('js/plugins/sweetalert2/sweetalert2.min.css') }}">
+@endsection
+
+@section('js')
+    <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
+    <!-- Page JS Code -->
+    @vite(['resources/js/pages/users.js'])
+@endsection
+
 @section('content')
     <!-- Hero -->
     <div class="bg-body-light">
@@ -92,7 +104,9 @@
                     <tbody>
                     @foreach ($users as $i => $user)
                         <tr>
-                            <td class="text-center">{{ $i + 1 }}</td>
+                            <td class="text-center">
+                                {{ $users->firstItem() + $i }}
+                            </td>
                             <td class="text-center">
                                 @if ($user->is_admin)
                                     <span class="badge bg-success">Admin</span>
@@ -106,17 +120,19 @@
                             <td class="d-none d-sm-table-cell">
                                 {{ $user->email }}
                             </td>
-                            <td class="text-center">
-                                <div class="btn-group">
-                                    <a href="{{ route('users.edit', ['user' => $user]) }}">
-                                        <button type="button" class="btn btn-sm btn-alt-warning">
-                                            <i class="fa fa-fw fa-pencil-alt"></i>
-                                        </button>
-                                    </a>
-                                    <button type="button" class="btn btn-sm btn-alt-danger">
-                                        <i class="fa fa-fw fa-times"></i>
+                            <td class="text-center d-flex justify-content-center gap-1">
+                                <a href="{{ route('users.edit', ['user' => $user]) }}">
+                                    <button type="button" class="btn btn-sm btn-alt-warning">
+                                        <i class="fa fa-fw fa-pencil-alt"></i>
                                     </button>
-                                </div>
+                                </a>
+                                <form class="form-delete" action="{{ route('users.destroy', ['user' => $user]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-alt-danger">
+                                        <i class="fa fa-fw fa-trash-alt"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

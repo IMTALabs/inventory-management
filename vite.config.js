@@ -14,6 +14,7 @@ export default defineConfig({
                 'resources/js/oneui/app.js',
                 'resources/js/app.js',
                 'resources/js/pages/datatables.js',
+                'resources/js/pages/users.js',
             ],
             refresh: true,
         }),
