@@ -9,19 +9,24 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                 <div class="flex-grow-1">
                     <h1 class="h3 fw-bold mb-1">
-                        Users
+                        {{ $user->name }}
                     </h1>
                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
-                        Create
+                        Detail
                     </h2>
                 </div>
                 <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item">
-                            <a class="link-fx" href="javascript:void(0)">Invent</a>
+                            <a class="link-fx" href="{{ route('dashboard') }}">Invent</a>
                         </li>
+                        @can('viewAny', \App\Models\User::class)
+                            <li class="breadcrumb-item">
+                                <a class="link-fx" href="{{ route('users.index') }}">Users</a>
+                            </li>
+                        @endcan
                         <li class="breadcrumb-item" aria-current="page">
-                            Create
+                            {{ $user->name }}
                         </li>
                     </ol>
                 </nav>
@@ -32,47 +37,50 @@
 
     <!-- Page Content -->
     <div class="content">
+        @session('status')
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <div class="flex-shrink-0">
+                <i class="fa fa-fw fa-check"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <p class="mb-0">
+                    {{ session('status') }}
+                </p>
+            </div>
+        </div>
+        @endsession
+
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
             <div class="block-header block-header-default">
                 <h3 class="block-title">
-                    Create User
+                    User Detail
                 </h3>
-                <div class="block-options">
-                    <button type="submit" form="create" class="btn btn-alt-success btn-sm">
-                        <i class="fa fa-check"></i> Submit
+                <a class="block-options" href="{{ route('users.edit', ['user' => $user]) }}">
+                    <button class="btn btn-alt-warning btn-sm">
+                        <i class="fa fa-pen"></i> Edit
                     </button>
-                </div>
+                </a>
             </div>
             <div class="block-content block-content-full">
-                <form id="create" action="{{ route('users.store') }}" method="POST">
-                    @csrf
+                <div id="create">
                     <div class="row g-4">
                         <div class="col-6">
-                            <input type="text" class="form-control form-control-alt @error('name') is-invalid @enderror"
-                                   placeholder="Name" name="name" value="{{ old('name') }}">
-                            @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="text" class="form-control form-control-alt" disabled
+                                   placeholder="Name" name="name" value="{{ $user->name }}">
                         </div>
                         <div class="col-6">
                             <input type="email"
-                                   class="form-control form-control-alt @error('email') is-invalid @enderror"
-                                   placeholder="Email" name="email" value="{{ old('email') }}">
-                            @error('email')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                                   class="form-control form-control-alt" disabled
+                                   placeholder="Email" name="email" value="{{ $user->email }}">
                         </div>
                         <div class="col-6">
                             <input type="password"
-                                   class="form-control form-control-alt @error('password') is-invalid @enderror"
+                                   class="form-control form-control-alt opacity-50" disabled
                                    placeholder="Password" name="password">
-                            @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
                         <div class="col-6">
-                            <select class="form-select form-control-alt @error('role') is-invalid @enderror"
+                            <select class="form-select form-control-alt" disabled
                                     name="role">
                                 @foreach(\App\Enums\RoleEnum::cases() as $availableRole)
                                     <option value="{{ $availableRole->value }}"
@@ -81,12 +89,9 @@
                                     </option>
                                 @endforeach
                             </select>
-                            @error('role')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
         <!-- END Dynamic Table Full -->

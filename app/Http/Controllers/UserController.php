@@ -31,9 +31,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $user = null;
-        $readOnly = false;
-        return view('users.create', compact('user', 'readOnly'));
+        return view('users.create');
     }
 
     public function store(Request $request)
@@ -52,7 +50,24 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $readOnly = true;
-        return view('users.create', compact('user', 'readOnly'));
+        return view('users.show', compact('user'));
+    }
+
+    public function edit(User $user)
+    {
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|in:' . implode(',', array_column(RoleEnum::cases(), 'value')),
+        ]);
+
+        $user->update($request->only('name', 'email', 'role'));
+
+        return redirect()->route('users.show', ['user' => $user])->with('status', 'User updated successfully.');
     }
 }

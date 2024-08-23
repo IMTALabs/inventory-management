@@ -9,10 +9,10 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                 <div class="flex-grow-1">
                     <h1 class="h3 fw-bold mb-1">
-                        Users
+                        {{ $user->name }}
                     </h1>
                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
-                        Create
+                        Edit
                     </h2>
                 </div>
                 <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
@@ -20,8 +20,13 @@
                         <li class="breadcrumb-item">
                             <a class="link-fx" href="javascript:void(0)">Invent</a>
                         </li>
+                        @can('viewAny', \App\Models\User::class)
+                            <li class="breadcrumb-item">
+                                <a class="link-fx" href="{{ route('users.index') }}">Users</a>
+                            </li>
+                        @endcan
                         <li class="breadcrumb-item" aria-current="page">
-                            Create
+                            {{ $user->name }}
                         </li>
                     </ol>
                 </nav>
@@ -36,7 +41,7 @@
         <div class="block block-rounded">
             <div class="block-header block-header-default">
                 <h3 class="block-title">
-                    Create User
+                    User Detail
                 </h3>
                 <div class="block-options">
                     <button type="submit" form="create" class="btn btn-alt-success btn-sm">
@@ -45,12 +50,13 @@
                 </div>
             </div>
             <div class="block-content block-content-full">
-                <form id="create" action="{{ route('users.store') }}" method="POST">
+                <form id="create" action="{{ route('users.update', ['user' => $user]) }}" method="post">
                     @csrf
+                    @method('PUT')
                     <div class="row g-4">
                         <div class="col-6">
                             <input type="text" class="form-control form-control-alt @error('name') is-invalid @enderror"
-                                   placeholder="Name" name="name" value="{{ old('name') }}">
+                                   placeholder="Name" name="name" value="{{ old('name') ?? $user->name }}">
                             @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -58,18 +64,15 @@
                         <div class="col-6">
                             <input type="email"
                                    class="form-control form-control-alt @error('email') is-invalid @enderror"
-                                   placeholder="Email" name="email" value="{{ old('email') }}">
+                                   placeholder="Email" name="email" value="{{ old('email') ?? $user->email }}">
                             @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-6">
-                            <input type="password"
-                                   class="form-control form-control-alt @error('password') is-invalid @enderror"
-                                   placeholder="Password" name="password">
-                            @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="password" disabled
+                                   class="form-control form-control-alt opacity-50"
+                                   placeholder="Password">
                         </div>
                         <div class="col-6">
                             <select class="form-select form-control-alt @error('role') is-invalid @enderror"

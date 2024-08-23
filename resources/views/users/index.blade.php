@@ -21,7 +21,7 @@
                             <a class="link-fx" href="javascript:void(0)">Invent</a>
                         </li>
                         <li class="breadcrumb-item" aria-current="page">
-                            List Users
+                            List
                         </li>
                     </ol>
                 </nav>
@@ -108,9 +108,11 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-alt-warning">
-                                        <i class="fa fa-fw fa-pencil-alt"></i>
-                                    </button>
+                                    <a href="{{ route('users.edit', ['user' => $user]) }}">
+                                        <button type="button" class="btn btn-sm btn-alt-warning">
+                                            <i class="fa fa-fw fa-pencil-alt"></i>
+                                        </button>
+                                    </a>
                                     <button type="button" class="btn btn-sm btn-alt-danger">
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>

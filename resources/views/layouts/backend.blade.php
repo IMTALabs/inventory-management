@@ -295,7 +295,7 @@
                             </div>
                             <div class="p-2">
                                 <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                   href="javascript:void(0)">
+                                   href="{{ route('users.show', ['user' => Auth::user()]) }}">
                                     <span class="fs-sm fw-medium">Profile</span>
                                     <span class="badge rounded-pill bg-primary ms-2">1</span>
                                 </a>
@@ -459,9 +459,7 @@
             <div class="content py-3">
                 <div class="row fs-sm">
                     <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
-                        Crafted with <i class="fa fa-heart text-danger"></i> by <a class="fw-semibold"
-                                                                                   href="https://pixelcave.com"
-                                                                                   target="_blank">pixelcave</a>
+                        Crafted with <i class="fa fa-heart text-danger"></i>
                     </div>
                     <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
                         <a class="fw-semibold" href="{{ route('dashboard') }}">{{ config('app.name') }}</a>
