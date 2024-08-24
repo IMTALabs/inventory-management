@@ -88,7 +88,7 @@
                                 {{ $performanceHistory->equipment->equipment_name }}
                             </td>
                             <td class="fw-semibold">
-                                {{ number_format($performanceHistory->metric_value) }} {{ $performanceHistory->metric->unit }}
+                                {{ number_format($performanceHistory->metric_value) }} {{ $performanceHistory->metric?->unit }}
                             </td>
                             <td>
                                 {{ $performanceHistory->created_at }}
