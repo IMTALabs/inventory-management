@@ -2,10 +2,16 @@
 
 @section('title', __('Users'))
 
-@section('js')
-    <script>
+@section('css')
+    <link rel="stylesheet" href="{{ asset('js/plugins/sweetalert2/sweetalert2.min.css') }}">
+@endsection
 
-    </script>
+@section('js')
+    <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
+    <!-- Page JS Code -->
+    @vite(['resources/js/pages/users.js'])
 @endsection
 
 @section('content')
@@ -27,7 +33,7 @@
                             <a class="link-fx" href="javascript:void(0)">Invent</a>
                         </li>
                         <li class="breadcrumb-item" aria-current="page">
-                            List Users
+                            List
                         </li>
                     </ol>
                 </nav>
@@ -38,10 +44,30 @@
 
     <!-- Page Content -->
     <div class="content">
+        @session('status')
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <div class="flex-shrink-0">
+                <i class="fa fa-fw fa-check"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <p class="mb-0">
+                    {{ session('status') }}
+                </p>
+            </div>
+        </div>
+        @endsession
+
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
             <div class="block-header block-header-default">
                 <h3 class="block-title">All Users</h3>
+                <div class="block-options">
+                    <a href="{{ route('users.create') }}">
+                        <button type="button" class="btn btn-alt-primary btn-sm">
+                            <i class="si si-plus"></i> Add User
+                        </button>
+                    </a>
+                </div>
             </div>
             <div class="block-content block-content-full">
                 <form class="row g-2 align-items-center mb-3" action="{{ route('users.index') }}" method="get">
@@ -49,7 +75,8 @@
                         <select class="form-select form-control-alt" name="role">
                             <option value="">All roles</option>
                             @foreach(\App\Enums\RoleEnum::cases() as $availableRole)
-                                <option value="{{ $availableRole->value }}" @if($role === $availableRole->value) selected @endif>
+                                <option value="{{ $availableRole->value }}"
+                                        @if($role === $availableRole->value) selected @endif>
                                     {{ ucfirst($availableRole->value) }}
                                 </option>
                             @endforeach
@@ -77,7 +104,9 @@
                     <tbody>
                     @foreach ($users as $i => $user)
                         <tr>
-                            <td class="text-center">{{ $i + 1 }}</td>
+                            <td class="text-center">
+                                {{ $users->firstItem() + $i }}
+                            </td>
                             <td class="text-center">
                                 @if ($user->is_admin)
                                     <span class="badge bg-success">Admin</span>
@@ -86,20 +115,24 @@
                                 @endif
                             </td>
                             <td class="fw-semibold">
-                                <a href="javascript:void(0)">{{ $user->name }}</a>
+                                <a href="{{ route('users.show', ['user' => $user]) }}">{{ $user->name }}</a>
                             </td>
                             <td class="d-none d-sm-table-cell">
                                 {{ $user->email }}
                             </td>
-                            <td class="text-center">
-                                <div class="btn-group">
+                            <td class="text-center d-flex justify-content-center gap-1">
+                                <a href="{{ route('users.edit', ['user' => $user]) }}">
                                     <button type="button" class="btn btn-sm btn-alt-warning">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-alt-danger">
-                                        <i class="fa fa-fw fa-times"></i>
+                                </a>
+                                <form class="form-delete" action="{{ route('users.destroy', ['user' => $user]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-alt-danger">
+                                        <i class="fa fa-fw fa-trash-alt"></i>
                                     </button>
-                                </div>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

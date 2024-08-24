@@ -23,8 +23,58 @@ class UserController extends Controller
                 fn ($orQuery) => $orQuery->where('name', 'like', "%$q%")->orWhere('email', 'like', "%$q%")
             ))
             ->when($role, fn ($query, $role) => $query->where('role', $role))
+            ->orderBy('id', 'desc')
             ->paginate(5)->withQueryString();
 
         return view('users.index', compact('users', 'q', 'role'));
+    }
+
+    public function create()
+    {
+        return view('users.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8',
+            'role' => 'required|in:' . implode(',', array_column(RoleEnum::cases(), 'value')),
+        ]);
+
+        $user = User::create($request->only('name', 'email', 'password', 'role'));
+
+        return redirect()->route('users.show', ['user' => $user])->with('status', 'User created successfully.');
+    }
+
+    public function show(User $user)
+    {
+        return view('users.show', compact('user'));
+    }
+
+    public function edit(User $user)
+    {
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|in:' . implode(',', array_column(RoleEnum::cases(), 'value')),
+        ]);
+
+        $user->update($request->only('name', 'email', 'role'));
+
+        return redirect()->route('users.show', ['user' => $user])->with('status', 'User updated successfully.');
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect()->back()->with('status', 'User deleted successfully.');
     }
 }
