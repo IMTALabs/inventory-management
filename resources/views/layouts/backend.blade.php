@@ -20,7 +20,6 @@
 
     <!-- Alternatively, you can also include a specific color theme after the main stylesheet to alter the default color theme of the template -->
     {{--    @vite(['resources/sass/main.scss', 'resources/sass/oneui/themes/smooth.scss', 'resources/js/oneui/app.js'])--}}
-    @yield('js')
 </head>
 
 <body>
@@ -226,6 +225,34 @@
                                 </ul>
                             </li>
                         @endcan
+                        <li class="nav-main-item{{ request()->routeIs('metrics.*') || request()->routeIs('performance.*') || request()->routeIs('monitor.*') ? ' open' : '' }}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                               aria-haspopup="true"
+                               aria-expanded="true" href="#">
+                                <i class="nav-main-link-icon si si-bar-chart"></i>
+                                <span class="nav-main-link-name">Equipment Monitor</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->routeIs('monitor.show') ? ' active' : '' }}"
+                                       href="{{ route('monitor.show') }}">
+                                        <span class="nav-main-link-name">Monitor</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->routeIs('performance.history') ? ' active' : '' }}"
+                                       href="{{ route('performance.history') }}">
+                                        <span class="nav-main-link-name">Performance History</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->routeIs('metrics.index') ? ' active' : '' }}"
+                                       href="{{ route('metrics.index') }}">
+                                        <span class="nav-main-link-name">Metrics</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
                 <!-- END Side Navigation -->
@@ -471,6 +498,8 @@
         <!-- END Footer -->
     </div>
     <!-- END Page Container -->
+
+    @yield('js')
 </body>
 
 </html>

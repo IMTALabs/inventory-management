@@ -9,8 +9,6 @@
 @section('js')
     <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-
-    <!-- Page JS Code -->
     @vite(['resources/js/pages/users.js'])
 @endsection
 
@@ -31,6 +29,9 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item">
                             <a class="link-fx" href="javascript:void(0)">Invent</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a class="link-fx" href="{{ route('users.index') }}">Users</a>
                         </li>
                         <li class="breadcrumb-item" aria-current="page">
                             List
@@ -126,7 +127,8 @@
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </button>
                                 </a>
-                                <form class="form-delete" action="{{ route('users.destroy', ['user' => $user]) }}" method="post">
+                                <form class="form-delete" action="{{ route('users.destroy', ['user' => $user]) }}"
+                                      method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-alt-danger">

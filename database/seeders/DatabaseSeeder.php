@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Enums\RoleEnum;
 use App\Models\Equipment;
+use App\Models\Metric;
+use App\Models\PerformanceMetric;
 use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -26,6 +28,10 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->count(30)->create();
 
-        Equipment::factory()->count(100)->create();
+        PerformanceMetric::factory()
+            ->count(1000)
+            ->for(Equipment::factory()->count(100)->create()->random())
+            ->for(Metric::factory()->count(5)->create()->random())
+            ->create();
     }
 }
