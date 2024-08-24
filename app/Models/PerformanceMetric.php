@@ -24,10 +24,6 @@ class PerformanceMetric extends Model
         'metric_value',
     ];
 
-    protected $appends = [
-        'formatted_value',
-    ];
-
     public function equipment(): BelongsTo
     {
         return $this->belongsTo(Equipment::class);
@@ -36,12 +32,5 @@ class PerformanceMetric extends Model
     public function metric(): BelongsTo
     {
         return $this->belongsTo(Metric::class);
-    }
-
-    public function formattedValue(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->metric_value . ' ' . $this->metric->unit
-        );
     }
 }
