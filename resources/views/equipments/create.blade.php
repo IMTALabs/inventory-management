@@ -1,6 +1,12 @@
 @extends('layouts.backend')
 
-@section('title', __('Users'))
+@section('title', __('Equipments'))
+
+@section('js')
+    <script>
+
+    </script>
+@endsection
 
 @section('content')
     <!-- Hero -->
@@ -9,7 +15,7 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                 <div class="flex-grow-1">
                     <h1 class="h3 fw-bold mb-1">
-                        Users
+                        Equipments
                     </h1>
                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
                         Create
@@ -21,16 +27,14 @@
                             <a class="link-fx" href="javascript:void(0)">Invent</a>
                         </li>
                         <li class="breadcrumb-item" aria-current="page">
-                            Create
+                            Create Equipment
                         </li>
                     </ol>
                 </nav>
             </div>
         </div>
     </div>
-    <!-- END Hero -->
 
-    <!-- Page Content -->
     <div class="content">
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
@@ -45,7 +49,7 @@
                 </div>
             </div>
             <div class="block-content block-content-full">
-                <form id="create" action="{{ route('equiments.store') }}" method="POST">
+                <form id="create" action="{{ route('users.store') }}" method="POST">
                     @csrf
                     <div class="row g-4">
                         <div class="col-6">
@@ -91,5 +95,4 @@
         </div>
         <!-- END Dynamic Table Full -->
     </div>
-    <!-- END Page Content -->
 @endsection

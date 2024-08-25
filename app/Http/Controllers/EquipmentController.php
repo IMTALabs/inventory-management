@@ -7,14 +7,31 @@ use Illuminate\Http\Request;
 
 class EquipmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $entries = Equipment::paginate();
+        $name = $request->name;
+        $type = $request->type;
+        $model = $request->model;
 
-        return view('equipments.index', compact('entries'));
+        $entries = Equipment::query()->when($name, function ($query) use ($name) {
+            $query->where('equipment_name', 'like', "%$name%");
+        })
+            ->when($name, function ($query) use ($type) {
+                $query->where('equipment_type', 'like', "%$type%");
+            })
+            ->when($name, function ($query) use ($model) {
+                $query->where('model', 'like', "%$model%");
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(5)->withQueryString();
+
+        return view('equipments.index', compact(['entries', 'name', 'type', 'model']));
     }
+
     public function create()
     {
+
+        return view('equipments.create');
 
     }
 }

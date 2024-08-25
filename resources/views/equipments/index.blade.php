@@ -51,25 +51,23 @@
                 </div>
             </div>
             <div class="block-content block-content-full">
-                {{--                <form class="row g-2 align-items-center mb-3" action="{{ route('users.index') }}" method="get">--}}
-                {{--                    <div class="col-3">--}}
-                {{--                        <select class="form-select form-control-alt" name="role">--}}
-                {{--                            <option value="">All roles</option>--}}
-                {{--                            @foreach(\App\Enums\RoleEnum::cases() as $availableRole)--}}
-                {{--                                <option value="{{ $availableRole->value }}" @if($role === $availableRole->value) selected @endif>--}}
-                {{--                                    {{ ucfirst($availableRole->value) }}--}}
-                {{--                                </option>--}}
-                {{--                            @endforeach--}}
-                {{--                        </select>--}}
-                {{--                    </div>--}}
-                {{--                    <div class="col-7">--}}
-                {{--                        <input type="text" class="form-control form-control-alt" name="q" placeholder="Name or Email"--}}
-                {{--                               value="{{ $q }}">--}}
-                {{--                    </div>--}}
-                {{--                    <div class="col-2">--}}
-                {{--                        <button type="submit" class="btn btn-dark w-100">Filter</button>--}}
-                {{--                    </div>--}}
-                {{--                </form>--}}
+                                <form class="row g-2 align-items-center mb-3" action="{{ route('equipments.index') }}" method="get">
+                                    <div class="col-3">
+                                        <input type="text" class="form-control form-control-alt" name="type" placeholder="Type"
+                                               value="{{ $type }}">
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="text" class="form-control form-control-alt" name="model" placeholder="Model"
+                                               value="{{ $model }}">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="text" class="form-control form-control-alt" name="name" placeholder="Name"
+                                               value="{{ $name }}">
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="submit" class="btn btn-dark w-100">Filter</button>
+                                    </div>
+                                </form>
                 <!-- DataTables init on table by adding .js-dataTable-full class, functionality is initialized in js/pages/tables_datatables.js -->
                 <table class="table table-striped table-vcenter fs-sm">
                     <thead>
