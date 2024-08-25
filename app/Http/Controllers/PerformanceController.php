@@ -11,7 +11,7 @@ class PerformanceController extends Controller
     {
         $performanceHistories = PerformanceMetric::with('equipment', 'metric')
             ->orderBy('created_at', 'desc')
-            ->paginate(20)
+            ->simplePaginate(30)
             ->withQueryString();
         return view('performance.history', compact('performanceHistories'));
     }

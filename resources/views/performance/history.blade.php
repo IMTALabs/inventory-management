@@ -98,7 +98,9 @@
                     </tbody>
                 </table>
 
-                {{ $performanceHistories->onEachSide(0)->links() }}
+                <div class="simple-paginate">
+                    {{ $performanceHistories->onEachSide(0)->links() }}
+                </div>
             </div>
         </div>
         <!-- END Dynamic Table Full -->
