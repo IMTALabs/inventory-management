@@ -45,8 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/monitor/{equipment}/fetch', [MonitorController::class, 'fetchEquipment'])->name('monitor.store');
     Route::prefix('equipments')->group(function () {
         Route::get('/', [EquipmentController::class, 'index'])->name('equipments.index');
-//        Route::get('/', [UserController::class, 'index'])->name('users.index');
-//        Route::get('/', [UserController::class, 'index'])->name('users.index');
-//        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/create', [EquipmentController::class, 'create'])->name('equipments.create');
+        Route::post('/store', [EquipmentController::class, 'store'])->name('equipments.store');
+        Route::get('/{equipment}', [EquipmentController::class, 'index'])->name('equipments.edit');
+        // Route::get('/{equipment}/edit', [UserController::class, 'index'])->name('users.index');
     });
 });

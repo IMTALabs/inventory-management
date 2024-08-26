@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="block-content block-content-full">
-                <form id="create" action="{{ route('equiments.store') }}" method="POST">
+                <form id="create" action="{{ route('users.store') }}" method="POST">
                     @csrf
                     <div class="row g-4">
                         <div class="col-6">

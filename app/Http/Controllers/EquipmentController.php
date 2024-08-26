@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleEnum;
 use App\Models\Equipment;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class EquipmentController extends Controller
@@ -30,8 +32,27 @@ class EquipmentController extends Controller
 
     public function create()
     {
-
         return view('equipments.create');
+    }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'equipment_name' => 'required|string|max:255',
+            'equipment_type' => 'required|string|max:255',
+            'serial_number' => 'required|numeric|unique:equipment,serial_number',
+            'equipment_condition' => 'required',
+        ]);
+        $equipment = Equipment::create($request->only('equipment_name', 'equipment_type', 'serial_number', 'equipment_condition'));
+        return view('equipments.show', ['equipment' => $equipment]);
+    }
+
+    public function show(Equipment $equipment)
+    {
+        return view('equipments.show', compact('equipment'));
+    }
+    public function edit(Equipment $equipment)
+    {
+        return view('equipments.edit', compact('equipment'));
     }
 }

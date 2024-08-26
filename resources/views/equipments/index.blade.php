@@ -43,7 +43,7 @@
             <div class="block-header block-header-default">
                 <h3 class="block-title">All Equipments</h3>
                 <div class="block-options">
-                    <a href="">
+                    <a href="{{route('equipments.create')}}">
                         <button type="button" class="btn btn-alt-primary btn-sm">
                             <i class="si si-plus"></i> Add Equipment
                         </button>

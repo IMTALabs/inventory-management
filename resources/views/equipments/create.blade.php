@@ -49,43 +49,37 @@
                 </div>
             </div>
             <div class="block-content block-content-full">
-                <form id="create" action="{{ route('users.store') }}" method="POST">
+                <form id="create" action="{{route('equipments.store')}}" method="POST">
                     @csrf
                     <div class="row g-4">
                         <div class="col-6">
-                            <input type="text" class="form-control form-control-alt @error('name') is-invalid @enderror"
-                                   placeholder="Name" name="name" value="{{ old('name') }}">
-                            @error('name')
+                            <input type="text" class="form-control form-control-alt @error('equipment_name') is-invalid @enderror"
+                                   placeholder="Name" name="equipment_name" value="{{ old('equipment_name') }}">
+                            @error('equipment_name')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-6">
-                            <input type="email"
-                                   class="form-control form-control-alt @error('email') is-invalid @enderror"
-                                   placeholder="Email" name="email" value="{{ old('email') }}">
-                            @error('email')
+                            <input type="text"
+                                   class="form-control form-control-alt @error('equipment_type') is-invalid @enderror"
+                                   placeholder="Type" name="equipment_type" value="{{ old('equipment_type') }}">
+                            @error('equipment_type')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-6">
-                            <input type="password"
-                                   class="form-control form-control-alt @error('password') is-invalid @enderror"
-                                   placeholder="Password" name="password">
-                            @error('password')
+                            <input type="number"
+                                   class="form-control form-control-alt @error('serial_number') is-invalid @enderror"
+                                   placeholder="Serial number" name="serial_number">
+                            @error('serial_number')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-6">
-                            <select class="form-select form-control-alt @error('role') is-invalid @enderror"
-                                    name="role">
-                                @foreach(\App\Enums\RoleEnum::cases() as $availableRole)
-                                    <option value="{{ $availableRole->value }}"
-                                            @if(old('role') === $availableRole->value) selected @endif>
-                                        {{ ucfirst($availableRole->value) }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('role')
+                            <input type="text"
+                                   class="form-control form-control-alt @error('equipment_condition') is-invalid @enderror"
+                                   placeholder="Condition" name="equipment_condition">
+                            @error('equipment_condition')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
