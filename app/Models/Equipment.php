@@ -11,6 +11,8 @@ class Equipment extends Model
 {
     use HasFactory;
 
+    protected $table = 'equipments';
+
     protected $fillable = [
         'equipment_name',
         'equipment_type',
@@ -39,5 +41,10 @@ class Equipment extends Model
     public function performanceMetrics(): HasMany
     {
         return $this->hasMany(PerformanceMetric::class);
+    }
+
+    public function maintenancePlans(): HasMany
+    {
+        return $this->hasMany(MaintenancePlan::class);
     }
 }

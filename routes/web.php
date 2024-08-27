@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MaintenancePlanController;
 use App\Http\Controllers\MetricController;
 use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\PerformanceController;
@@ -42,4 +43,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/performance-history', [PerformanceController::class, 'history'])->name('performance.history');
     Route::get('/monitor', [MonitorController::class, 'show'])->name('monitor.show');
     Route::get('/monitor/{equipment}/fetch', [MonitorController::class, 'fetchEquipment'])->name('monitor.store');
+
+    Route::prefix('maintenance-plans')->group(function () {
+        Route::get('/', [MaintenancePlanController::class, 'index'])->name('maintenance-plans.index');
+        Route::get('/create', [MaintenancePlanController::class, 'create'])->name('maintenance-plans.create');
+        Route::post('/', [MaintenancePlanController::class, 'store'])->name('maintenance-plans.store');
+    });
 });

@@ -251,6 +251,62 @@
                                         <span class="nav-main-link-name">Metrics</span>
                                     </a>
                                 </li>
+                        </ul>
+                        </li>
+                        <li class="nav-main-item{{ request()->routeIs('maintenance-*') ? ' open' : '' }}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                               aria-haspopup="true"
+                               aria-expanded="true" href="#">
+                                <i class="nav-main-link-icon si si-wrench"></i>
+                                <span class="nav-main-link-name">
+                                    Maintenance
+                                </span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item{{ request()->routeIs('maintenance-plans.*') ? ' open' : '' }}">
+                                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                                       aria-haspopup="true" aria-expanded="false" href="#">
+                                        <span class="nav-main-link-name">Maintenance Plans</span>
+                                    </a>
+                                    <ul class="nav-main-submenu">
+                                        <li class="nav-main-item">
+                                            <a class="nav-main-link{{ request()->routeIs('maintenance-plans.index') ? ' active' : '' }}" href="{{ route('maintenance-plans.index') }}">
+                                                <span class="nav-main-link-name">List</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-main-item">
+                                            <a class="nav-main-link{{ request()->routeIs('maintenance-plans.create') ? ' active' : '' }}" href="{{ route('maintenance-plans.create') }}">
+                                                <span class="nav-main-link-name">Create</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                                       aria-haspopup="true" aria-expanded="false" href="#">
+                                        <span class="nav-main-link-name">Maintenance Schedules</span>
+                                    </a>
+                                    <ul class="nav-main-submenu">
+                                        <li class="nav-main-item">
+                                            <a class="nav-main-link" href="#">
+                                                <span class="nav-main-link-name">List</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-main-item">
+                                            <a class="nav-main-link" href="#">
+                                                <span class="nav-main-link-name">Create</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->routeIs('metrics.index') ? ' active' : '' }}"
+                                       href="{{ route('metrics.index') }}">
+                                        <span class="nav-main-link-name">
+                                            Maintenance Logs
+                                        </span>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
