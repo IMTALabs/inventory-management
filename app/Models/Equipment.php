@@ -11,8 +11,6 @@ class Equipment extends Model
 {
     use HasFactory;
 
-    protected $table = 'equipments';
-
     protected $fillable = [
         'equipment_name',
         'equipment_type',
