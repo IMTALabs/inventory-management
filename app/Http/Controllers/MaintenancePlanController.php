@@ -16,7 +16,7 @@ class MaintenancePlanController extends Controller
             'plan_name' => 'nullable|string',
             'equipment_id' => 'nullable|exists:equipment,id',
             'frequency' => 'nullable|in:' . implode(',', array_column(MaintenancePlanFrequencyEnum::cases(), 'value')),
-            'sort_by' => 'nullable|in:default,plan_name,equipment_equipment_name,frequency',
+            'sort_by' => 'nullable|in:id,plan_name,equipment_equipment_name,frequency',
             'sort_order' => 'nullable|in:asc,desc',
         ]);
 
