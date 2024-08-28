@@ -17,6 +17,7 @@ export default defineConfig({
         "resources/js/pages/users.js",
         "resources/js/pages/metrics.js",
         "resources/js/pages/monitor.js",
+        "resources/js/pages/maintenance-plans.js",
       ],
       refresh: true
     })

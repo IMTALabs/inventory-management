@@ -48,5 +48,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [MaintenancePlanController::class, 'index'])->name('maintenance-plans.index');
         Route::get('/create', [MaintenancePlanController::class, 'create'])->name('maintenance-plans.create');
         Route::post('/', [MaintenancePlanController::class, 'store'])->name('maintenance-plans.store');
+        Route::get('/{maintenancePlan}/edit', [MaintenancePlanController::class, 'edit'])->name('maintenance-plans.edit');
+        Route::put('/{maintenancePlan}', [MaintenancePlanController::class, 'update'])->name('maintenance-plans.update');
+        Route::delete('/{maintenancePlan}', [MaintenancePlanController::class, 'destroy'])->name('maintenance-plans.destroy');
     });
 });

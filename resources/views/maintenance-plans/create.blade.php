@@ -66,19 +66,21 @@
                     @csrf
                     <div class="row g-3">
                         <div class="col-12">
+                            <label class="form-label">Plan name<span class="text-danger">*</span></label>
                             <input type="text"
                                    class="form-control form-control-alt @error('plan_name') is-invalid @enderror"
-                                   placeholder="Plan name ..." name="plan_name"
+                                   placeholder="..." name="plan_name"
                                    value="{{ old('maintenance_plan_name') }}">
                             @error('plan_name')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="col-6">
+                            <label class="form-label">Equipment<span class="text-danger">*</span></label>
                             <select
                                 class="js-select2 form-select form-control-alt @error('equipment_id') is-invalid @enderror"
                                 name="equipment_id"
-                                style="width: 100%;" data-placeholder="Choose one equipment ...">
+                                style="width: 100%;" data-placeholder="...">
                                 <option></option>
                                 @foreach($equipmentsCompact as $equipment)
                                     <option value="{{ $equipment->id }}"
@@ -92,10 +94,11 @@
                             @enderror
                         </div>
                         <div class="col-6">
+                            <label class="form-label">Frequency<span class="text-danger">*</span></label>
                             <select class="form-select form-control-alt @error('frequency') is-invalid @enderror"
                                     name="frequency">
                                 <option selected="">
-                                    Choose frequency ...
+                                    ...
                                 </option>
                                 @foreach(\App\Enums\MaintenancePlanFrequencyEnum::cases() as $frequency)
                                     <option value="{{ $frequency->value }}"
@@ -109,9 +112,10 @@
                             @enderror
                         </div>
                         <div class="col-12">
+                            <label class="form-label">Description</label>
                             <textarea rows="10"
                                       class="form-control form-control-alt @error('description') is-invalid @enderror"
-                                      placeholder="Description ..."
+                                      placeholder="..."
                                       name="description">{{ old('description') }}</textarea>
                             @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
