@@ -24,7 +24,7 @@ class UserController extends Controller
             ))
             ->when($role, fn ($query, $role) => $query->where('role', $role))
             ->orderBy('id', 'desc')
-            ->paginate(5)->withQueryString();
+            ->paginate(10)->withQueryString();
 
         return view('users.index', compact('users', 'q', 'role'));
     }

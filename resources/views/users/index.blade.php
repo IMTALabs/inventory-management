@@ -109,11 +109,9 @@
                                 {{ $users->firstItem() + $i }}
                             </td>
                             <td class="text-center">
-                                @if ($user->is_admin)
-                                    <span class="badge bg-success">Admin</span>
-                                @else
-                                    <span class="badge bg-info">Staff</span>
-                                @endif
+                                <span class="badge text-uppercase {{ role_badge_class($user->role) }}">
+                                    {{ $user->role }}
+                                </span>
                             </td>
                             <td class="fw-semibold">
                                 <a href="{{ route('users.show', ['user' => $user]) }}">{{ $user->name }}</a>

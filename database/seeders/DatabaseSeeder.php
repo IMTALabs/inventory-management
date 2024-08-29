@@ -19,25 +19,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::factory()->create([
-            'name' => 'Admin',
+            'name' => 'Invent Admin',
             'email' => config('auth.test_admin_email'),
             'role' => RoleEnum::ADMIN->value,
         ]);
 
-        User::factory()->count(30)->create();
+        User::factory()->count(30)->create([
+            'role' => RoleEnum::STAFF->value,
+        ]);
+
+        User::factory()->count(5)->create([
+            'role' => RoleEnum::MAINTAINER->value,
+        ]);
+
+        $equipments = Equipment::factory()->count(30)->create();
+
+        $metrics = Metric::factory()->count(5)->create();
 
         PerformanceMetric::factory()
             ->count(1000)
-            ->for(Equipment::factory()->count(100)->create()->random())
-            ->for(Metric::factory()->count(5)->create()->random())
+            ->for($equipments->random())
+            ->for($metrics->random())
             ->create();
 
         MaintenancePlan::factory()
-            ->count(100)
-            ->for(Equipment::factory()->count(100)->create()->random())
+            ->count(20)
+            ->for($equipments->random())
             ->create();
     }
 }

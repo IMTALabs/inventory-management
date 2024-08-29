@@ -131,51 +131,6 @@
 
                 <!-- Extra -->
                 <div>
-                    <!-- Dark Mode -->
-                    <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
-                    <a class="btn btn-sm btn-alt-secondary" data-toggle="layout" data-action="dark_mode_toggle"
-                       href="javascript:void(0)">
-                        <i class="far fa-moon"></i>
-                    </a>
-                    <!-- END Dark Mode -->
-
-                    <!-- Options -->
-                    <div class="dropdown d-inline-block ms-1">
-                        <a class="btn btn-sm btn-alt-secondary" id="sidebar-themes-dropdown" data-bs-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false" href="#">
-                            <i class="fa fa-brush"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
-                             aria-labelledby="sidebar-themes-dropdown">
-                            <!-- Sidebar Styles -->
-                            <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
-                            <a class="dropdown-item fw-medium" data-toggle="layout" data-action="sidebar_style_light"
-                               href="javascript:void(0)">
-                                <span>Sidebar Light</span>
-                            </a>
-                            <a class="dropdown-item fw-medium" data-toggle="layout" data-action="sidebar_style_dark"
-                               href="javascript:void(0)">
-                                <span>Sidebar Dark</span>
-                            </a>
-                            <!-- END Sidebar Styles -->
-
-                            <div class="dropdown-divider"></div>
-
-                            <!-- Header Styles -->
-                            <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
-                            <a class="dropdown-item fw-medium" data-toggle="layout" data-action="header_style_light"
-                               href="javascript:void(0)">
-                                <span>Header Light</span>
-                            </a>
-                            <a class="dropdown-item fw-medium" data-toggle="layout" data-action="header_style_dark"
-                               href="javascript:void(0)">
-                                <span>Header Dark</span>
-                            </a>
-                            <!-- END Header Styles -->
-                        </div>
-                    </div>
-                    <!-- END Options -->
-
                     <!-- Close Sidebar, Visible only on mobile screens -->
                     <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
                     <a class="d-lg-none btn btn-sm btn-alt-secondary ms-1" data-toggle="layout"
@@ -281,19 +236,19 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="nav-main-item">
+                                <li class="nav-main-item{{ request()->routeIs('maintenance-schedules.*') ? ' open' : '' }}">
                                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
                                        aria-haspopup="true" aria-expanded="false" href="#">
                                         <span class="nav-main-link-name">Maintenance Schedules</span>
                                     </a>
                                     <ul class="nav-main-submenu">
                                         <li class="nav-main-item">
-                                            <a class="nav-main-link" href="#">
+                                            <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.index') ? ' active' : '' }}" href="{{ route('maintenance-schedules.index') }}">
                                                 <span class="nav-main-link-name">List</span>
                                             </a>
                                         </li>
                                         <li class="nav-main-item">
-                                            <a class="nav-main-link" href="#">
+                                            <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.create') ? ' active' : '' }}" href="{{ route('maintenance-schedules.create') }}">
                                                 <span class="nav-main-link-name">Create</span>
                                             </a>
                                         </li>
