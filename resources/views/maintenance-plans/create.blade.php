@@ -9,7 +9,6 @@
 @section('js')
     <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('js/plugins/select2/js/select2.full.min.js') }}"></script>
-    {{--    @vite('resources/js/pages/maintenance-plans.js')--}}
     <script type="module">
       One.helpersOnLoad(["jq-select2"]);
     </script>
@@ -103,7 +102,7 @@
                                 @foreach(\App\Enums\MaintenancePlanFrequencyEnum::cases() as $frequency)
                                     <option value="{{ $frequency->value }}"
                                             @if($frequency->value == old('frequency')) selected @endif>
-                                        {{ ucfirst(str_replace('_', ' ', $frequency->value)) }}
+                                        {{ strtoupper(str_replace('_', ' ', $frequency->value)) }}
                                     </option>
                                 @endforeach
                             </select>

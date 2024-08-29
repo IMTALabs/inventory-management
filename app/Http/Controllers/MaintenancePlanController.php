@@ -79,6 +79,8 @@ class MaintenancePlanController extends Controller
 
     public function show(MaintenancePlan $maintenancePlan)
     {
+        $maintenancePlan->loadAggregate('equipment', 'equipment_name');
+
         return view('maintenance-plans.show', compact([
             'maintenancePlan',
         ]));

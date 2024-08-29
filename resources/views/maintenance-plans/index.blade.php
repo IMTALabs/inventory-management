@@ -151,7 +151,9 @@
                                 {{ $maintenancePlans->firstItem() + $i }}
                             </td>
                             <td class="fw-semibold">
-                                {{ $plan->plan_name }}
+                                <a href="{{ route('maintenance-plans.show', ['maintenancePlan' => $plan]) }}">
+                                    {{ $plan->plan_name }}
+                                </a>
                             </td>
                             <td>
                                 {{ $plan->equipment_equipment_name }}
