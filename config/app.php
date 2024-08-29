@@ -123,4 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'scheme' => env('APP_SCHEME', 'http'),
 ];
