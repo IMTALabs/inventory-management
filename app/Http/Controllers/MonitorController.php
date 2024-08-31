@@ -23,7 +23,7 @@ class MonitorController extends Controller
                     $metric->id => $currentEquipment->performanceMetrics()
                         ->where('metric_id', $metric->id)
                         ->orderBy('created_at', 'desc')
-                        ->limit(10)->get()->reverse(),
+                        ->limit(20)->get()->reverse(),
                 ];
             });
         }
@@ -39,7 +39,7 @@ class MonitorController extends Controller
                 $metric->chart_key => $equipment->performanceMetrics()
                     ->where('metric_id', $metric->id)
                     ->orderBy('created_at', 'desc')
-                    ->limit(10)->get()
+                    ->limit(20)->get()
                     ->map(function ($performance) {
                         return [
                             'created_at' => $performance->created_at->format('Y-m-d H:i:s'),

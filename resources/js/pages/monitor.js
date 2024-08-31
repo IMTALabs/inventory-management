@@ -21,7 +21,7 @@ class MonitorScript {
           charts[metric] = new Chart(chartLinesCon, {
             type: "line",
             data: chartData[metric],
-            options: { responsive: true, maintainAspectRatio: false, tension: .4 }
+            options: { responsive: true, maintainAspectRatio: false, tension: 0 }
           });
         }
       });

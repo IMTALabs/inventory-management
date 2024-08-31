@@ -46,4 +46,9 @@ class Equipment extends Model
     {
         return $this->hasMany(PerformanceMetric::class);
     }
+
+    public function maintenancePlans(): HasMany
+    {
+        return $this->hasMany(MaintenancePlan::class);
+    }
 }

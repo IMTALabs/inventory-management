@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\MaintenancePlanController;
+use App\Http\Controllers\MaintenanceScheduleController;
 use App\Http\Controllers\MetricController;
 use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\PerformanceController;
@@ -49,5 +51,25 @@ Route::middleware('auth')->group(function () {
         Route::post('/store', [EquipmentController::class, 'store'])->name('equipments.store');
         Route::get('/{equipment}', [EquipmentController::class, 'index'])->name('equipments.edit');
         // Route::get('/{equipment}/edit', [UserController::class, 'index'])->name('users.index');
+    });
+
+    Route::prefix('/maintenance-plans')->group(function () {
+        Route::get('/', [MaintenancePlanController::class, 'index'])->name('maintenance-plans.index');
+        Route::get('/create', [MaintenancePlanController::class, 'create'])->name('maintenance-plans.create');
+        Route::post('/', [MaintenancePlanController::class, 'store'])->name('maintenance-plans.store');
+        Route::get('/{maintenancePlan}', [MaintenancePlanController::class, 'show'])->name('maintenance-plans.show');
+        Route::get('/{maintenancePlan}/edit', [MaintenancePlanController::class, 'edit'])->name('maintenance-plans.edit');
+        Route::put('/{maintenancePlan}', [MaintenancePlanController::class, 'update'])->name('maintenance-plans.update');
+        Route::delete('/{maintenancePlan}', [MaintenancePlanController::class, 'destroy'])->name('maintenance-plans.destroy');
+    });
+
+    Route::prefix('/maintenance-schedules')->group(function () {
+        Route::get('/', [MaintenanceScheduleController::class, 'index'])->name('maintenance-schedules.index');
+        Route::get('/create', [MaintenanceScheduleController::class, 'create'])->name('maintenance-schedules.create');
+        Route::post('/', [MaintenanceScheduleController::class, 'store'])->name('maintenance-schedules.store');
+        Route::get('/{maintenanceSchedule}', [MaintenanceScheduleController::class, 'show'])->name('maintenance-schedules.show');
+        Route::get('/{maintenanceSchedule}/edit', [MaintenanceScheduleController::class, 'edit'])->name('maintenance-schedules.edit');
+        Route::put('/{maintenanceSchedule}', [MaintenanceScheduleController::class, 'update'])->name('maintenance-schedules.update');
+        Route::delete('/{maintenanceSchedule}', [MaintenanceScheduleController::class, 'destroy'])->name('maintenance-schedules.destroy');
     });
 });
