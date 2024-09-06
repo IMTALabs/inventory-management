@@ -48,6 +48,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ${{ secrets.TARGET }}
+            npx dotenv-vault@latest pull
             php artisan migrate --force
             php artisan optimize:clear
             php artisan config:cache
