@@ -78,4 +78,9 @@ class User extends Authenticatable implements CanResetPassword
             get: fn () => $this->role === RoleEnum::ADMIN,
         );
     }
+
+    public function scopeMaintainers($query): void
+    {
+        $query->where('role', RoleEnum::MAINTAINER);
+    }
 }

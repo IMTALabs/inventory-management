@@ -8,6 +8,7 @@ use App\Models\MaintenancePlan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class MaintenancePlanFactory extends Factory
 {
@@ -17,7 +18,7 @@ class MaintenancePlanFactory extends Factory
     {
         return [
             'equipment_id' => $this->faker->randomNumber(),
-            'plan_name' => $this->faker->name(),
+            'plan_name' => $this->faker->sentence(),
             'description' => $this->faker->text(),
             'frequency' => Arr::random(MaintenancePlanFrequencyEnum::cases())->value,
             'created_at' => Carbon::now(),

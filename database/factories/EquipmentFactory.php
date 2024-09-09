@@ -11,8 +11,28 @@ class EquipmentFactory extends Factory
 
     public function definition(): array
     {
+        $equipmentNames = [
+            "ZenithBook 1500", "OptiMate X", "TerraByte Z2", "AeroBook Pro", "CyberEdge M100", "QuantumPad 14",
+            "TitanBolt X1", "AlphaVibe Z300", "HyperNova Pro", "TechMaster Slim", "GigaFlex Ultra", "FusionCore S2",
+            "PowerEdge V100", "CosmoPad Elite", "UltraVision 5", "MagnoBook Max", "VortexBlade 17", "PixelWave XR",
+            "StormForce G5", "VelocityNote 12", "NeonTech Ultra", "NebulaCore Mx", "SpectraView Y1", "InfiBook Pro",
+            "NanoByte Max", "ProGlide Slim", "HyperTech Vibe", "AlphaFusion 300", "VisionPad Pro", "ChronoEdge 15",
+            "FlexPad Infinity", "UltraNova Z7", "XenithBook 400", "TechForce Ultra", "QuantumEdge 12", "VeloNote Pro",
+            "DynamiBook Elite", "TitanBlade 11", "SpectraCore M2", "TerraNote Z", "AstroPad Slim", "LumiFlex Pro",
+            "Celeronix Ultra", "AlphaMax Z15", "VegaBook M1", "ProtoFlex Slim", "MaxiTech X", "HyperByte 200",
+            "OmegaWave S", "GigaBook V5", "ZenithEdge Pro", "TurboPad 13", "FusionWave XR", "PixelCore S12",
+            "PowerByte Max", "VisionFlex G2", "VelocityMax Pro", "ChronoPad Ultra", "AlphaCore Z8", "OptiBook Max",
+            "UltraVibe 15", "GigaBlade Pro", "TechnoEdge X", "VortexPad Y7", "StormBook Elite", "CosmoCore Ultra",
+            "HyperBlade Z", "NeonPad 12", "CyberTech Pro", "TitanNote V", "AlphaEdge XR", "NebulaNote 14",
+            "PixelMate Ultra", "FusionNote M1", "MaxiCore Slim", "UltraByte Z5", "VisionNote Elite", "CeleronPad Pro",
+            "GigaVibe M10", "LumiTech Max", "ZenithMate X1", "HyperNote Ultra", "OmegaEdge Pro", "QuantumBook 13",
+            "AlphaWave S2", "ProtoBlade Max", "AstroBook Slim", "TurboNote G1", "UltraCore X5", "CosmoNote 15",
+            "NeonFlex Vibe", "PowerTech 200", "VegaEdge Pro", "MaxiPad Elite", "HyperVision Z", "TitanWave 300",
+            "VisionCore X1", "QuantumPad Ultra", "TechMaster Pro", "FusionEdge 14", "PixelFlex Mx", "ChronoBook G3"
+        ];
+
         return [
-            'equipment_name' => fake()->sentence,
+            'equipment_name' => fake()->unique()->randomElement($equipmentNames),
             'equipment_type' => fake()->randomElement(['Server', 'Computer', 'Printer', 'Network Device', 'Other']),
             'model' => fake()->word,
             'serial_number' => fake()->unique()->randomNumber(8),
