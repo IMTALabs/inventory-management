@@ -66,12 +66,25 @@
                                    class="form-control form-control-alt" disabled
                                    placeholder="Condition" name="equipment_condition" value="{{ $equipment->equipment_condition }}">
                         </div>
-
+                        <div id="image_grid" class="row mt-2 px-4">
+                            @foreach($equipment->images as $image)
+                                <div class="col-md-3 mb-4">
+                                    <img src="{{ asset('storage/' . $image->image) }}" alt="Image" class="img-fluid fixed-size">
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- END Dynamic Table Full -->
     </div>
-    <!-- END Page Content -->
+
+    <style>
+        .fixed-size {
+            width: 100%;
+            height: 200px; /* Set the desired fixed height */
+            object-fit: cover; /* Ensure the image covers the entire area */
+        }
+    </style>
 @endsection

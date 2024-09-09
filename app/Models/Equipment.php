@@ -37,7 +37,7 @@ class Equipment extends Model
         'notes',
     ];
 
-    public function image(): MorphMany
+    public function images(): MorphMany
     {
         return $this->MorphMany(Image::class, 'imageable');
     }

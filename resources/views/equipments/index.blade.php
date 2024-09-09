@@ -87,12 +87,16 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-alt-warning">
+                                    <a href="{{ route('equipments.edit', ['equipment' => $entry]) }}" class="btn btn-sm btn-alt-warning">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-alt-danger">
-                                        <i class="fa fa-fw fa-times"></i>
-                                    </button>
+                                    </a>
+                                    <form action="{{ route('equipments.destroy', ['equipment' => $entry]) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-alt-danger" onclick="return confirm('Are you sure you want to delete this equipment?');">
+                                            <i class="fa fa-fw fa-times"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>

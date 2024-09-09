@@ -45,12 +45,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/performance-history', [PerformanceController::class, 'history'])->name('performance.history');
     Route::get('/monitor', [MonitorController::class, 'show'])->name('monitor.show');
     Route::get('/monitor/{equipment}/fetch', [MonitorController::class, 'fetchEquipment'])->name('monitor.store');
+
     Route::prefix('equipments')->group(function () {
         Route::get('/', [EquipmentController::class, 'index'])->name('equipments.index');
         Route::get('/create', [EquipmentController::class, 'create'])->name('equipments.create');
         Route::post('/store', [EquipmentController::class, 'store'])->name('equipments.store');
-        Route::get('/{equipment}', [EquipmentController::class, 'index'])->name('equipments.edit');
-        // Route::get('/{equipment}/edit', [UserController::class, 'index'])->name('users.index');
+        Route::get('/{equipment}', [EquipmentController::class, 'edit'])->name('equipments.edit');
+         Route::put('/{equipment}', [EquipmentController::class, 'update'])->name('equipments.update');
+        Route::delete('/{equipment}', [EquipmentController::class, 'destroy'])->name('equipments.destroy');
     });
 
     Route::prefix('/maintenance-plans')->group(function () {
