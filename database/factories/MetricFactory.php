@@ -12,8 +12,21 @@ class MetricFactory extends Factory
 
     public function definition(): array
     {
+        $metricNames = [
+            'CPU',
+            'Memory',
+            'Storage',
+            'Network',
+            'Temperature',
+            'Fan Speed',
+            'Voltage',
+            'Power',
+            'Utilization',
+            'Latency',
+        ];
+
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->unique()->randomElement($metricNames),
             'unit' => $this->faker->word(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
