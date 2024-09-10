@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MaintenanceScheduleStatusEnum;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $maintenance_plan_id
  * @property string $scheduled_date
- * @property string $status
+ * @property MaintenanceScheduleStatusEnum $status
  * @property string $performed_by
  * @property string $remarks
  * @property Carbon $created_at
@@ -30,6 +31,13 @@ class MaintenanceSchedule extends Model
         'performed_by',
         'remarks',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'status' => MaintenanceScheduleStatusEnum::class,
+        ];
+    }
 
     public function maintenancePlan(): BelongsTo
     {

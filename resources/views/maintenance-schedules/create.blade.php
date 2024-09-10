@@ -21,6 +21,13 @@
         frequency = frequency.replace(/_/g, " ").toUpperCase();
         jQuery("#frequency").html(`<span class="badge ${ badgeClass }">${ frequency }</span>`);
       });
+      jQuery("#auto_schedule").on("change", function () {
+        if (jQuery(this).is(":checked")) {
+          jQuery("#scheduled_to").prop("disabled", false);
+        } else {
+          jQuery("#scheduled_to").prop("disabled", true);
+        }
+      });
     </script>
     <script type="module">
       One.helpersOnLoad(["jq-select2"]);
@@ -75,13 +82,13 @@
                 </div>
             </div>
             <div class="block-content block-content-full">
-                <form id="create" action="{{ route('maintenance-plans.store') }}" method="POST">
+                <form id="create" action="{{ route('maintenance-schedules.store') }}" method="POST">
                     @csrf
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label">Plan<span class="text-danger">*</span></label>
                             <select id="plan"
-                                    class="js-select2 form-select form-control-alt @error('equipment_id') is-invalid @enderror"
+                                    class="js-select2 form-select form-control-alt @error('maintenance_plan_id') is-invalid @enderror"
                                     name="maintenance_plan_id"
                                     style="width: 100%;" data-placeholder="...">
                                 <option></option>
@@ -109,7 +116,7 @@
                         <div class="col-6">
                             <label class="form-label">Performed By<span class="text-danger">*</span></label>
                             <select
-                                class="js-select2 form-select form-control-alt @error('equipment_id') is-invalid @enderror"
+                                class="js-select2 form-select form-control-alt @error('performed_by') is-invalid @enderror"
                                 name="performed_by"
                                 style="width: 100%;" data-placeholder="...">
                                 <option></option>
@@ -124,7 +131,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                             <label class="form-label">Frequency</label>
                             <div id="frequency">
                                 <span class="badge bg-secondary text-white">
@@ -132,15 +139,28 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                             <label class="form-label">Auto Schedule</label>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" value="" id="auto-schedule"
-                                       name="auto-schedule">
-                                <label class="form-check-label" for="auto-schedule">
-                                    Auto Create Next Schedule
+                                <input class="form-check-input" type="checkbox" value="1" id="auto_schedule"
+                                       name="auto_schedule" @if(old('auto_schedule') == 1) checked @endif>
+                                <label class="form-check-label" for="auto_schedule">
+                                    Auto create schedule
                                 </label>
                             </div>
+                            @error('auto_schedule')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label" for="scheduled_to">Scheduled To</label>
+                            <input type="date" id="scheduled_to" disabled
+                                   class="form-control form-control-alt @error('scheduled_to') is-invalid @enderror"
+                                   name="scheduled_to"
+                                   value="{{ old('scheduled_to') }}">
+                            @error('scheduled_to')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-12">
                             <label class="form-label">Remarks</label>
