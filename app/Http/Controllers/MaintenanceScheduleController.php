@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\MaintenancePlanFrequencyEnum;
 use App\Enums\MaintenanceScheduleStatusEnum;
 use App\Models\MaintenancePlan;
 use App\Models\MaintenanceSchedule;
@@ -13,7 +14,10 @@ class MaintenanceScheduleController extends Controller
 {
     public function index(Request $request)
     {
+        $maintenanceSchedules = MaintenanceSchedule::with(['maintenancePlan', 'performer'])
+            ->latest()->paginate(10);
 
+        return view('maintenance-schedules.index', compact('maintenanceSchedules'));
     }
 
     public function create()
@@ -57,12 +61,8 @@ class MaintenanceScheduleController extends Controller
         $maintenancePlan = MaintenancePlan::find($maintenancePlanId);
         $scheduledDates = [$scheduledDate->format('Y-m-d')];
         if ($autoSchedule == 1) {
-            $frequency = $maintenancePlan->frequency->value;
-            dd($frequency);
-            $scheduledDates = [];
-            for ($i = 1; $i <= 12; $i++) {
-                $scheduledDates[] = $scheduledDate->addMonths($frequency)->format('Y-m-d');
-            }
+            $frequency = $maintenancePlan->frequency;
+            $scheduledDates = $this->autoScheduledDates($scheduledDate, $scheduledTo, $frequency);
         }
 
         foreach ($scheduledDates as $date) {
@@ -97,5 +97,57 @@ class MaintenanceScheduleController extends Controller
     public function destroy(MaintenanceSchedule $maintenanceSchedule)
     {
 
+    }
+
+    private function autoScheduledDates(
+        Carbon $scheduledDate,
+        mixed $scheduledTo,
+        MaintenancePlanFrequencyEnum $frequency
+    ) {
+        $scheduledDates = [];
+        $date = $scheduledDate->copy();
+        switch ($frequency) {
+            case MaintenancePlanFrequencyEnum::DAILY:
+                while ($date->lte($scheduledTo)) {
+                    $scheduledDates[] = $date->format('Y-m-d');
+                    $date->addDay();
+                }
+                break;
+            case MaintenancePlanFrequencyEnum::WEEKLY:
+                while ($date->lte($scheduledTo)) {
+                    $scheduledDates[] = $date->format('Y-m-d');
+                    $date->addWeek();
+                }
+                break;
+            case MaintenancePlanFrequencyEnum::MONTHLY:
+                while ($date->lte($scheduledTo)) {
+                    $scheduledDates[] = $date->format('Y-m-d');
+                    $date->addMonth();
+                }
+                break;
+            case MaintenancePlanFrequencyEnum::QUARTERLY:
+                while ($date->lte($scheduledTo)) {
+                    $scheduledDates[] = $date->format('Y-m-d');
+                    $date->addMonths(3);
+                }
+                break;
+            case MaintenancePlanFrequencyEnum::SEMI_ANNUALLY:
+                while ($date->lte($scheduledTo)) {
+                    $scheduledDates[] = $date->format('Y-m-d');
+                    $date->addMonths(6);
+                }
+                break;
+            case MaintenancePlanFrequencyEnum::ANNUALLY:
+                while ($date->lte($scheduledTo)) {
+                    $scheduledDates[] = $date->format('Y-m-d');
+                    $date->addYear();
+                }
+                break;
+            case MaintenancePlanFrequencyEnum::ONE_TIME:
+                $scheduledDates[] = $date->format('Y-m-d');
+                break;
+        }
+
+        return $scheduledDates;
     }
 }

@@ -6,7 +6,7 @@
 <!-- Hero -->
 <div class="bg-body-light">
     <div class="content content-full">
-        <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+        <div class="d-flex flex-column gap-8 flex-sm-row justify-content-sm-between align-items-sm-center py-2">
             <div class="flex-grow-1">
                 <h1 class="h3 fw-bold mb-1">
                     {{ $maintenancePlan->plan_name }}
@@ -23,7 +23,7 @@
                     <li class="breadcrumb-item" aria-current="page">
                         <a class="link-fx" href="{{ route('maintenance-plans.index') }}">Maintenance Plans</a>
                     </li>
-                    <li class="breadcrumb-item" aria-current="page">
+                    <li class="breadcrumb-item text-truncate max-width-200" aria-current="page">
                         {{ $maintenancePlan->plan_name }}
                     </li>
                 </ol>

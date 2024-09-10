@@ -14,7 +14,7 @@
       const badgeClasses = @json(\App\Enums\MaintenancePlanFrequencyEnum::frequencyBadgeClasses());
       jQuery("#plan").on("select2:select", function (e) {
         const data = e.params.data;
-        const index = Number(data.id);
+        const index = Number(data.id) - 1;
         const plan = maintenancePlans.find(((_, idx) => idx === index));
         let frequency = plan.frequency;
         const badgeClass = badgeClasses[frequency];

@@ -47,3 +47,10 @@
     }
   }
 }
+
+// Max width utility
+@for $i from 1 through 9 {
+  .max-width-#{$i}00 {
+    max-width: #{$i}00px;
+  }
+}
