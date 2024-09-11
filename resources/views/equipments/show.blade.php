@@ -32,6 +32,7 @@
 
     <!-- Page Content -->
     <div class="content">
+        @include('common.alert')
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
             <div class="block-header block-header-default">
@@ -66,7 +67,7 @@
                                    class="form-control form-control-alt" disabled
                                    placeholder="Condition" name="equipment_condition" value="{{ $equipment->equipment_condition }}">
                         </div>
-                        <div id="image_grid" class="row mt-2 px-4">
+                        <div id="image_grid" class="row mt-4 px-4">
                             @foreach($equipment->images as $image)
                                 <div class="col-md-3 mb-4">
                                     <img src="{{ asset('storage/' . $image->image) }}" alt="Image" class="img-fluid fixed-size">

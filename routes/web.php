@@ -75,3 +75,4 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{maintenanceSchedule}', [MaintenanceScheduleController::class, 'destroy'])->name('maintenance-schedules.destroy');
     });
 });
+Route::post('/image', [EquipmentController::class, 'image'])->name('images.create');

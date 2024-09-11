@@ -74,11 +74,15 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <input type="file" name="images[]" multiple class="form-control @error('image') is-invalid @enderror">
+                        <input type="file" id="images" name="images[]" multiple class="form-control @error('image') is-invalid @enderror">
                         @error('image')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="mt-4">
+                        <div class="dropzone" id="equipment-dropzone"></div>
+                    </div>
+                    <input type="hidden" name="additional_data" id="additional_data">
                 </form>
             </div>
         </div>
@@ -87,5 +91,34 @@
 
 @section('js')
     <script src="{{ asset('/js/plugins/dropzone/min/dropzone.min.js') }}"></script>
+    <script>
+        const fileImages = [];
+        Dropzone.options.equipmentDropzone = {
+            url: '{{ route('images.create') }}',
+            paramName: 'images', // The name that will be used to transfer the file
+            maxFilesize: 2, // MB
+            acceptedFiles: 'image/*',
+            addRemoveLinks: true,
+            dictDefaultMessage: 'Drop files here or click to upload',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            init: function() {
+                this.on('success', function(file, response) {
+                    console.log(file);
+                    console.log(response);
+                    fileImages.push(file);
+                    console.log('File uploaded successfully');
+                });
+                this.on('error', function(file, response) {
+                    console.log('File upload error');
+                });
+            }
+        };
 
+        document.getElementById('create').addEventListener('submit', function() {
+            const additionalData = document.getElementById('additional_data');
+            additionalData.value = JSON.stringify(fileImages);
+        });
+    </script>
 @endsection

@@ -11,6 +11,7 @@ class EquipmentController extends Controller
 {
     public function index(Request $request)
     {
+
         $name = $request->name;
         $type = $request->type;
         $model = $request->model;
@@ -44,21 +45,25 @@ class EquipmentController extends Controller
             'equipment_condition' => 'required',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
         DB::beginTransaction();
         try {
             $equipment = Equipment::create($request->only('equipment_name', 'equipment_type', 'serial_number', 'equipment_condition'));
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $image) {
-                    $imageName = time() . '_' . $image->getClientOriginalName();
-                    $imagePath = $image->storeAs('images', $imageName, 'public');
 
-                    $equipment->images()->create(['image' => $imagePath]);
-                }
+            // Process additional data
+            $additionalData = json_decode($request->input('additional_data'));
+            foreach ($additionalData as $image) {
+                $imageName = time() . '_' . $image->upload->filename;
+                $imagePath = Storage::disk('public')->putFileAs('images', $image->dataURL, $imageName);
+
+                $equipment->images()->create(['image' => $imagePath]);
             }
+
             DB::commit();
             return view('equipments.show', ['equipment' => $equipment]);
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return back()->with('error', 'An error occurred while creating the equipment');
         }
     }
@@ -108,7 +113,7 @@ class EquipmentController extends Controller
             }
 
             DB::commit();
-            return view('equipments.show', ['equipment' => $equipment]);
+            return to_route('equipments.edit', ['equipment' => $equipment])->with('status', 'Equipment updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
@@ -129,5 +134,13 @@ class EquipmentController extends Controller
             DB::rollBack();
             return back()->with('error', 'An error occurred while deleting the equipment');
         }
+    }
+
+    public function image(Request $request)
+    {
+//        $image = $request->file;
+//        $imageName = time() . '_' . $image->getClientOriginalName();
+//        $imagePath = $image->storeAs('images', $imageName, 'public');
+        return response()->json(['image_path' => $request]);
     }
 }

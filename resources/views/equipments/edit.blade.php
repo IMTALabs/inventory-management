@@ -30,6 +30,7 @@
     </div>
 
     <div class="content">
+        @include('common.alert')
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
             <div class="block-header block-header-default">
@@ -43,7 +44,7 @@
                 </div>
             </div>
             <div class="block-content block-content-full">
-                <form id="edit" action="{{route('equipments.update', ['equipment' => $equipment])}}" method="post">
+                <form id="edit" action="{{route('equipments.update', ['equipment' => $equipment])}}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="row g-4">
@@ -96,6 +97,9 @@
                             @enderror
                         </div>
                     </div>
+                </form>
+                <form class="dropzone" action="{{route('equipments.store')}}">
+
                 </form>
             </div>
         </div>
