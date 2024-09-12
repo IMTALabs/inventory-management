@@ -73,17 +73,14 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <input type="file" id="images" name="images[]" multiple class="form-control @error('image') is-invalid @enderror">
-                        @error('image')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="mt-4">
-                        <div class="dropzone" id="equipment-dropzone"></div>
-                    </div>
                     <input type="hidden" name="additional_data" id="additional_data">
                 </form>
+
+                <form method="post" action="{{route('images.create')}}" enctype="multipart/form-data"
+                      class="dropzone mt-4" id="dropzone">
+                    @csrf
+                </form>
+
             </div>
         </div>
     </div>
@@ -93,32 +90,27 @@
     <script src="{{ asset('/js/plugins/dropzone/min/dropzone.min.js') }}"></script>
     <script>
         const fileImages = [];
-        Dropzone.options.equipmentDropzone = {
-            url: '{{ route('images.create') }}',
-            paramName: 'images', // The name that will be used to transfer the file
-            maxFilesize: 2, // MB
-            acceptedFiles: 'image/*',
-            addRemoveLinks: true,
-            dictDefaultMessage: 'Drop files here or click to upload',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        Dropzone.options.dropzone =
+          {
+            maxFilesize: 10,
+            renameFile: function (file) {
+              var dt = new Date();
+              var time = dt.getTime();
+              return time + file.name;
             },
-            init: function() {
-                this.on('success', function(file, response) {
-                    console.log(file);
-                    console.log(response);
-                    fileImages.push(file);
-                    console.log('File uploaded successfully');
-                });
-                this.on('error', function(file, response) {
-                    console.log('File upload error');
-                });
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            timeout: 60000,
+            success: function (file, response) {
+              fileImages.push(response.image_path);
+            },
+            error: function (file, response) {
+              return false;
             }
-        };
-
+          };
         document.getElementById('create').addEventListener('submit', function() {
-            const additionalData = document.getElementById('additional_data');
-            additionalData.value = JSON.stringify(fileImages);
+          const additionalData = document.getElementById('additional_data');
+          additionalData.value = fileImages;
         });
     </script>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipment;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -38,26 +39,21 @@ class EquipmentController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'equipment_name' => 'required|string|max:255',
             'equipment_type' => 'required|string|max:255',
             'serial_number' => 'required|numeric|unique:equipment,serial_number',
             'equipment_condition' => 'required',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         DB::beginTransaction();
         try {
-            $equipment = Equipment::create($request->only('equipment_name', 'equipment_type', 'serial_number', 'equipment_condition'));
+            $equipment = Equipment::create($request->only('equipment_name', 'equipment_type', 'serial_number',
+                'equipment_condition'));
 
-            // Process additional data
-            $additionalData = json_decode($request->input('additional_data'));
-            foreach ($additionalData as $image) {
-                $imageName = time() . '_' . $image->upload->filename;
-                $imagePath = Storage::disk('public')->putFileAs('images', $image->dataURL, $imageName);
-
-                $equipment->images()->create(['image' => $imagePath]);
-            }
+            $additionalData = explode(',', $request->additional_data);
+            Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
 
             DB::commit();
             return view('equipments.show', ['equipment' => $equipment]);
@@ -89,31 +85,18 @@ class EquipmentController extends Controller
 
         DB::beginTransaction();
         try {
-            $equipment->update($request->only('equipment_name', 'equipment_type', 'serial_number', 'equipment_condition'));
+            $equipment->update($request->only('equipment_name', 'equipment_type', 'serial_number',
+                'equipment_condition'));
 
             if ($request->use_old_image !== 'on') {
-//                dd($request);
-                $request->validate([
-                    'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-                ]);
-
-                // Delete old images from storage
-                Storage::delete($equipment->images->pluck('image')->toArray());
-
-                // Delete old images from database
                 $equipment->images()->delete();
-
-                // Save new images
-                foreach ($request->file('images') as $image) {
-                    $imageName = time() . '_' . $image->getClientOriginalName();
-                    $imagePath = $image->storeAs('images', $imageName, 'public');
-
-                    $equipment->images()->create(['image' => $imagePath]);
-                }
+                $additionalData = explode(',', $request->additional_data);
+                Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
             }
 
             DB::commit();
-            return to_route('equipments.edit', ['equipment' => $equipment])->with('status', 'Equipment updated successfully');
+            return to_route('equipments.edit', ['equipment' => $equipment])->with('status',
+                'Equipment updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
@@ -138,9 +121,14 @@ class EquipmentController extends Controller
 
     public function image(Request $request)
     {
-//        $image = $request->file;
-//        $imageName = time() . '_' . $image->getClientOriginalName();
-//        $imagePath = $image->storeAs('images', $imageName, 'public');
-        return response()->json(['image_path' => $request]);
+        $image = $request->file;
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $imagePath = $image->storeAs('images', $imageName, 'public');
+
+        $image = Image::create([
+            'image' => $imagePath,
+            'imageable_type' => Equipment::class,
+        ]);
+        return response()->json(['image_path' => $image->id]);
     }
 }

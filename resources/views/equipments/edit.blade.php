@@ -2,6 +2,10 @@
 
 @section('title', __('Equipments'))
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('js/plugins/dropzone/min/dropzone.min.css') }}">
+@endsection
+
 @section('content')
     <!-- Hero -->
     <div class="bg-body-light">
@@ -90,16 +94,12 @@
                                 </div>
                             @endforeach
                         </div>
-                        <div id="file_input" class="mt-4" style="display: none;">
-                            <input type="file" name="images[]" multiple class="form-control @error('image') is-invalid @enderror">
-                            @error('image')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
                     </div>
+                    <input type="hidden" name="additional_data" id="additional_data">
                 </form>
-                <form class="dropzone" action="{{route('equipments.store')}}">
-
+                <form method="post" action="{{route('images.create')}}" enctype="multipart/form-data"
+                      class="dropzone mt-4" id="dropzone" style="display: none">
+                    @csrf
                 </form>
             </div>
         </div>
@@ -115,16 +115,38 @@
 @endsection
 
 @section('js')
+    <script src="{{ asset('/js/plugins/dropzone/min/dropzone.min.js') }}"></script>
     <script>
         function toggleImageInput() {
             const useOldImage = document.getElementById('use_old_image').checked;
             document.getElementById('image_grid').style.display = useOldImage ? '' : 'none';
-            document.getElementById('file_input').style.display = useOldImage ? 'none' : 'block';
+            document.getElementById('dropzone').style.display = useOldImage ? 'none' : 'block';
         }
-
-        // Initialize the visibility on page load
         document.addEventListener('DOMContentLoaded', function() {
             toggleImageInput();
+        });
+        const fileImages = [];
+        Dropzone.options.dropzone =
+          {
+            maxFilesize: 10,
+            renameFile: function (file) {
+              var dt = new Date();
+              var time = dt.getTime();
+              return time + file.name;
+            },
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            timeout: 60000,
+            success: function (file, response) {
+              fileImages.push(response.image_path);
+            },
+            error: function (file, response) {
+              return false;
+            }
+          };
+        document.getElementById('edit').addEventListener('submit', function() {
+          const additionalData = document.getElementById('additional_data');
+          additionalData.value = fileImages;
         });
     </script>
 @endsection
