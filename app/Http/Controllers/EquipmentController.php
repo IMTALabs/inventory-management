@@ -12,24 +12,32 @@ class EquipmentController extends Controller
 {
     public function index(Request $request)
     {
-
         $name = $request->name;
         $type = $request->type;
-        $model = $request->model;
+        $location = $request->location;
+        $status = $request->status;
+        $condition = $request->condition;
 
         $entries = Equipment::query()->when($name, function ($query) use ($name) {
             $query->where('equipment_name', 'like', "%$name%");
         })
-            ->when($name, function ($query) use ($type) {
-                $query->where('equipment_type', 'like', "%$type%");
+            ->when($condition, function ($query) use ($condition) {
+                $query->where('equipment_condition', $condition);
             })
-            ->when($name, function ($query) use ($model) {
-                $query->where('model', 'like', "%$model%");
+            ->when($type, function ($query) use ($type) {
+                $query->where('equipment_type', $type);
+            })
+            ->when($status, function ($query) use ($status) {
+                $query->where('equipment_type', $status);
+            })
+            ->when($location, function ($query) use ($location) {
+                $query->where('model', 'like', "%$location%");
             })
             ->orderBy('id', 'desc')
-            ->paginate(5)->withQueryString();
+            ->paginate(5)
+            ->withQueryString();
 
-        return view('equipments.index', compact(['entries', 'name', 'type', 'model']));
+        return view('equipments.index', compact(['entries', 'name', 'type', 'status','location', 'condition']));
     }
 
     public function create()
@@ -39,27 +47,44 @@ class EquipmentController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'equipment_name' => 'required|string|max:255',
             'equipment_type' => 'required|string|max:255',
-            'serial_number' => 'required|numeric|unique:equipment,serial_number',
-            'equipment_condition' => 'required',
+            'serial_number' => 'required|string|unique:equipment,serial_number',
+            'equipment_condition' => 'required|string|max:255',
+            'model' => 'nullable|string|max:255',
+            'manufacturer' => 'nullable|string|max:255',
+            'purchase_date' => 'nullable|date',
+            'location' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
+            'warranty_period' => 'nullable|date',
+            'installation_date' => 'nullable|date',
+            'last_service_date' => 'nullable|date',
+            'next_service_date' => 'nullable|date',
+            'equipment_specifications' => 'nullable|string',
+            'usage_duration' => 'nullable|integer',
+            'power_requirements' => 'nullable|string|max:255',
+            'network_info' => 'nullable|string|max:255',
+            'software_version' => 'nullable|string|max:255',
+            'hardware_version' => 'nullable|string|max:255',
+            'purchase_price' => 'nullable|numeric',
+            'depreciation_value' => 'nullable|numeric',
+            'notes' => 'nullable|string',
         ]);
 
         DB::beginTransaction();
         try {
-            $equipment = Equipment::create($request->only('equipment_name', 'equipment_type', 'serial_number',
-                'equipment_condition'));
+            $equipment = Equipment::create($request->all());
 
-            $additionalData = explode(',', $request->additional_data);
-            Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
+            $additionalData = json_decode($request->additional_data, true);
+            if (is_array($additionalData)) {
+                Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
+            }
 
             DB::commit();
             return view('equipments.show', ['equipment' => $equipment]);
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return back()->with('error', 'An error occurred while creating the equipment');
         }
     }
@@ -79,27 +104,44 @@ class EquipmentController extends Controller
         $request->validate([
             'equipment_name' => 'required|string|max:255',
             'equipment_type' => 'required|string|max:255',
-            'serial_number' => 'required|numeric|unique:equipment,serial_number,' . $equipment->id,
-            'equipment_condition' => 'required',
+            'serial_number' => 'required|string|unique:equipment,serial_number,' . $equipment->id,
+            'equipment_condition' => 'required|string|max:255',
+            'model' => 'nullable|string|max:255',
+            'manufacturer' => 'nullable|string|max:255',
+            'purchase_date' => 'nullable|date',
+            'location' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
+            'warranty_period' => 'nullable|date',
+            'installation_date' => 'nullable|date',
+            'last_service_date' => 'nullable|date',
+            'next_service_date' => 'nullable|date',
+            'equipment_specifications' => 'nullable|string',
+            'usage_duration' => 'nullable|integer',
+            'power_requirements' => 'nullable|string|max:255',
+            'network_info' => 'nullable|string|max:255',
+            'software_version' => 'nullable|string|max:255',
+            'hardware_version' => 'nullable|string|max:255',
+            'purchase_price' => 'nullable|numeric',
+            'depreciation_value' => 'nullable|numeric',
+            'notes' => 'nullable|string',
         ]);
 
         DB::beginTransaction();
         try {
-            $equipment->update($request->only('equipment_name', 'equipment_type', 'serial_number',
-                'equipment_condition'));
+            $equipment->update($request->all());
 
             if ($request->use_old_image !== 'on') {
                 $equipment->images()->delete();
-                $additionalData = explode(',', $request->additional_data);
-                Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
+                $additionalData = json_decode($request->additional_data, true);
+                if (is_array($additionalData)) {
+                    Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
+                }
             }
 
             DB::commit();
-            return to_route('equipments.edit', ['equipment' => $equipment])->with('status',
-                'Equipment updated successfully');
+            return to_route('equipments.edit', ['equipment' => $equipment])->with('status', 'Equipment updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return back()->with('error', 'An error occurred while updating the equipment');
         }
     }
