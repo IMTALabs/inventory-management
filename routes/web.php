@@ -8,6 +8,7 @@ use App\Http\Controllers\MetricController;
 use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\UserController;
+use App\Models\Equipment;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -47,12 +48,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/monitor/{equipment}/fetch', [MonitorController::class, 'fetchEquipment'])->name('monitor.store');
 
     Route::prefix('equipments')->group(function () {
-        Route::get('/', [EquipmentController::class, 'index'])->name('equipments.index');
-        Route::get('/create', [EquipmentController::class, 'create'])->name('equipments.create');
-        Route::post('/store', [EquipmentController::class, 'store'])->name('equipments.store');
-        Route::get('/{equipment}', [EquipmentController::class, 'edit'])->name('equipments.edit');
-         Route::put('/{equipment}', [EquipmentController::class, 'update'])->name('equipments.update');
-        Route::delete('/{equipment}', [EquipmentController::class, 'destroy'])->name('equipments.destroy');
+        Route::get('/', [EquipmentController::class, 'index'])->name('equipments.index')->can('viewAny', Equipment::class);
+        Route::get('/create', [EquipmentController::class, 'create'])->name('equipments.create')->can('create', Equipment::class);
+        Route::post('/store', [EquipmentController::class, 'store'])->name('equipments.store')->can('create', Equipment::class);
+        Route::get('/{equipment}', [EquipmentController::class, 'edit'])->name('equipments.edit')->can('view', 'equipment');
+        Route::put('/{equipment}', [EquipmentController::class, 'update'])->name('equipments.update')->can('update', 'equipment');
+        Route::delete('/{equipment}', [EquipmentController::class, 'destroy'])->name('equipments.destroy')->can('delete', 'equipment');
     });
 
     Route::prefix('/maintenance-plans')->group(function () {
@@ -75,3 +76,4 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{maintenanceSchedule}', [MaintenanceScheduleController::class, 'destroy'])->name('maintenance-schedules.destroy');
     });
 });
+Route::post('/image', [EquipmentController::class, 'image'])->name('images.create');

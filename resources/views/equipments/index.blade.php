@@ -2,11 +2,11 @@
 
 @section('title', __('Equipments'))
 
-@section('js')
-    <script>
-
-    </script>
+@section('css')
+    <link rel="stylesheet" href="{{ asset('js/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('js/plugins/sweetalert2/sweetalert2.min.css') }}">
 @endsection
+
 
 @section('content')
     <!-- Hero -->
@@ -36,8 +36,81 @@
     </div>
     <!-- END Hero -->
 
-    <!-- Page Content -->
     <div class="content">
+        @include('common.alert')
+        <div class="block block-rounded">
+            <div class="block-content block-content-full">
+                <form action="{{ route('equipments.index') }}" method="get">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control form-control-alt" name="name" placeholder="Name"
+                                   value="{{ $name }}" id="name">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="type" class="form-label">Type</label>
+                            <select class="form-control js-select2 form-select form-control-alt" name="type" id="type">
+                                <option value="">Select Type</option>
+                                @foreach(App\Models\Equipment::EQUIPMENT_TYPE as $key => $value)
+                                    <option value="{{ $value }}"
+                                            @if($type == $value) selected @endif>{{ $value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-control js-select2 form-select form-control-alt" name="status"
+                                    id="status">
+                                <option value="">Select Status</option>
+                                @foreach(App\Models\Equipment::STATUS as $key => $value)
+                                    <option value="{{ $value }}"
+                                            @if($status == $value) selected @endif>{{ $value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 mt-2">
+                            <label for="condition" class="form-label">Condition</label>
+                            <select class="form-control js-select2 form-select form-control-alt" name="condition"
+                                    id="condition">
+                                <option value="">Select Condition</option>
+                                @foreach(App\Models\Equipment::EQUIPMENT_CONDITION as $key => $value)
+                                    <option value="{{ $value }}"
+                                            @if($condition == $value) selected @endif>{{ $value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <label for="locationel" class="form-label">Location</label>
+                            <input type="text" name="location" class="form-control form-control-alt"
+                                   value="{{ $location }}"
+                                   id="location" placeholder="Location">
+                        </div>
+                        <div class="col-md-3 mt-2">
+                            <label class="form-label">Sort order</label>
+                            <select class="form-select form-control-alt" name="sort_order">
+                                <option value="asc" @if(request('sort_order') === 'asc') selected @endif>
+                                    Ascending
+                                </option>
+                                <option value="desc"
+                                        @if(!request('sort_order') || request('sort_order') === 'desc') selected @endif>
+                                    Descending
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-end mt-2">
+                        <a href="{{ route('equipments.index') }}" class="btn btn-warning">
+                            <i class="fa fa-undo"></i> Reset
+                        </a>
+                        <button type="submit" class="btn btn-dark">
+                            <i class="fa fa-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
             <div class="block-header block-header-default">
@@ -51,29 +124,17 @@
                 </div>
             </div>
             <div class="block-content block-content-full">
-                                <form class="row g-2 align-items-center mb-3" action="{{ route('equipments.index') }}" method="get">
-                                    <div class="col-3">
-                                        <input type="text" class="form-control form-control-alt" name="type" placeholder="Type"
-                                               value="{{ $type }}">
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="text" class="form-control form-control-alt" name="model" placeholder="Model"
-                                               value="{{ $model }}">
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="text" class="form-control form-control-alt" name="name" placeholder="Name"
-                                               value="{{ $name }}">
-                                    </div>
-                                    <div class="col-2">
-                                        <button type="submit" class="btn btn-dark w-100">Filter</button>
-                                    </div>
-                                </form>
                 <!-- DataTables init on table by adding .js-dataTable-full class, functionality is initialized in js/pages/tables_datatables.js -->
                 <table class="table table-striped table-vcenter fs-sm">
                     <thead>
                     <tr>
                         <th class="text-center" style="width: 80px;">#</th>
                         <th>Name</th>
+                        <th class="text-center">Type</th>
+                        <th class="text-center">Serial Number</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Condition</th>
+                        {{--                        <th>Location</th>--}}
                         <th class="text-center">Actions</th>
                     </tr>
                     </thead>
@@ -86,15 +147,55 @@
                                 <a href="javascript:void(0)">{{ $entry->equipment_name }}</a>
                             </td>
                             <td class="text-center">
-                                <div class="btn-group">
-                                    <a href="{{ route('equipments.edit', ['equipment' => $entry]) }}" class="btn btn-sm btn-alt-warning">
+                                {{ $entry->equipment_type }}
+                            </td>
+                            <td class="text-center barcode" title="{{ $entry->serial_number }}">
+                                {!! DNS1D::getBarcodeHTML($entry->serial_number, 'C128') !!}
+                            </td>
+                            <td class="text-center" title="{{ $entry->status }}">
+                                @if($entry->status === 'Active')
+                                    <span class="badge bg-success text-white"> Active</span>
+                                @elseif($entry->status === 'Inactive')
+                                    <span class="badge bg-danger text-white"> Inactive</span>
+                                @elseif($entry->status === 'Pending Disposal')
+                                    <span class="badge bg-warning text-white">Pending Disposal</span>
+                                @elseif($entry->status === 'Under Maintenance')
+                                    <span class="badge bg-info text-white">Under Maintenance</span>
+                                @elseif($entry->status === 'Under Repair')
+                                    <span class="badge bg-primary text-white">Under Repair</span>
+                                @else
+                                    <span class="badge bg-secondary text-white">Unknown</span>
+                                @endif
+                            </td>
+                            <td class="text-center" title="{{ $entry->equipment_condition }}">
+                                @if($entry->equipment_condition === 'Good')
+                                    <i class="fa fa-check-circle text-success"></i>
+                                @elseif($entry->equipment_condition === 'Fair')
+                                    <i class="fa fa-exclamation-circle text-warning"></i>
+                                @elseif($entry->equipment_condition === 'Poor')
+                                    <i class="fa fa-times-circle text-danger"></i>
+                                @elseif($entry->equipment_condition === 'Excellent')
+                                    <i class="fa fa-star text-primary"></i>
+                                @else
+                                    <i class="fa fa-question-circle text-muted"></i>
+                                @endif
+                            </td>
+                            {{--                            <td>--}}
+                            {{--                                {{ $entry->location }}--}}
+                            {{--                            </td>--}}
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{{ route('equipments.edit', ['equipment' => $entry]) }}"
+                                       class="btn btn-sm btn-alt-warning">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </a>
-                                    <form action="{{ route('equipments.destroy', ['equipment' => $entry]) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('equipments.destroy', ['equipment' => $entry]) }}"
+                                          method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-alt-danger" onclick="return confirm('Are you sure you want to delete this equipment?');">
-                                            <i class="fa fa-fw fa-times"></i>
+                                        <button type="submit" class="btn btn-sm btn-alt-danger"
+                                                onclick="return confirm('Are you sure you want to delete this equipment?');">
+                                            <i class="fa fa-fw fa-trash-alt"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -110,4 +211,14 @@
         <!-- END Dynamic Table Full -->
     </div>
     <!-- END Page Content -->
+@endsection
+
+@section('js')
+    <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    @vite('resources/js/pages/maintenance-plans.js')
+    <script type="module">
+        One.helpersOnLoad(["jq-select2"]);
+    </script>
 @endsection
