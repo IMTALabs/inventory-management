@@ -75,16 +75,16 @@ class EquipmentController extends Controller
         DB::beginTransaction();
         try {
             $equipment = Equipment::create($request->all());
-
-            $additionalData = json_decode($request->additional_data, true);
-            if (is_array($additionalData)) {
+//            "3,4"
+            if(trim($request->additional_data) != "") {
+                $additionalData = json_decode($request->additional_data, true);
                 Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
             }
-
             DB::commit();
             return view('equipments.show', ['equipment' => $equipment]);
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return back()->with('error', 'An error occurred while creating the equipment');
         }
     }
@@ -130,12 +130,10 @@ class EquipmentController extends Controller
         try {
             $equipment->update($request->all());
 
-            if ($request->use_old_image !== 'on') {
+            if ($request->use_old_image !== 'on' && trim($request->additional_data) != "") {
                 $equipment->images()->delete();
                 $additionalData = json_decode($request->additional_data, true);
-                if (is_array($additionalData)) {
-                    Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
-                }
+                Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
             }
 
             DB::commit();

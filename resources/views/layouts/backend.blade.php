@@ -208,6 +208,29 @@
                                 </li>
                         </ul>
                         </li>
+                        <li class="nav-main-item{{ request()->routeIs('equipments.*') ? ' open' : '' }}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                               aria-haspopup="true"
+                               aria-expanded="true" href="#">
+                                <i class="nav-main-link-icon si si-bar-chart"></i>
+                                <span class="nav-main-link-name">Equipment</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->routeIs('equipments.index') ? ' active' : '' }}"
+                                       href="{{ route('equipments.index') }}">
+                                        <span class="nav-main-link-name">List</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->routeIs('equipments.create') ? ' active' : '' }}"
+                                       href="{{ route('equipments.create') }}">
+                                        <span class="nav-main-link-name">Create</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
                         <li class="nav-main-item{{ request()->routeIs('maintenance-*') ? ' open' : '' }}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
                                aria-haspopup="true"
