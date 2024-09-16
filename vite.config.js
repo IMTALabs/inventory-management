@@ -1,7 +1,5 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
-import { browserslistToTargets } from "lightningcss";
-import browserslist from "browserslist";
 
 export default defineConfig({
   plugins: [
