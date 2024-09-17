@@ -33,6 +33,10 @@ class DatabaseSeeder extends Seeder
             'role' => RoleEnum::MAINTAINER->value,
         ]);
 
+        User::factory()->count(5)->create([
+            'role' => RoleEnum::MANAGER->value,
+        ]);
+
         $equipments = Equipment::factory()->count(100)->create();
 
         $metrics = Metric::factory()->count(10)->create();

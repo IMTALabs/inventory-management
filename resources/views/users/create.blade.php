@@ -49,6 +49,7 @@
                     @csrf
                     <div class="row g-4">
                         <div class="col-6">
+                            <label class="form-label">Name<span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-alt @error('name') is-invalid @enderror"
                                    placeholder="Name" name="name" value="{{ old('name') }}">
                             @error('name')
@@ -56,6 +57,7 @@
                             @enderror
                         </div>
                         <div class="col-6">
+                            <label class="form-label">Email<span class="text-danger">*</span></label>
                             <input type="email"
                                    class="form-control form-control-alt @error('email') is-invalid @enderror"
                                    placeholder="Email" name="email" value="{{ old('email') }}">
@@ -64,6 +66,7 @@
                             @enderror
                         </div>
                         <div class="col-6">
+                            <label class="form-label">Password<span class="text-danger">*</span></label>
                             <input type="password"
                                    class="form-control form-control-alt @error('password') is-invalid @enderror"
                                    placeholder="Password" name="password">
@@ -72,6 +75,7 @@
                             @enderror
                         </div>
                         <div class="col-6">
+                            <label class="form-label">Role<span class="text-danger">*</span></label>
                             <select class="form-select form-control-alt @error('role') is-invalid @enderror"
                                     name="role">
                                 @foreach(\App\Enums\RoleEnum::cases() as $availableRole)

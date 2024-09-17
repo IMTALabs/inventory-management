@@ -66,20 +66,24 @@
                 <div id="create">
                     <div class="row g-4">
                         <div class="col-6">
+                            <label class="form-label">Name<span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-alt" disabled
                                    placeholder="Name" name="name" value="{{ $user->name }}">
                         </div>
                         <div class="col-6">
+                            <label class="form-label">Email<span class="text-danger">*</span></label>
                             <input type="email"
                                    class="form-control form-control-alt" disabled
                                    placeholder="Email" name="email" value="{{ $user->email }}">
                         </div>
                         <div class="col-6">
+                            <label class="form-label">Password<span class="text-danger">*</span></label>
                             <input type="password"
                                    class="form-control form-control-alt opacity-50" disabled
                                    placeholder="Password" name="password">
                         </div>
                         <div class="col-6">
+                            <label class="form-label">Role<span class="text-danger">*</span></label>
                             <select class="form-select form-control-alt" disabled
                                     name="role">
                                 @foreach(\App\Enums\RoleEnum::cases() as $availableRole)
