@@ -4,6 +4,8 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('js/plugins/dropzone/min/dropzone.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('js/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('js/plugins/sweetalert2/sweetalert2.min.css') }}">
 @endsection
 
 @section('content')
@@ -54,10 +56,14 @@
                         <div class="col-6">
                             <label for="equipment_type" placeholder="Equipment Type" class="form-label">Equipment
                                 Type<span class="text-danger">*</span></label>
-                            <input type="text"
-                                   class="form-control form-control-alt @error('equipment_type') is-invalid @enderror"
-                                   placeholder="Equipment Type" name="equipment_type" id="equipment_type"
-                                   value="{{ old('equipment_type') ?? $equipment->equipment_type }}">
+                            <select class="form-control js-select2 form-select form-control-alt" name="equipment_type"
+                                    id="equipment_type">
+                                <option value="">Select Type</option>
+                                @foreach(\App\Enums\EquipmentTypeEnum::cases() as $key => $value)
+                                    <option value="{{ $value }}"
+                                            @if($equipment->equipment_type == $value) selected @endif>{{ $value }}</option>
+                                @endforeach
+                            </select>
                             @error('equipment_type')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -119,10 +125,14 @@
                         </div>
                         <div class="col-6">
                             <label for="status" placeholder="Status" class="form-label">Status<span class="text-danger">*</span></label>
-                            <input type="text"
-                                   class="form-control form-control-alt @error('status') is-invalid @enderror"
-                                   placeholder="Status" name="status" id="status"
-                                   value="{{ old('status', 'Active') ?? $equipment->status }}">
+                            <select class="form-control js-select2 form-select form-control-alt" name="status"
+                                    id="status">
+                                <option value="">Select Status</option>
+                                @foreach(\App\Enums\EquipmentStatusEnum::cases() as $key => $value)
+                                    <option value="{{ $value }}"
+                                            @if($equipment->status == $value) selected @endif>{{ $value }}</option>
+                                @endforeach
+                            </select>
                             @error('status')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -174,10 +184,14 @@
                         <div class="col-6">
                             <label for="equipment_condition" placeholder="Equipment Condition" class="form-label">Equipment
                                 Condition<span class="text-danger">*</span></label>
-                            <input type="text"
-                                   class="form-control form-control-alt @error('equipment_condition') is-invalid @enderror"
-                                   placeholder="Equipment Condition" name="equipment_condition" id="equipment_condition"
-                                   value="{{ old('equipment_condition', 'Good') ?? $equipment->equipment_condition }}">
+                            <select class="form-control js-select2 form-select form-control-alt" name="equipment_condition"
+                                    id="equipment_condition">
+                                <option value="">Select Condition</option>
+                                @foreach(\App\Enums\EquipmentConditionEnum::cases() as $key => $value)
+                                    <option value="{{ $value }}"
+                                            @if($equipment->equipment_condition == $value) selected @endif>{{ $value }}</option>
+                                @endforeach
+                            </select>
                             @error('equipment_condition')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -316,6 +330,13 @@
 
 @section('js')
     <script src="{{ asset('/js/plugins/dropzone/min/dropzone.min.js') }}"></script>
+    <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    @vite('resources/js/pages/maintenance-plans.js')
+    <script type="module">
+      One.helpersOnLoad(["jq-select2"]);
+    </script>
     <script>
         const fileImages = [];
         Dropzone.options.dropzone = {
