@@ -57,7 +57,8 @@
                     <div class="row g-2">
                         <div class="col-md-4">
                             <label class="form-label">Plan name</label>
-                            <input type="text" class="form-control form-control-alt" name="plan_name" value="{{ request('plan_name') }}"
+                            <input type="text" class="form-control form-control-alt" name="plan_name"
+                                   value="{{ request('plan_name') }}"
                                    placeholder="Search by name">
                         </div>
                         <div class="col-md-8">
@@ -141,6 +142,7 @@
                         <th>Name</th>
                         <th>Equipment</th>
                         <th class="text-center" style="width: 80px;">Frequency</th>
+                        <th class="text-center" style="width: 120px;">Is opening</th>
                         <th class="text-center" style="width: 80px;">Actions</th>
                     </tr>
                     </thead>
@@ -163,6 +165,13 @@
                                     class="badge {{ maintenance_plan_frequency_badge_class($plan->frequency) }} text-white text-uppercase">
                                     {{ str_replace('_', ' ', $plan->frequency->value) }}
                                 </span>
+                            </td>
+                            <td class="text-center">
+                                @if($plan->status == \App\Enums\MaintenancePlanStatusEnum::OPEN)
+                                    <i class="fa fa-check text-success"></i>
+                                @else
+                                    <i class="fa fa-times text-danger"></i>
+                                @endif
                             </td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-1">

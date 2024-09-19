@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\MaintenancePlanFrequencyEnum;
+use App\Enums\MaintenancePlanStatusEnum;
 use App\Models\Equipment;
 use App\Models\MaintenancePlan;
 use Illuminate\Database\Eloquent\Builder;
@@ -72,6 +73,7 @@ class MaintenancePlanController extends Controller
             'plan_name' => $request->plan_name,
             'frequency' => $request->frequency,
             'description' => $request->description,
+            'status' => MaintenancePlanStatusEnum::OPEN,
         ]);
 
         return redirect()->route('maintenance-plans.index')->with('status', 'Maintenance plan created successfully.');

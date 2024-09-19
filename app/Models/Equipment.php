@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,25 +39,26 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Equipment extends Model
 {
     use HasFactory;
-    CONST EQUIPMENT_TYPE = [
+
+    const EQUIPMENT_TYPE = [
         'Computer',
         'Network Device',
         'Server',
         'Printer',
-        'Other'
+        'Other',
     ];
-    CONST STATUS = [
+    const STATUS = [
         'Active',
         'Inactive',
         'Pending Disposal',
         'Under Maintenance',
-        'Under Repair'
+        'Under Repair',
     ];
-    CONST EQUIPMENT_CONDITION = [
+    const EQUIPMENT_CONDITION = [
         'Good',
         'Fair',
         'Poor',
-        'Excellent'
+        'Excellent',
     ];
 
     protected $fillable = [
@@ -110,5 +112,13 @@ class Equipment extends Model
     public function maintenancePlans(): HasMany
     {
         return $this->hasMany(MaintenancePlan::class);
+    }
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     */
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d');
     }
 }

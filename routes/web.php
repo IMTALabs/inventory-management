@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{maintenanceSchedule}/edit', [MaintenanceScheduleController::class, 'edit'])->name('maintenance-schedules.edit');
         Route::put('/{maintenanceSchedule}', [MaintenanceScheduleController::class, 'update'])->name('maintenance-schedules.update');
         Route::delete('/{maintenanceSchedule}', [MaintenanceScheduleController::class, 'destroy'])->name('maintenance-schedules.destroy');
+        Route::put('/{maintenanceSchedule}/status', [MaintenanceScheduleController::class, 'updateStatus'])->name('maintenance-schedules.update-status');
     });
 });
 Route::post('/image', [EquipmentController::class, 'image'])->name('images.create');

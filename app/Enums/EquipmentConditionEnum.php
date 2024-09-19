@@ -9,6 +9,3 @@ enum EquipmentConditionEnum :string
     case POOR = 'Poor';
     case EXCELLENT = 'Excellent';
 }
-{
-
-}

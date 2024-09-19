@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\MaintenancePlanFrequencyEnum;
+use App\Enums\MaintenancePlanStatusEnum;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $equipment_id
  * @property MaintenancePlanFrequencyEnum $frequency
  * @property string $description
+ * @property MaintenancePlanStatusEnum $status
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -27,10 +29,12 @@ class MaintenancePlan extends Model
         'equipment_id',
         'frequency',
         'description',
+        'status',
     ];
 
     protected $casts = [
         'frequency' => MaintenancePlanFrequencyEnum::class,
+        'status' => MaintenancePlanStatusEnum::class,
     ];
 
     public function equipment(): BelongsTo
