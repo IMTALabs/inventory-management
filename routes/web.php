@@ -8,6 +8,7 @@ use App\Http\Controllers\MaintenanceScheduleController;
 use App\Http\Controllers\MetricController;
 use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\PerformanceController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkOrderController;
 use App\Models\Equipment;
@@ -105,6 +106,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/{workOrder}/edit', [WorkOrderController::class, 'edit'])->name('work-orders.edit');
         Route::put('/{workOrder}', [WorkOrderController::class, 'update'])->name('work-orders.update');
         Route::delete('/{workOrder}', [WorkOrderController::class, 'destroy'])->name('work-orders.destroy');
+    });
+    Route::prefix('requests')->group(function () {
+        Route::get('/', [RequestController::class, 'index'])->name('requests.index');
+        Route::get('/create', [RequestController::class, 'create'])->name('requests.create');
+        Route::post('/', [RequestController::class, 'store'])->name('requests.store');
+        Route::put('/{request}/status', [RequestController::class, 'updateStatus'])->name('requests.update-status');
     });
 
     Route::post('/image', [EquipmentController::class, 'image'])->name('images.create');

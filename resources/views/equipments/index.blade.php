@@ -205,7 +205,7 @@
                     </tbody>
                 </table>
 
-                {{ $entries->onEachSide(5)->links() }}
+                {{ $entries->onEachSide(0)->links() }}
             </div>
         </div>
         <!-- END Dynamic Table Full -->

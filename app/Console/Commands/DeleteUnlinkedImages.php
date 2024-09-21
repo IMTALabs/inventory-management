@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Image;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class DeleteUnlinkedImages extends Command
@@ -33,7 +34,6 @@ class DeleteUnlinkedImages extends Command
             Storage::disk('public')->delete($image->image);
             $image->delete();
         }
-
-        $this->info('Unlinked images deleted successfully.');
+        Log::log('info', 'Unlinked images deleted successfully.');
     }
 }

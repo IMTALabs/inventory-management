@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
@@ -97,6 +98,11 @@ class Equipment extends Model
     protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d');
+    }
+
+    public function warrantyInformation():HasOne
+    {
+        return $this->hasOne(WarrantyInformation::class);
     }
 
     public function scopeAvailable($query): void
