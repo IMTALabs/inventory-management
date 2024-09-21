@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\EquipmentStatusEnum;
 use DateTimeInterface;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -40,27 +40,6 @@ class Equipment extends Model
 {
     use HasFactory;
 
-    const EQUIPMENT_TYPE = [
-        'Computer',
-        'Network Device',
-        'Server',
-        'Printer',
-        'Other',
-    ];
-    const STATUS = [
-        'Active',
-        'Inactive',
-        'Pending Disposal',
-        'Under Maintenance',
-        'Under Repair',
-    ];
-    const EQUIPMENT_CONDITION = [
-        'Good',
-        'Fair',
-        'Poor',
-        'Excellent',
-    ];
-
     protected $fillable = [
         'equipment_name',
         'equipment_type',
@@ -87,6 +66,7 @@ class Equipment extends Model
     ];
 
     protected $casts = [
+        'status' => EquipmentStatusEnum::class,
         'purchase_date' => 'date',
         'warranty_period' => 'date',
         'installation_date' => 'date',
@@ -114,11 +94,13 @@ class Equipment extends Model
         return $this->hasMany(MaintenancePlan::class);
     }
 
-    /**
-     * Prepare a date for array / JSON serialization.
-     */
     protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d');
+    }
+
+    public function scopeAvailable($query): void
+    {
+        $query->where('status', EquipmentStatusEnum::AVAILABLE);
     }
 }

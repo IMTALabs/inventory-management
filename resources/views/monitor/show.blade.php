@@ -10,6 +10,7 @@
     <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('js/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('js/plugins/chart.js/chart.umd.js') }}"></script>
+    <script src="{{ asset('js/plugins/fullcalendar/index.global.min.js') }}"></script>
     <script>
       const metrics = @json($metrics->pluck('chart_key') ?? []);
       const currentEquipment = @json($currentEquipment ?? null);
@@ -33,6 +34,98 @@
           },
           @endforeach
       };
+
+      let date = new Date();
+      let d = date.getDate();
+      let m = date.getMonth();
+      let y = date.getFullYear();
+
+      let calendar = new FullCalendar.Calendar(document.getElementById("js-calendar"), {
+        themeSystem: "standard",
+        firstDay: 1,
+        editable: true,
+        droppable: true,
+        headerToolbar: {
+          left: "title",
+          right: "prev,next today dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+        },
+        drop: function (info) {
+          info.draggedEl.parentNode.remove();
+        },
+        events: [
+          {
+            title: "Gaming Day",
+            start: new Date(y, m, 1),
+            allDay: true
+          },
+          {
+            title: "Skype Meeting",
+            start: new Date(y, m, 3)
+          },
+          {
+            title: "Project X",
+            start: new Date(y, m, 9),
+            end: new Date(y, m, 12),
+            allDay: true,
+            color: "#e04f1a"
+          },
+          {
+            title: "Work",
+            start: new Date(y, m, 17),
+            end: new Date(y, m, 19),
+            allDay: true,
+            color: "#82b54b"
+          },
+          {
+            id: 999,
+            title: "Hiking (repeated)",
+            start: new Date(y, m, d - 1, 15, 0)
+          },
+          {
+            id: 999,
+            title: "Hiking (repeated)",
+            start: new Date(y, m, d + 3, 15, 0)
+          },
+          {
+            title: "Landing Template",
+            start: new Date(y, m, d - 3),
+            end: new Date(y, m, d - 3),
+            allDay: true,
+            color: "#ffb119"
+          },
+          {
+            title: "Lunch",
+            start: new Date(y, m, d + 7, 15, 0),
+            color: "#82b54b"
+          },
+          {
+            title: "Coding",
+            start: new Date(y, m, d, 8, 0),
+            end: new Date(y, m, d, 14, 0)
+          },
+          {
+            title: "Trip",
+            start: new Date(y, m, 25),
+            end: new Date(y, m, 27),
+            allDay: true,
+            color: "#ffb119"
+          },
+          {
+            title: "Reading",
+            start: new Date(y, m, d + 8, 20, 0),
+            end: new Date(y, m, d + 8, 22, 0)
+          },
+          {
+            title: "Follow us on Twitter",
+            start: new Date(y, m, 22),
+            allDay: true,
+            url: "http://twitter.com/pixelcave",
+            color: "#3c90df"
+          }
+        ]
+      });
+
+      calendar.render();
     </script>
     @vite('resources/js/pages/monitor.js')
     <script type="module">
@@ -131,6 +224,17 @@
                 </div>
             </div>
         @endif
+
+        <div class="block block-rounded">
+            <div class="block-header block-header-default">
+                <h3 class="block-title">
+                    Equipment Timeline
+                </h3>
+            </div>
+            <div class="block-content block-content-full">
+                <div id="js-calendar"></div>
+            </div>
+        </div>
     </div>
     <!-- END Page Content -->
 @endsection

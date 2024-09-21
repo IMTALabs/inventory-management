@@ -39,7 +39,7 @@ class EquipmentFactory extends Factory
             'manufacturer' => fake()->company,
             'purchase_date' => fake()->date('Y-m-d'),
             'location' => fake()->address,
-            'status' => fake()->randomElement(['Active', 'Inactive', 'Under Repair', 'Pending Disposal']),
+            'status' => fake()->randomElement(['Available', 'Unavailable', 'Inactive', 'Under Repair', 'Pending Disposal']),
             'warranty_period' => fake()->date('Y-m-d', '+1 year'),
             'installation_date' => fake()->date('Y-m-d'),
             'last_service_date' => fake()->date('Y-m-d'),
