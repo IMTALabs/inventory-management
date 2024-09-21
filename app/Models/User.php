@@ -88,4 +88,9 @@ class User extends Authenticatable implements CanResetPassword
     {
         $query->whereNot('role', RoleEnum::ADMIN);
     }
+
+    public function requestWarranty()
+    {
+        return $this->hasMany(WarrantyRequest::class, 'comfirmation_id');
+    }
 }

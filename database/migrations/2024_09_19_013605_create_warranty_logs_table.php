@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('log_date')->comment('Date the log was made');
             $table->string('status')->comment('Status of the warranty log');
             $table->bigInteger('waranty_request_id');
+            $table->bigInteger('updated_by');
             $table->softDeletes();
             $table->timestamps();
         });

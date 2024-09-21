@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EquipmentTypeEnum;
 use App\Models\Equipment;
 use App\Models\Image;
+use App\Models\WarrantyInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -37,7 +39,7 @@ class EquipmentController extends Controller
             ->paginate(5)
             ->withQueryString();
 
-        return view('equipments.index', compact(['entries', 'name', 'type', 'status','location', 'condition']));
+        return view('equipments.index', compact(['entries', 'name', 'type', 'status', 'location', 'condition']));
     }
 
     public function create()
@@ -76,7 +78,7 @@ class EquipmentController extends Controller
         try {
             $equipment = Equipment::create($request->all());
 //            "3,4"
-            if(trim($request->additional_data) != "") {
+            if (trim($request->additional_data) != "") {
                 $additionalData = json_decode($request->additional_data, true);
                 Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
             }
@@ -106,30 +108,66 @@ class EquipmentController extends Controller
             'equipment_type' => 'required|string|max:255',
             'serial_number' => 'required|string|unique:equipment,serial_number,' . $equipment->id,
             'equipment_condition' => 'required|string|max:255',
-            'model' => 'nullable|string|max:255',
-            'manufacturer' => 'nullable|string|max:255',
-            'purchase_date' => 'nullable|date',
-            'location' => 'nullable|string|max:255',
-            'status' => 'nullable|string|max:255',
-            'warranty_period' => 'nullable|date',
-            'installation_date' => 'nullable|date',
-            'last_service_date' => 'nullable|date',
-            'next_service_date' => 'nullable|date',
-            'equipment_specifications' => 'nullable|string',
-            'usage_duration' => 'nullable|integer',
-            'power_requirements' => 'nullable|string|max:255',
-            'network_info' => 'nullable|string|max:255',
-            'software_version' => 'nullable|string|max:255',
-            'hardware_version' => 'nullable|string|max:255',
-            'purchase_price' => 'nullable|numeric',
-            'depreciation_value' => 'nullable|numeric',
-            'notes' => 'nullable|string',
+            'model' => 'required|string|max:255',
+            'manufacturer' => 'required|string|max:255',
+            'purchase_date' => 'required|date',
+            'location' => 'required|string|max:255',
+            'status' => 'required|string|max:255',
+            'warranty_period' => 'required|date',
+            'installation_date' => 'required|date',
+            'last_service_date' => 'required|date',
+            'next_service_date' => 'required|date',
+            'equipment_specifications' => 'required|string',
+            'usage_duration' => 'required|integer',
+            'power_requirements' => 'required|string|max:255',
+            'network_info' => 'required|string|max:255',
+            'software_version' => 'required|string|max:255',
+            'hardware_version' => 'required|string|max:255',
+            'purchase_price' => 'required|numeric',
+            'depreciation_value' => 'required|numeric',
+            'notes' => 'required|string',
+            'provider_name' => 'required|string',
+            'provider_address' => 'required|string',
+            'contact_info' => 'required|string',
+            'warranty_start_date' => 'required|date',
+            'warranty_end_date' => 'required|date',
         ]);
 
         DB::beginTransaction();
         try {
-            $equipment->update($request->all());
-
+            $equipment->update($request->only(['equipment_name',
+                'equipment_type',
+                'serial_number',
+                'equipment_condition',
+                'model',
+                'manufacturer',
+                'purchase_date',
+                'location',
+                'status',
+                'warranty_period',
+                'installation_date',
+                'last_service_date',
+                'next_service_date',
+                'equipment_specifications',
+                'usage_duration',
+                'power_requirements',
+                'network_info',
+                'software_version',
+                'hardware_version',
+                'purchase_price',
+                'depreciation_value',
+                'notes',
+            ]));
+            WarrantyInformation::updateOrCreate(
+                ['equipment_id' => $equipment->id],
+                $request->only([
+                    'provider_name',
+                    'provider_address',
+                    'contact_info',
+                    'warranty_start_date',
+                    'warranty_end_date'
+                ])
+            );
             if ($request->use_old_image !== 'on' && trim($request->additional_data) != "") {
                 $equipment->images()->delete();
                 $additionalData = json_decode($request->additional_data, true);

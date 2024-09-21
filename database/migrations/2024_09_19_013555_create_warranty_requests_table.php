@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('status')->default('pending')->comment('Status of the warranty request');
             $table->bigInteger('equipment_id');
             $table->bigInteger('warranty_information_id');
-
             $table->softDeletes();
             $table->timestamps();
         });
