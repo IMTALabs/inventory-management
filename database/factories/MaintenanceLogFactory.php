@@ -16,6 +16,7 @@ class MaintenanceLogFactory extends Factory
             'equipment_id' => $this->faker->randomNumber(),
             'maintenance_date' => Carbon::now(),
             'maintenance_plan_id' => $this->faker->randomNumber(),
+            'maintenance_schedule_id' => $this->faker->randomNumber(),
             'performed_by' => $this->faker->randomNumber(),
             'description' => $this->faker->text(),
             'outcome' => $this->faker->word(),

@@ -156,30 +156,29 @@
                             </a>
                         </li>
                         <li class="nav-main-heading">Management</li>
-                        @can('viewAny', \App\Models\User::class)
-                            <li class="nav-main-item{{ request()->routeIs('users.*') ? ' open' : '' }}">
-                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
-                                   aria-haspopup="true"
-                                   aria-expanded="true" href="#">
-                                    <i class="nav-main-link-icon si si-users"></i>
-                                    <span class="nav-main-link-name">Users</span>
-                                </a>
-                                <ul class="nav-main-submenu">
-                                    <li class="nav-main-item">
-                                        <a class="nav-main-link{{ request()->routeIs('users.index') ? ' active' : '' }}"
-                                           href="{{ route('users.index') }}">
-                                            <span class="nav-main-link-name">List</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-main-item">
-                                        <a class="nav-main-link{{ request()->routeIs('users.create') ? ' active' : '' }}"
-                                           href="{{ route('users.create') }}">
-                                            <span class="nav-main-link-name">Create</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endcan
+                        <li class="nav-main-item{{ request()->routeIs('equipments.*') ? ' open' : '' }}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                               aria-haspopup="true"
+                               aria-expanded="true" href="#">
+                                <i class="nav-main-link-icon si si-screen-desktop"></i>
+                                <span class="nav-main-link-name">Equipment</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->routeIs('equipments.index') ? ' active' : '' }}"
+                                       href="{{ route('equipments.index') }}">
+                                        <span class="nav-main-link-name">List</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->routeIs('equipments.create') ? ' active' : '' }}"
+                                       href="{{ route('equipments.create') }}">
+                                        <span class="nav-main-link-name">Create</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
                         <li class="nav-main-item{{ request()->routeIs('metrics.*') || request()->routeIs('performance.*') || request()->routeIs('monitor.*') ? ' open' : '' }}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
                                aria-haspopup="true"
@@ -206,31 +205,32 @@
                                         <span class="nav-main-link-name">Metrics</span>
                                     </a>
                                 </li>
-                        </ul>
-                        </li>
-                        <li class="nav-main-item{{ request()->routeIs('equipments.*') ? ' open' : '' }}">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
-                               aria-haspopup="true"
-                               aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon si si-bar-chart"></i>
-                                <span class="nav-main-link-name">Equipment</span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('equipments.index') ? ' active' : '' }}"
-                                       href="{{ route('equipments.index') }}">
-                                        <span class="nav-main-link-name">List</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('equipments.create') ? ' active' : '' }}"
-                                       href="{{ route('equipments.create') }}">
-                                        <span class="nav-main-link-name">Create</span>
-                                    </a>
-                                </li>
-
                             </ul>
                         </li>
+                        @can('viewAny', \App\Models\User::class)
+                            <li class="nav-main-item{{ request()->routeIs('users.*') ? ' open' : '' }}">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                                   aria-haspopup="true"
+                                   aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon si si-users"></i>
+                                    <span class="nav-main-link-name">Users</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('users.index') ? ' active' : '' }}"
+                                           href="{{ route('users.index') }}">
+                                            <span class="nav-main-link-name">List</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('users.create') ? ' active' : '' }}"
+                                           href="{{ route('users.create') }}">
+                                            <span class="nav-main-link-name">Create</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endcan
                         <li class="nav-main-item{{ request()->routeIs('maintenance-*') ? ' open' : '' }}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
                                aria-haspopup="true"
@@ -248,12 +248,14 @@
                                     </a>
                                     <ul class="nav-main-submenu">
                                         <li class="nav-main-item">
-                                            <a class="nav-main-link{{ request()->routeIs('maintenance-plans.index') ? ' active' : '' }}" href="{{ route('maintenance-plans.index') }}">
+                                            <a class="nav-main-link{{ request()->routeIs('maintenance-plans.index') ? ' active' : '' }}"
+                                               href="{{ route('maintenance-plans.index') }}">
                                                 <span class="nav-main-link-name">List</span>
                                             </a>
                                         </li>
                                         <li class="nav-main-item">
-                                            <a class="nav-main-link{{ request()->routeIs('maintenance-plans.create') ? ' active' : '' }}" href="{{ route('maintenance-plans.create') }}">
+                                            <a class="nav-main-link{{ request()->routeIs('maintenance-plans.create') ? ' active' : '' }}"
+                                               href="{{ route('maintenance-plans.create') }}">
                                                 <span class="nav-main-link-name">Create</span>
                                             </a>
                                         </li>
@@ -266,22 +268,44 @@
                                     </a>
                                     <ul class="nav-main-submenu">
                                         <li class="nav-main-item">
-                                            <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.index') ? ' active' : '' }}" href="{{ route('maintenance-schedules.index') }}">
+                                            <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.index') ? ' active' : '' }}"
+                                               href="{{ route('maintenance-schedules.index') }}">
                                                 <span class="nav-main-link-name">List</span>
                                             </a>
                                         </li>
                                         <li class="nav-main-item">
-                                            <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.create') ? ' active' : '' }}" href="{{ route('maintenance-schedules.create') }}">
+                                            <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.create') ? ' active' : '' }}"
+                                               href="{{ route('maintenance-schedules.create') }}">
                                                 <span class="nav-main-link-name">Create</span>
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('metrics.index') ? ' active' : '' }}"
-                                       href="{{ route('metrics.index') }}">
+                                    <a class="nav-main-link{{ request()->routeIs('maintenance-logs.index') ? ' active' : '' }}"
+                                       href="{{ route('maintenance-logs.index') }}">
                                         <span class="nav-main-link-name">
                                             Maintenance Logs
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-main-item{{ request()->routeIs('work-orders.*') ? ' open' : '' }}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                               aria-haspopup="true"
+                               aria-expanded="true" href="#">
+                                <i class="nav-main-link-icon si si-folder-alt"></i>
+                                <span class="nav-main-link-name">
+                                    Work Orders
+                                </span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->routeIs('work-orders.index') ? ' active' : '' }}"
+                                       href="{{ route('work-orders.index') }}">
+                                        <span class="nav-main-link-name">
+                                            List
                                         </span>
                                     </a>
                                 </li>

@@ -7,7 +7,7 @@ export const confirmToast = Swal.mixin({
     input: 'form-control'
   },
   title: 'Are you sure?',
-  text: 'You will not be able to recover your data!',
+  text: 'You will not be able to undo this operation.',
   icon: 'warning',
   showCancelButton: true,
   confirmButtonText: 'Yes, do it!',

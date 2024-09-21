@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('maintenance_logs', function (Blueprint $table) {
+        Schema::create('work_orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('equipment_id');
-            $table->date('maintenance_date');
-            $table->unsignedBigInteger('maintenance_plan_id');
-            $table->unsignedBigInteger('maintenance_schedule_id');
-            $table->string('performed_by')->nullable();
-            $table->text('description')->nullable();
-            $table->string('outcome')->nullable();
+            $table->unsignedBigInteger('created_by');
+            $table->string('status')->default('pending');
+            $table->date('due_date')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('maintenance_logs');
+        Schema::dropIfExists('work_orders');
     }
 };
