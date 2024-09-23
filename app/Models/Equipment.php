@@ -95,6 +95,11 @@ class Equipment extends Model
         return $this->hasMany(MaintenancePlan::class);
     }
 
+    public function workOrders(): HasMany
+    {
+        return $this->hasMany(WorkOrder::class);
+    }
+
     protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d');

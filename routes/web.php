@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\MaintenanceLogController;
 use App\Http\Controllers\MaintenancePlanController;
@@ -27,9 +28,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::match(['get', 'post'], '/', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::match(['get', 'post'], '/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('/users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('users.index')->can('viewAny', User::class);

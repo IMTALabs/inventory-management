@@ -11,7 +11,7 @@
     <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('js/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    {{--    @vite('resources/js/pages/maintenance-plans.js')--}}
+    @vite('resources/js/pages/maintenance-schedules.js')
     <script type="module">
       One.helpersOnLoad(["jq-select2"]);
     </script>

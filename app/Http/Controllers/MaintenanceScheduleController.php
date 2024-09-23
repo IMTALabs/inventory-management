@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EquipmentStatusEnum;
 use App\Enums\MaintenancePlanFrequencyEnum;
 use App\Enums\MaintenanceScheduleStatusEnum;
+use App\Enums\WorkOrderStatusEnum;
 use App\Events\MaintenanceScheduleCompleted;
+use App\Models\Equipment;
 use App\Models\MaintenanceLog;
 use App\Models\MaintenancePlan;
 use App\Models\MaintenanceSchedule;
@@ -173,12 +176,16 @@ class MaintenanceScheduleController extends Controller
 
     public function destroy(MaintenanceSchedule $maintenanceSchedule)
     {
+        $maintenanceSchedule->delete();
 
+        return redirect()->route('maintenance-schedules.index')
+            ->with('status', 'Maintenance schedule deleted successfully.');
     }
 
     public function updateStatus(MaintenanceSchedule $maintenanceSchedule, Request $request)
     {
         $maintenanceSchedule->load('maintenancePlan', 'maintenancePlan.equipment');
+        $equipment = $maintenanceSchedule->maintenancePlan->equipment;
 
         $request->validate([
             'status' => 'required|in:' . implode(',', array_column(MaintenanceScheduleStatusEnum::cases(), 'value')),
@@ -201,6 +208,12 @@ class MaintenanceScheduleController extends Controller
                     'description' => 'Maintenance schedule confirmed.',
                     'outcome' => MaintenanceScheduleStatusEnum::CONFIRMED->value,
                 ]);
+                $equipment->update([
+                    'next_service_date' => $maintenanceSchedule->scheduled_date,
+                    'status' => EquipmentStatusEnum::UNDER_MAINTENANCE,
+                ]);
+                $equipment->workOrders()->where('status', WorkOrderStatusEnum::ACTIVE)
+                    ->update(['status' => WorkOrderStatusEnum::ARCHIVED]);
                 break;
             case MaintenanceScheduleStatusEnum::COMPLETED->value:
                 MaintenanceLog::create([
@@ -212,6 +225,22 @@ class MaintenanceScheduleController extends Controller
                     'description' => 'Maintenance schedule completed.',
                     'outcome' => MaintenanceScheduleStatusEnum::COMPLETED->value,
                 ]);
+                $equipment->update([
+                    'last_service_date' => $maintenanceSchedule->scheduled_date,
+                ]);
+                $archivedWorkOrder = $equipment->workOrders()->where('status', WorkOrderStatusEnum::ARCHIVED)->first();
+                if ($archivedWorkOrder) {
+                    $archivedWorkOrder->update([
+                        'status' => WorkOrderStatusEnum::ACTIVE,
+                    ]);
+                    $equipment->update([
+                        'status' => EquipmentStatusEnum::IN_USE,
+                    ]);
+                } else {
+                    $equipment->update([
+                        'status' => EquipmentStatusEnum::AVAILABLE,
+                    ]);
+                }
                 break;
             case MaintenanceScheduleStatusEnum::CANCELLED->value:
                 MaintenanceLog::create([

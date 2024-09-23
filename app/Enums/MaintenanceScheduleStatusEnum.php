@@ -20,4 +20,9 @@ enum MaintenanceScheduleStatusEnum: string
             self::CANCELLED => 'bg-dark text-white',
         };
     }
+
+    public static function incoming(): array
+    {
+        return [self::PENDING, self::CONFIRMED];
+    }
 }

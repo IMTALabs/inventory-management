@@ -8,12 +8,14 @@ enum WorkOrderStatusEnum: string
     case ACTIVE = 'active';
     case COMPLETED = 'completed';
     case CANCELLED = 'cancelled';
+    case ARCHIVED = 'archived';
 
     public static function unavailableStatuses(): array
     {
         return [
             self::PENDING,
             self::ACTIVE,
+            self::ARCHIVED,
         ];
     }
 
@@ -24,6 +26,7 @@ enum WorkOrderStatusEnum: string
             self::ACTIVE => 'bg-info text-white',
             self::COMPLETED => 'bg-success text-white',
             self::CANCELLED => 'bg-dark text-white',
+            self::ARCHIVED => 'bg-secondary text-white',
         };
     }
 }

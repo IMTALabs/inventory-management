@@ -44,7 +44,7 @@ class FakePerformanceMonitor extends Command
                 );
                 $this->info('Fake performance monitor data created for equipment: ' . $equipment->equipment_name);
             });
-            sleep(5);
+            sleep(3);
         }
     }
 }
