@@ -8,6 +8,6 @@ enum EquipmentTypeEnum :string
     case NETWORK_DEVICE = 'Network Device';
     case SERVER = 'Server';
     case PRINTER = 'Printer';
-    case ORTHER = 'Other';
+    case OTHER = 'Other';
 }
 

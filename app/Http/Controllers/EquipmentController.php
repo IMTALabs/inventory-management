@@ -135,7 +135,8 @@ class EquipmentController extends Controller
 
         DB::beginTransaction();
         try {
-            $equipment->update($request->only(['equipment_name',
+            $equipment->update($request->only([
+                'equipment_name',
                 'equipment_type',
                 'serial_number',
                 'equipment_condition',
@@ -178,6 +179,7 @@ class EquipmentController extends Controller
             return to_route('equipments.edit', ['equipment' => $equipment])->with('status', 'Equipment updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return back()->with('error', 'An error occurred while updating the equipment');
         }
     }
