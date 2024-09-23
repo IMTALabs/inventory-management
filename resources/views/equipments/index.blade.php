@@ -51,9 +51,9 @@
                             <label for="type" class="form-label">Type</label>
                             <select class="form-control js-select2 form-select form-control-alt" name="type" id="type">
                                 <option value="">Select Type</option>
-                                @foreach(App\Models\Equipment::EQUIPMENT_TYPE as $key => $value)
+                                @foreach(\App\Enums\EquipmentTypeEnum::cases() as $key => $value)
                                     <option value="{{ $value }}"
-                                            @if($type == $value) selected @endif>{{ $value }}</option>
+                                            @if($type == $value->value) selected @endif>{{ $value->value }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -62,9 +62,9 @@
                             <select class="form-control js-select2 form-select form-control-alt" name="status"
                                     id="status">
                                 <option value="">Select Status</option>
-                                @foreach(App\Models\Equipment::STATUS as $key => $value)
+                                @foreach(\App\Enums\EquipmentStatusEnum::cases() as $key => $value)
                                     <option value="{{ $value }}"
-                                            @if($status == $value) selected @endif>{{ $value }}</option>
+                                            @if($status == $value->value) selected @endif>{{ $value->value }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -73,7 +73,7 @@
                             <select class="form-control js-select2 form-select form-control-alt" name="condition"
                                     id="condition">
                                 <option value="">Select Condition</option>
-                                @foreach(App\Models\Equipment::EQUIPMENT_CONDITION as $key => $value)
+                                @foreach(\App\Enums\EquipmentConditionEnum::cases() as $key => $value)
                                     <option value="{{ $value }}"
                                             @if($condition == $value) selected @endif>{{ $value }}</option>
                                 @endforeach

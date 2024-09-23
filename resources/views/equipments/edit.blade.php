@@ -29,6 +29,7 @@
     </div>
 
     <div class="content">
+        @include('common.alert')
         <div class="block block-rounded">
             <div class="block-header block-header-default">
                 <h3 class="block-title">Edit Equipment</h3>
@@ -62,9 +63,8 @@
                                 <option value="">Select Type</option>
 
                                 @foreach(\App\Enums\EquipmentTypeEnum::cases() as $key => $value)
-
-                                        <option value="{{ $value }}"
-                                                @if($equipment->equipment_type == $value->value) selected @endif>{{ $value }}</option>
+                                        <option value="{{ $value->value }}"
+                                                @if($equipment->equipment_type == $value->value) selected @endif>{{ $value->value }}</option>
                                     @endforeach
                                 </select>
                                 @error('equipment_type')
@@ -131,9 +131,10 @@
                                 <select class="form-control js-select2 form-select form-control-alt" name="status"
                                         id="status">
                                     <option value="">Select Status</option>
+
                                     @foreach(\App\Enums\EquipmentStatusEnum::cases() as $key => $value)
-                                        <option value="{{ $value }}"
-                                                @if($equipment->status == $value->value) selected @endif>{{ $value }}</option>
+                                        <option value="{{ $value->value }}"
+                                                @if($equipment->status == $value->value) selected @endif>{{ $value->value }}</option>
                                     @endforeach
                                 </select>
                                 @error('status')
@@ -192,8 +193,8 @@
                                         id="equipment_condition">
                                     <option value="">Select Condition</option>
                                     @foreach(\App\Enums\EquipmentConditionEnum::cases() as $key => $value)
-                                        <option value="{{ $value }}"
-                                                @if($equipment->equipment_condition == $value->value) selected @endif>{{ $value }}</option>
+                                        <option value="{{ $value->value }}"
+                                                @if($equipment->equipment_condition == $value->value) selected @endif>{{ $value->value }}</option>
                                     @endforeach
                                 </select>
                                 @error('equipment_condition')
@@ -347,7 +348,7 @@
                                 <input type="text"  form="create"
                                        class="form-control form-control-alt @error('provider_address') is-invalid @enderror"
                                        placeholder="Provider Address" name="provider_address" id="provider_address"
-                                       value="{{ old('provider_address') ?? ($equipment->warrantyInformation ? $equipment->warrantyInformation->provider_address : '') }}">
+                                       value="{{ $equipment->warrantyInformation ? $equipment->warrantyInformation->provider_address : '' }}">
                                 @error('provider_address')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -357,7 +358,7 @@
                                 <input type="text" form="create"
                                        class="form-control form-control-alt @error('contact_info') is-invalid @enderror"
                                        placeholder="Contact Info" name="contact_info" id="contact_info"
-                                       value="{{ old('contact_info') ?? ($equipment->warrantyInformation ? $equipment->warrantyInformation->contact_info : '') }}">
+                                       value="{{ $equipment->warrantyInformation ? $equipment->warrantyInformation->contact_info : '' }}">
                                 @error('contact_info')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -367,9 +368,9 @@
                                         class="text-danger">*</span></label>
                                 <input type="date" form="create"
                                        class="form-control form-control-alt @error('warranty_start_date') is-invalid @enderror"
-                                       placeholder="Warranty Start Date" name="warranty_end_date" id="warranty_start_date"
-                                       value="{{ old('warranty_start_date') ?? ($equipment->warrantyInformation ? $equipment->warrantyInformation->warranty_start_date->format('Y-m-d') : '') }}">
-                                @error('warranty_end_date')
+                                       placeholder="Warranty Start Date" name="warranty_start_date" id="warranty_start_date"
+                                       value="{{ $equipment->warrantyInformation ? $equipment->warrantyInformation->warranty_start_date->format('Y-m-d') : '' }}">
+                                @error('warranty_start_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -379,8 +380,8 @@
                                 <input type="date" form="create"
                                        class="form-control form-control-alt @error('warranty_end_date') is-invalid @enderror"
                                        placeholder="Warranty End Date" name="warranty_end_date" id="warranty_start_date"
-                                       value="{{ old('warranty_end_date') ?? ($equipment->warrantyInformation ? $equipment->warrantyInformation->warranty_end_date->format('Y-m-d') : '') }}">
-                                @error('warranty_start_date')
+                                       value="{{ $equipment->warrantyInformation ? $equipment->warrantyInformation->warranty_end_date->format('Y-m-d') : '' }}">
+                                @error('warranty_end_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
