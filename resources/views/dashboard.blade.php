@@ -10,13 +10,13 @@
             Dashboard
           </h1>
           <h2 class="fs-base lh-base fw-medium text-muted mb-0">
-            Welcome Admin, everything looks great.
+            Welcome {{ Auth::user()->name }}, everything looks great.
           </h2>
         </div>
         <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
           <ol class="breadcrumb breadcrumb-alt">
             <li class="breadcrumb-item">
-              <a class="link-fx" href="javascript:void(0)">App</a>
+              <a class="link-fx" href="javascript:void(0)">Invent</a>
             </li>
             <li class="breadcrumb-item" aria-current="page">
               Dashboard

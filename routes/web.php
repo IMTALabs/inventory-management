@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit')->can('update', 'user');
         Route::put('/{user}', [UserController::class, 'update'])->name('users.update')->can('update', 'user');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy')->can('delete', 'user');
+
+        Route::put('/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.update-password');
     });
 
     Route::prefix('/metrics')->group(function () {
@@ -106,6 +108,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{workOrder}/edit', [WorkOrderController::class, 'edit'])->name('work-orders.edit');
         Route::put('/{workOrder}', [WorkOrderController::class, 'update'])->name('work-orders.update');
         Route::delete('/{workOrder}', [WorkOrderController::class, 'destroy'])->name('work-orders.destroy');
+        Route::put('/{workOrder}/update-status',
+            [WorkOrderController::class, 'updateStatus'])->name('work-orders.update-status');
     });
     Route::prefix('requests')->group(function () {
         Route::get('/', [RequestController::class, 'index'])->name('requests.index');

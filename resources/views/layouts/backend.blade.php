@@ -309,6 +309,14 @@
                                         </span>
                                     </a>
                                 </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link{{ request()->routeIs('work-orders.create') ? ' active' : '' }}"
+                                       href="{{ route('work-orders.create') }}">
+                                        <span class="nav-main-link-name">
+                                            Create
+                                        </span>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

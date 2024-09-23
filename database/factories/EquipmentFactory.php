@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\EquipmentStatusEnum;
 use App\Models\Equipment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -39,7 +40,7 @@ class EquipmentFactory extends Factory
             'manufacturer' => fake()->company,
             'purchase_date' => fake()->date('Y-m-d'),
             'location' => fake()->address,
-            'status' => fake()->randomElement(['Available', 'Unavailable', 'Inactive', 'Under Repair', 'Pending Disposal']),
+            'status' => EquipmentStatusEnum::AVAILABLE->value,
             'warranty_period' => fake()->date('Y-m-d', '+1 year'),
             'installation_date' => fake()->date('Y-m-d'),
             'last_service_date' => fake()->date('Y-m-d'),

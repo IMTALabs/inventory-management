@@ -70,8 +70,8 @@
                     @endforeach
                 </div>
                 <div class="row">
-                    <div class="col-12">
-                        <button type="button" class="btn-add-metric btn btn-alt-primary btn-sm float-end">
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn-add-metric btn btn-alt-primary btn-sm">
                             <i class="fa fa-plus"></i> Add Metric
                         </button>
                     </div>

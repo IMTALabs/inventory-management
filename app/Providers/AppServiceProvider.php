@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Response;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 

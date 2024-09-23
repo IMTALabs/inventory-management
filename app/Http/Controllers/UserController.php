@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\RoleEnum;
+use App\Enums\WorkOrderStatusEnum;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -50,6 +53,11 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $user->load([
+            'workOrders' => fn (HasMany $query) => $query->with('equipment')
+                ->where('status', WorkOrderStatusEnum::ACTIVE),
+        ]);
+
         return view('users.show', compact('user'));
     }
 
@@ -76,5 +84,23 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->back()->with('status', 'User deleted successfully.');
+    }
+
+    public function updatePassword(User $user, Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required|string|min:8',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if (! Hash::check($request->input('old_password'), $user->password)) {
+            return back()->withErrors(['old_password' => 'The old password is incorrect.']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->input('new_password')),
+        ]);
+
+        return redirect()->route('users.show', ['user' => $user])->with('status', 'Password updated successfully.');
     }
 }

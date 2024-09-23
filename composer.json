@@ -8,6 +8,7 @@
         "php": "^8.2",
         "bref/bref": "^2.3",
         "bref/laravel-bridge": "^2.4",
+        "code-tieumomo/laravel-server-timing": "^0.1.0",
         "inspector-apm/inspector-laravel": "^4.9",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
@@ -69,6 +70,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

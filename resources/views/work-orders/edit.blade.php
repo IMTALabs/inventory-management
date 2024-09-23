@@ -24,7 +24,7 @@
                         Work Orders
                     </h1>
                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
-                        Create
+                        Edit
                     </h2>
                 </div>
                 <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
@@ -36,7 +36,7 @@
                             <a class="link-fx" href="{{ route('work-orders.index') }}">Work Orders</a>
                         </li>
                         <li class="breadcrumb-item" aria-current="page">
-                            Create
+                            Edit
                         </li>
                     </ol>
                 </nav>
@@ -49,10 +49,11 @@
     <div class="content">
         @include('common.alert')
 
-        <form class="block block-rounded" action="{{ route('work-orders.store') }}" method="post">
+        <form class="block block-rounded" action="{{ route('work-orders.update', $workOrder) }}" method="post">
+            @method('PUT')
             @csrf
             <div class="block-header block-header-default">
-                <h3 class="block-title">All Work Orders</h3>
+                <h3 class="block-title">Edit Work Order</h3>
                 <div class="block-options">
                     <button type="submit" class="btn btn-alt-success btn-sm">
                         <i class="fa fa-check"></i> Submit
@@ -70,7 +71,7 @@
                             <option></option>
                             @foreach($usersCompact as $user)
                                 <option value="{{ $user->id }}"
-                                        @if($user->id == old('user_id')) selected @endif>
+                                        @if($user->id == old('user_id') || $user->id == $workOrder->user_id) selected @endif>
                                     [U-{{ str_pad($user->id, 4, '0', STR_PAD_LEFT) }}] {{ $user->name }}
                                 </option>
                             @endforeach
@@ -88,7 +89,7 @@
                             <option></option>
                             @foreach($equipmentsCompact as $equipment)
                                 <option value="{{ $equipment->id }}"
-                                        @if($equipment->id == old('equipment_id')) selected @endif>
+                                        @if($equipment->id == old('equipment_id') || $equipment->id == $workOrder->equipment_id) selected @endif>
                                     [E-{{ str_pad($equipment->id, 4, '0', STR_PAD_LEFT) }}]
                                     {{ $equipment->equipment_name }}
                                 </option>
@@ -103,7 +104,7 @@
                         <input type="date"
                                class="form-control form-control-alt @error('due_date') is-invalid @enderror"
                                name="due_date" min="{{ date('Y-m-d') }}"
-                               value="{{ old('due_date') }}">
+                               value="{{ old('due_date') ?? $workOrder->due_date?->format('Y-m-d') }}">
                         @error('due_date')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -113,7 +114,7 @@
                         <textarea
                             class="form-control form-control-alt @error('notes') is-invalid @enderror"
                             name="notes" placeholder="..."
-                            rows="5">{{ old('notes') }}</textarea>
+                            rows="5">{{ old('notes') ?? $workOrder->notes }}</textarea>
                         @error('notes')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
