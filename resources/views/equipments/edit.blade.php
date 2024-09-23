@@ -58,7 +58,7 @@
                         <div class="col-6">
                             <label for="equipment_type" class="form-label">Equipment
                                 Type<span class="text-danger">*</span></label>
-                            <select class="form-control js-select2 form-select form-control-alt" name="equipment_type"
+                            <select class="form-control js-select2 form-select form-control-alt @error('equipment_type') is-invalid @enderror" name="equipment_type"
                                     id="equipment_type">
                                 <option value="">Select Type</option>
 
@@ -126,21 +126,22 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-6">
-                                <label for="status" class="form-label">Status<span class="text-danger">*</span></label>
-                                <select class="form-control js-select2 form-select form-control-alt" name="status"
-                                        id="status">
-                                    <option value="">Select Status</option>
-
-                                    @foreach(\App\Enums\EquipmentStatusEnum::cases() as $key => $value)
-                                        <option value="{{ $value->value }}"
-                                                @if($equipment->status == $value->value) selected @endif>{{ $value->value }}</option>
-                                    @endforeach
-                                </select>
-                                @error('status')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        <div class="col-6">
+                            <label for="status" class="form-label">Equipment
+                                Status<span class="text-danger">*</span></label>
+                            <select class="form-control js-select2 form-select form-control-alt @error('status') is-invalid @enderror"
+                                    name="status"
+                                    id="status">
+                                <option value="">Select Status</option>
+                                @foreach(\App\Enums\EquipmentStatusEnum::cases() as $key => $value)
+                                    <option value="{{ $value->value }}"
+                                            @if($equipment->status == $value) selected @endif>{{ $value->value }}</option>
+                                @endforeach
+                            </select>
+                            @error('equipment_condition')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                             <div class="col-6">
                                 <label for="warranty_period" placeholder="Warranty Period" class="form-label">Warranty
                                     Period<span class="text-danger">*</span></label>
@@ -188,7 +189,7 @@
                             <div class="col-6">
                                 <label for="equipment_condition" class="form-label">Equipment
                                     Condition<span class="text-danger">*</span></label>
-                                <select class="form-control js-select2 form-select form-control-alt"
+                                <select class="form-control js-select2 form-select form-control-alt @error('equipment_condition') is-invalid @enderror"
                                         name="equipment_condition"
                                         id="equipment_condition">
                                     <option value="">Select Condition</option>
@@ -306,7 +307,7 @@
                             <label class="form-label">Image<span
                                     class="text-danger">*</span></label>
                             <div class="form-check d-flex">
-                                <input type="checkbox" name="use_old_image" checked id="use_old_image">
+                                <input type="checkbox" name="use_old_image" checked id="use_old_image" form="create">
                                 <label for="use_old_image" class="form-check ml-1">
                                     Use old image
                                 </label>

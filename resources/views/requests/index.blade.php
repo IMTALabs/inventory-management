@@ -38,48 +38,47 @@
 
     <div class="content">
         @include('common.alert')
-        <div class="block block-rounded">
-            <div class="block-content block-content-full">
-                <form action="" method="get">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control form-control-alt" name="name" placeholder="Name"
-                                   value="" id="name">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="type" class="form-label">Type</label>
-                            <select class="form-control js-select2 form-select form-control-alt" name="type" id="type">
-                                <option value="">Select Type</option>
-                                @foreach(App\Models\Equipment::EQUIPMENT_TYPE as $key => $value)
-                                    <option value="{{ $value }}"
-                                           >{{ $value }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+        {{--        <div class="block block-rounded">--}}
+        {{--            <div class="block-content block-content-full">--}}
+        {{--                <form action="" method="get">--}}
+        {{--                    <div class="row">--}}
+        {{--                        <div class="col-md-6">--}}
+        {{--                            <label for="name" class="form-label">Name</label>--}}
+        {{--                            <input type="text" class="form-control form-control-alt" name="name" placeholder="Name"--}}
+        {{--                                   value="" id="name">--}}
+        {{--                        </div>--}}
+        {{--                        <div class="col-md-3">--}}
+        {{--                            <label for="type" class="form-label">Type</label>--}}
+        {{--                            <select class="form-control js-select2 form-select form-control-alt" name="type" id="type">--}}
+        {{--                                <option value="">Select Type</option>--}}
+        {{--                                @foreach(\App\Enums\EquipmentTypeEnum::cases() as $key => $value)--}}
+        {{--                                    <option value="{{ $value->value }}">{{ $value }}</option>--}}
+        {{--                                @endforeach--}}
+        {{--                            </select>--}}
+        {{--                        </div>--}}
 
 
-                    <div class="col-md-12 text-end mt-2">
-                        <a href="{{ route('equipments.index') }}" class="btn btn-warning">
-                            <i class="fa fa-undo"></i> Reset
-                        </a>
-                        <button type="submit" class="btn btn-dark">
-                            <i class="fa fa-search"></i> Search
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        {{--                        <div class="col-md-12 text-end mt-2">--}}
+        {{--                            <a href="{{ route('equipments.index') }}" class="btn btn-warning">--}}
+        {{--                                <i class="fa fa-undo"></i> Reset--}}
+        {{--                            </a>--}}
+        {{--                            <button type="submit" class="btn btn-dark">--}}
+        {{--                                <i class="fa fa-search"></i> Search--}}
+        {{--                            </button>--}}
+        {{--                        </div>--}}
+        {{--                </form>--}}
+        {{--            </div>--}}
+        {{--        </div>--}}
 
 
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
             <div class="block-header block-header-default">
-                <h3 class="block-title">All Equipments</h3>
+                <h3 class="block-title">All Request Warranty</h3>
                 <div class="block-options">
                     <a href="{{route('requests.create')}}">
                         <button type="button" class="btn btn-alt-primary btn-sm">
-                            <i class="si si-plus"></i> Add Equipment
+                            <i class="si si-plus"></i> Add Request Warranty
                         </button>
                     </a>
                 </div>
@@ -89,17 +88,49 @@
                 <table class="table table-striped table-vcenter fs-sm">
                     <thead>
                     <tr>
-                        <th class="text-center" style="width: 80px;">#</th>
-                        <th>Name</th>
-                        <th class="text-center">Type</th>
-                        <th class="text-center">Serial Number</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Condition</th>
-                        <th class="text-center">Actions</th>
+                        <th style="width: 80px;">#</th>
+                        <th>Equipment Name</th>
+                        <th>Warranty Name</th>
+                        <th>Status</th>
+                        <th>Request Date</th>
+                        <th>Description</th>
+                        <th class="text-center">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-
+                    @foreach($entries as $key => $value)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $value->equipment->equipment_name }}</td>
+                            <td>{{ $value->warrantyInformation->provider_name }}</td>
+                            <td>{{ $value->status }}</td>
+                            <td>{{ $value->request_date->format('Y-m-d') }}</td>
+                            <td>{{ $value->issue_description }}</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="{{ route('requests.show', ['request' => $value]) }}">
+                                        <button type="button" class="btn btn-sm btn-alt-info">
+                                            <i class="fa fa-fw fa-eye"></i>
+                                        </button>
+                                    </a>
+                                        <a href="">
+                                            <button type="button" class="btn btn-sm btn-alt-warning">
+                                                <i class="fa fa-fw fa-pencil-alt"></i>
+                                            </button>
+                                        </a>
+                                        <form class="form-delete"
+                                              action=""
+                                              method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-alt-danger">
+                                                <i class="fa fa-fw fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
 
