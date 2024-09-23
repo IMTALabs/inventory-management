@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function () {
             Equipment::class);
         Route::post('/store', [EquipmentController::class, 'store'])->name('equipments.store')->can('create',
             Equipment::class);
+        Route::get('/{equipment}/show', [EquipmentController::class, 'show'])->name('equipments.show')->can('view',
+            'equipment');
         Route::get('/{equipment}', [EquipmentController::class, 'edit'])->name('equipments.edit')->can('view',
             'equipment');
         Route::put('/{equipment}', [EquipmentController::class, 'update'])->name('equipments.update')->can('update',
@@ -115,7 +117,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [RequestController::class, 'index'])->name('requests.index');
         Route::get('/create', [RequestController::class, 'create'])->name('requests.create');
         Route::post('/', [RequestController::class, 'store'])->name('requests.store');
-        Route::put('/{request}/status', [RequestController::class, 'updateStatus'])->name('requests.update-status');
+        Route::get('/{request}', [RequestController::class, 'show'])->name('requests.show');
+        Route::get('/{request}/edit', [RequestController::class, 'edit'])->name('requests.edit');
+        Route::put('/{request}', [RequestController::class, 'updateStatus'])->name('requests.update-status');
+        Route::delete('/{request}', [RequestController::class, 'destroy'])->name('requests.destroy');
+        Route::put('/{request}/status',
+            [RequestController::class, 'updateStatus'])->name('requests.update-status');
     });
 
     Route::post('/image', [EquipmentController::class, 'image'])->name('images.create');

@@ -132,7 +132,6 @@ class EquipmentController extends Controller
             'warranty_start_date' => 'required|date',
             'warranty_end_date' => 'required|date',
         ]);
-
         DB::beginTransaction();
         try {
             $equipment->update($request->only([
