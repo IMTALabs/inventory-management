@@ -52,20 +52,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/monitor/{equipment}/fetch', [MonitorController::class, 'fetchEquipment'])->name('monitor.store');
 
     Route::prefix('equipments')->group(function () {
-        Route::get('/', [EquipmentController::class, 'index'])->name('equipments.index')->can('viewAny',
-            Equipment::class);
-        Route::get('/create', [EquipmentController::class, 'create'])->name('equipments.create')->can('create',
-            Equipment::class);
-        Route::post('/store', [EquipmentController::class, 'store'])->name('equipments.store')->can('create',
-            Equipment::class);
-        Route::get('/{equipment}/show', [EquipmentController::class, 'show'])->name('equipments.show')->can('view',
-            'equipment');
-        Route::get('/{equipment}', [EquipmentController::class, 'edit'])->name('equipments.edit')->can('view',
-            'equipment');
-        Route::put('/{equipment}', [EquipmentController::class, 'update'])->name('equipments.update')->can('update',
-            'equipment');
-        Route::delete('/{equipment}',
-            [EquipmentController::class, 'destroy'])->name('equipments.destroy')->can('delete', 'equipment');
+        Route::get('/', [EquipmentController::class, 'index'])->name('equipments.index')->can('viewAny', Equipment::class);
+        Route::get('/create', [EquipmentController::class, 'create'])->name('equipments.create')->can('create', Equipment::class);
+        Route::post('/store', [EquipmentController::class, 'store'])->name('equipments.store')->can('create', Equipment::class);
+        Route::get('/{equipment}/show', [EquipmentController::class, 'show'])->name('equipments.show')->can('view', 'equipment');
+        Route::get('/{equipment}', [EquipmentController::class, 'edit'])->name('equipments.edit')->can('view', 'equipment');
+        Route::put('/{equipment}', [EquipmentController::class, 'update'])->name('equipments.update')->can('update', 'equipment');
+        Route::delete('/{equipment}', [EquipmentController::class, 'destroy'])->name('equipments.destroy')->can('delete', 'equipment');
     });
 
     Route::prefix('/maintenance-plans')->group(function () {
