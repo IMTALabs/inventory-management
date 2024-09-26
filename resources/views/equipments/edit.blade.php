@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', __('Create Equipment'))
+@section('title', __('Update Equipment'))
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('js/plugins/dropzone/min/dropzone.min.css') }}">
@@ -13,15 +13,15 @@
         <div class="content content-full">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                 <div class="flex-grow-1">
-                    <h1 class="h3 fw-bold mb-1">Create Equipment</h1>
-                    <h2 class="fs-base lh-base fw-medium text-muted mb-0">Add new equipment details</h2>
+                    <h1 class="h3 fw-bold mb-1">Update Equipment</h1>
+                    <h2 class="fs-base lh-base fw-medium text-muted mb-0">Update equipment details</h2>
                 </div>
                 <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item">
                             <a class="link-fx" href="javascript:void(0)">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item" aria-current="page">Edit Equipment</li>
+                        <li class="breadcrumb-item" aria-current="page">Update Equipment</li>
                     </ol>
                 </nav>
             </div>
@@ -32,7 +32,7 @@
         @include('common.alert')
         <div class="block block-rounded">
             <div class="block-header block-header-default">
-                <h3 class="block-title">Edit Equipment</h3>
+                <h3 class="block-title">Update Equipment</h3>
                 <div class="block-options">
                     <button type="submit" form="create" class="btn btn-alt-success btn-sm">
                         <i class="fa fa-check"></i> Submit
