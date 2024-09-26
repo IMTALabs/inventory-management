@@ -2,12 +2,12 @@
 
 namespace App\Enums;
 
-enum EquipmentStatusEnum :string
+enum EquipmentStatusEnum: string
 {
     case AVAILABLE = 'Available';
     case IN_USE = 'In Use';
-    case INACTIVE = 'Inactive';
     case PENDING_DISPOSAL = 'Pending Disposal';
+    case INACTIVE = 'Inactive';
     case UNDER_MAINTENANCE = 'Under Maintenance';
     case UNDER_REPAIR = 'Under Repair';
 
@@ -15,7 +15,5 @@ enum EquipmentStatusEnum :string
     {
         return [self::AVAILABLE, self::IN_USE, self::PENDING_DISPOSAL];
     }
-
-
 }
 
