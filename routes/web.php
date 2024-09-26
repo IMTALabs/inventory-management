@@ -51,14 +51,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/monitor', [MonitorController::class, 'show'])->name('monitor.show');
     Route::get('/monitor/{equipment}/fetch', [MonitorController::class, 'fetchEquipment'])->name('monitor.store');
 
-    Route::prefix('equipments')->group(function () {
-        Route::get('/', [EquipmentController::class, 'index'])->name('equipments.index')->can('viewAny', Equipment::class);
-        Route::get('/create', [EquipmentController::class, 'create'])->name('equipments.create')->can('create', Equipment::class);
-        Route::post('/store', [EquipmentController::class, 'store'])->name('equipments.store')->can('create', Equipment::class);
-        Route::get('/{equipment}/show', [EquipmentController::class, 'show'])->name('equipments.show')->can('view', 'equipment');
-        Route::get('/{equipment}', [EquipmentController::class, 'edit'])->name('equipments.edit')->can('view', 'equipment');
-        Route::put('/{equipment}', [EquipmentController::class, 'update'])->name('equipments.update')->can('update', 'equipment');
-        Route::delete('/{equipment}', [EquipmentController::class, 'destroy'])->name('equipments.destroy')->can('delete', 'equipment');
+    Route::prefix('equipment')->group(function () {
+        Route::get('/', [EquipmentController::class, 'index'])->name('equipments.index')->can('viewAny',
+            Equipment::class);
+        Route::get('/create', [EquipmentController::class, 'create'])->name('equipments.create')->can('create',
+            Equipment::class);
+        Route::post('/store', [EquipmentController::class, 'store'])->name('equipments.store')->can('create',
+            Equipment::class);
+        Route::get('/{equipment}', [EquipmentController::class, 'show'])->name('equipments.show')->can('view',
+            'equipment');
+        Route::get('/{equipment}/edit', [EquipmentController::class, 'edit'])->name('equipments.edit')->can('view',
+            'equipment');
+        Route::put('/{equipment}', [EquipmentController::class, 'update'])->name('equipments.update')->can('update',
+            'equipment');
+        Route::delete('/{equipment}',
+            [EquipmentController::class, 'destroy'])->name('equipments.destroy')->can('delete', 'equipment');
     });
 
     Route::prefix('/maintenance-plans')->group(function () {
@@ -105,7 +112,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/{workOrder}/update-status',
             [WorkOrderController::class, 'updateStatus'])->name('work-orders.update-status');
     });
-    Route::prefix('requests')->group(function () {
+    Route::prefix('warranty-requests')->group(function () {
         Route::get('/', [RequestController::class, 'index'])->name('requests.index');
         Route::get('/create', [RequestController::class, 'create'])->name('requests.create');
         Route::post('/', [RequestController::class, 'store'])->name('requests.store');

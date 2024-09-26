@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MaintenanceScheduleStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +22,7 @@ class WarrantyRequest extends Model
 
     protected $casts = [
         'request_date' => 'date',
+        'status' => MaintenanceScheduleStatusEnum::class,
     ];
 
     public function equipment(): BelongsTo

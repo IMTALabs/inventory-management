@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', __('Equipments'))
+@section('title', __('Equipment'))
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('js/plugins/select2/css/select2.min.css') }}">
@@ -15,7 +15,7 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                 <div class="flex-grow-1">
                     <h1 class="h3 fw-bold mb-1">
-                        Equipments
+                        Equipment
                     </h1>
                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
                         List
@@ -27,7 +27,7 @@
                             <a class="link-fx" href="javascript:void(0)">Invent</a>
                         </li>
                         <li class="breadcrumb-item" aria-current="page">
-                            List Equipments
+                            List Equipment
                         </li>
                     </ol>
                 </nav>
@@ -144,7 +144,7 @@
                             <td class="text-center">{{ $i + 1 }}</td>
 
                             <td class="fw-semibold">
-                                <a href="javascript:void(0)">{{ $entry->equipment_name }}</a>
+                                <a href="{{ route('equipments.show', ['equipment' => $entry]) }}">{{ $entry->equipment_name }}</a>
                             </td>
                             <td class="text-center">
                                 {{ $entry->equipment_type }}
@@ -153,15 +153,17 @@
                                 {!! DNS1D::getBarcodeHTML($entry->serial_number, 'C128') !!}
                             </td>
                             <td class="text-center" title="{{ $entry->status }}">
-                                @if($entry->status === 'Active')
-                                    <span class="badge bg-success text-white"> Active</span>
-                                @elseif($entry->status === 'Inactive')
+                                @if($entry->status->value == 'Available')
+                                    <span class="badge bg-success text-white"> Available</span>
+                                @elseif($entry->status->value == 'Inactive')
                                     <span class="badge bg-danger text-white"> Inactive</span>
-                                @elseif($entry->status === 'Pending Disposal')
+                                @elseif($entry->status->value == 'Pending Disposal')
                                     <span class="badge bg-warning text-white">Pending Disposal</span>
-                                @elseif($entry->status === 'Under Maintenance')
+                                @elseif($entry->status->value == 'In Use')
+                                    <span class="badge bg-warning text-white">In Use</span>
+                                @elseif($entry->status->value == 'Under Maintenance')
                                     <span class="badge bg-info text-white">Under Maintenance</span>
-                                @elseif($entry->status === 'Under Repair')
+                                @elseif($entry->status->value == 'Under Repair')
                                     <span class="badge bg-primary text-white">Under Repair</span>
                                 @else
                                     <span class="badge bg-secondary text-white">Unknown</span>

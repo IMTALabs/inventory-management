@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('title', __('Request Warranty'))
+@section('title', __('Create Warranty Request'))
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('js/plugins/select2/css/select2.min.css') }}">
@@ -15,7 +15,7 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                 <div class="flex-grow-1">
                     <h1 class="h3 fw-bold mb-1">
-                        Request Warranty
+                        Warranty Requests
                     </h1>
                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
                         Create
@@ -27,7 +27,7 @@
                             <a class="link-fx" href="javascript:void(0)">Invent</a>
                         </li>
                         <li class="breadcrumb-item" aria-current="page">
-                            Create Request Warranty
+                            Create Warranty Request
                         </li>
                     </ol>
                 </nav>
