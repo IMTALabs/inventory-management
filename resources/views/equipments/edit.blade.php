@@ -307,10 +307,10 @@
                             <label class="form-label">Image<span
                                     class="text-danger">*</span></label>
                             <div class="form-check d-flex">
-                                <input type="checkbox" name="use_old_image" checked id="use_old_image" form="create">
-                                <label for="use_old_image" class="form-check ml-1">
-                                    Use old image
-                                </label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" form="create" type="checkbox" name="use_old_image" id="use_old_image" checked>
+                                    <label class="form-check-label" for="use_old_image">Use old image</label>
+                                </div>
                             </div>
                         </div>
 

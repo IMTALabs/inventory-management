@@ -102,7 +102,52 @@ class RequestController extends Controller
             dd($e);
             return back()->with('error', 'Request status update failed.');
         }
-
     }
 
+    public function edit($id)
+    {
+        $equipment = Equipment::whereHas('warrantyInformation', function ($query) {
+            $query->whereNotNull('id');
+        })->get();
+        $requestWarranty = WarrantyRequest::with(['equipment', 'warrantyInformation'])->find($id);
+        return view('requests.edit', compact(['requestWarranty', 'equipment']));
+    }
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'request_date' => 'required|date',
+            'issue_description' => 'required|string',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $warrantyRequest = WarrantyRequest::find($id);
+            $warrantyRequest->update($request->only('request_date', 'issue_description', 'equipment_id'));
+
+            $this->logWarrantyRequest($warrantyRequest);
+
+            DB::commit();
+            return redirect()->route('requests.show', $id)->with('status', 'Request updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Request update failed.');
+        }
+    }
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+        try {
+            $warrantyRequest = WarrantyRequest::find($id);
+            if ($warrantyRequest) {
+                $warrantyRequest->delete();
+                DB::commit();
+                return redirect()->route('requests.index')->with('status', 'Request deleted successfully.');
+            } else {
+                return redirect()->route('requests.index')->with('error', 'Request not found.');
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('requests.index')->with('error', 'Request deletion failed.');
+        }
+    }
 }

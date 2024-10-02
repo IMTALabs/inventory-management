@@ -49,13 +49,13 @@
     <div class="content">
         @include('common.alert')
         <div class="row">
-            @if($requestWarranty->status == \App\Enums\MaintenanceScheduleStatusEnum::PENDING->value)
+            @if($requestWarranty->status == \App\Enums\MaintenanceScheduleStatusEnum::PENDING)
                 <form class="col-lg-12" method="post"
                       action="{{ route('requests.update-status', $requestWarranty) }}">
                     @method('PUT')
                     @csrf
                     <input type="hidden" name="status"
-                           value="{{ \App\Enums\MaintenanceScheduleStatusEnum::CONFIRMED->value }}">
+                           value="{{ \App\Enums\MaintenanceScheduleStatusEnum::CONFIRMED }}">
                     <a class="block block-rounded block-link-shadow text-center">
                         <div class="block-content block-content-full">
                             <div class="fs-2 fw-semibold text-info">
@@ -70,13 +70,13 @@
                     </a>
                 </form>
             @endif
-            @if($requestWarranty->status == \App\Enums\MaintenanceScheduleStatusEnum::CONFIRMED->value)
+            @if($requestWarranty->status == \App\Enums\MaintenanceScheduleStatusEnum::CONFIRMED)
                 <form class="col-lg-6" method="post"
                       action="{{ route('requests.update-status', $requestWarranty) }}">
                     @method('PUT')
                     @csrf
                     <input type="hidden" name="status"
-                           value="{{ \App\Enums\MaintenanceScheduleStatusEnum::COMPLETED->value }}">
+                           value="{{ \App\Enums\MaintenanceScheduleStatusEnum::COMPLETED }}">
                     <a class="block block-rounded block-link-shadow text-center">
                         <div class="block-content block-content-full">
                             <div class="fs-2 fw-semibold text-success">
@@ -95,7 +95,7 @@
                     @method('PUT')
                     @csrf
                     <input type="hidden" name="status"
-                           value="{{ \App\Enums\MaintenanceScheduleStatusEnum::CANCELLED->value }}">
+                           value="{{ \App\Enums\MaintenanceScheduleStatusEnum::CANCELLED }}">
                     <a class="block block-rounded block-link-shadow text-center">
                         <div class="block-content block-content-full">
                             <div class="fs-2 fw-semibold text-danger">
@@ -112,53 +112,47 @@
             @endif
         </div>
         <!-- Dynamic Table Full -->
-{{--        <div class="block block-rounded">--}}
-{{--            <div class="block-header block-header-default">--}}
-{{--                <h3 class="block-title d-flex align-items-center">--}}
-{{--                    Detail Request Warranty--}}
-{{--                    <span class="ms-2 badge {{ $requestWarranty->status->getBadgeClass() }}">--}}
-{{--                        {{ strtoupper($requestWarranty->status->value) }}--}}
-{{--                    </span>--}}
-{{--                </h3>--}}
-{{--                @if($maintenanceSchedule->status == \App\Enums\MaintenanceScheduleStatusEnum::PENDING)--}}
-{{--                    <div class="block-options">--}}
-{{--                        <a href=""--}}
-{{--                           class="btn btn-alt-warning btn-sm">--}}
-{{--                            <i class="fa fa-pen"></i> Edit--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
-{{--                @endif--}}
-{{--            </div>--}}
-{{--            <div class="block-content block-content-full">--}}
-{{--                <div class="row g-3">--}}
-{{--                    <div class="col-12">--}}
-{{--                        <label class="form-label">Plan<span class="text-danger">*</span></label>--}}
-{{--                        <input type="text" class="form-control form-control-alt"--}}
-{{--                               value="[{{ str_pad($maintenanceSchedule->maintenancePlan->id, 4, '0', STR_PAD_LEFT) }}] {{ $maintenanceSchedule->maintenancePlan->plan_name }}"--}}
-{{--                               disabled>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-6">--}}
-{{--                        <label class="form-label">Scheduled Date<span class="text-danger">*</span></label>--}}
-{{--                        <input type="date" disabled--}}
-{{--                               class="form-control form-control-alt"--}}
-{{--                               value="{{ $maintenanceSchedule->scheduled_date }}">--}}
-{{--                    </div>--}}
-{{--                    <div class="col-6">--}}
-{{--                        <label class="form-label">Performed By<span class="text-danger">*</span></label>--}}
-{{--                        <input type="text" disabled--}}
-{{--                               class="form-control form-control-alt"--}}
-{{--                               value="[{{ str_pad($maintenanceSchedule->performer->id, 4, '0', STR_PAD_LEFT) }}] {{ $maintenanceSchedule->performer->name }}">--}}
-{{--                    </div>--}}
-{{--                    <div class="col-12">--}}
-{{--                        <label class="form-label">Remarks</label>--}}
-{{--                        <textarea--}}
-{{--                            class="form-control form-control-alt disabled"--}}
-{{--                            name="remarks" placeholder="..."--}}
-{{--                            rows="5">{{ $maintenanceSchedule->remarks }}</textarea>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
+        <div class="block block-rounded">
+            <div class="block-header block-header-default">
+                <h3 class="block-title d-flex align-items-center">
+                    Detail Request Warranty
+                    <span class="ms-2 badge {{ $requestWarranty->status->getBadgeClass() }}">
+                        {{ strtoupper($requestWarranty->status->value) }}
+                    </span>
+                </h3>
+                @if($requestWarranty->status == \App\Enums\MaintenanceScheduleStatusEnum::PENDING)
+                    <div class="block-options">
+                        <a href=""
+                           class="btn btn-alt-warning btn-sm">
+                            <i class="fa fa-pen"></i> Edit
+                        </a>
+                    </div>
+                @endif
+            </div>
+            <div class="block-content block-content-full">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <label class="form-label">Equiment Name<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-alt"
+                               value="{{ $requestWarranty->equipment->equipment_name }}"
+                               disabled>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Request Date<span class="text-danger">*</span></label>
+                        <input type="date" disabled
+                               class="form-control form-control-alt"
+                               value="{{ $requestWarranty->request_date }}">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Issue Description</label>
+                        <textarea
+                            class="form-control form-control-alt disabled"
+                            name="remarks" placeholder="..."
+                            rows="5">{{ $requestWarranty->issue_description }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="block block-rounded">
             <div class="block-header block-header-default">

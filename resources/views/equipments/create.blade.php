@@ -56,7 +56,7 @@
                         <div class="col-6">
                             <label for="equipment_type" class="form-label">Equipment Type<span
                                     class="text-danger">*</span></label>
-                            <select class="form-control js-select2 form-select form-control-alt" name="equipment_type"
+                            <select class="form-control js-select2 form-select form-control-alt @error('equipment_type') is-invalid @enderror"  name="equipment_type"
                                     id="equipment_type">
                                 <option value="">Select Type</option>
                                 @foreach(\App\Enums\EquipmentTypeEnum::cases() as $key => $value)
@@ -68,7 +68,8 @@
                             @enderror
                         </div>
                         <div class="col-6">
-                            <label for="model" class="form-label">Model</label>
+                            <label for="model" class="form-label">Model<span
+                                    class="text-danger">*</span></label>
                             <input type="text"
                                    class="form-control form-control-alt @error('model') is-invalid @enderror"
                                    placeholder="Model" name="model" id="model" value="{{ old('model') }}">

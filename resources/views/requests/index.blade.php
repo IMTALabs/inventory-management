@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="{{ asset('js/plugins/sweetalert2/sweetalert2.min.css') }}">
 @endsection
 
+@section('js')
+    <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    @vite('resources/js/pages/maintenance-schedules.js')
+    <script type="module">
+        One.helpersOnLoad(["jq-select2"]);
+    </script>
+@endsection
+
 
 @section('content')
     <!-- Hero -->
@@ -140,20 +150,22 @@
                                             <i class="fa fa-fw fa-eye"></i>
                                         </button>
                                     </a>
-                                    <a href="">
-                                        <button type="button" class="btn btn-sm btn-alt-warning">
-                                            <i class="fa fa-fw fa-pencil-alt"></i>
-                                        </button>
-                                    </a>
-                                    <form class="form-delete"
-                                          action=""
-                                          method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-alt-danger">
-                                            <i class="fa fa-fw fa-trash-alt"></i>
-                                        </button>
-                                    </form>
+                                    @if($value->status == \App\Enums\MaintenanceScheduleStatusEnum::PENDING)
+                                        <a href="{{ route('requests.edit', ['request' => $value]) }}">
+                                            <button type="button" class="btn btn-sm btn-alt-warning">
+                                                <i class="fa fa-fw fa-pencil-alt"></i>
+                                            </button>
+                                        </a>
+                                        <form class="form-delete"
+                                              action="{{ route('requests.destroy', ['request' => $value]) }}"
+                                              method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-alt-danger">
+                                                <i class="fa fa-fw fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
