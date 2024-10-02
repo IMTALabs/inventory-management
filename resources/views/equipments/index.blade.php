@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="{{ asset('js/plugins/sweetalert2/sweetalert2.min.css') }}">
 @endsection
 
+@section('js')
+    <script src="{{ asset('js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/select2/js/select2.full.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    @vite('resources/js/pages/maintenance-schedules.js')
+    <script type="module">
+        One.helpersOnLoad(["jq-select2"]);
+    </script>
+@endsection
 
 @section('content')
     <!-- Hero -->
@@ -79,20 +88,14 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-6 mt-2">
-                            <label for="locationel" class="form-label">Location</label>
-                            <input type="text" name="location" class="form-control form-control-alt"
-                                   value="{{ $location }}"
-                                   id="location" placeholder="Location">
-                        </div>
                         <div class="col-md-3 mt-2">
                             <label class="form-label">Sort order</label>
                             <select class="form-select form-control-alt" name="sort_order">
-                                <option value="asc" @if(request('sort_order') === 'asc') selected @endif>
+                                <option value="asc" @if(request('sort_order') == 'asc') selected @endif>
                                     Ascending
                                 </option>
                                 <option value="desc"
-                                        @if(!request('sort_order') || request('sort_order') === 'desc') selected @endif>
+                                        @if(!request('sort_order') || request('sort_order') == 'desc') selected @endif>
                                     Descending
                                 </option>
                             </select>
@@ -191,12 +194,12 @@
                                        class="btn btn-sm btn-alt-warning">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </a>
-                                    <form action="{{ route('equipments.destroy', ['equipment' => $entry]) }}"
-                                          method="POST" style="display:inline;">
+                                    <form class="form-delete"
+                                          action="{{ route('equipments.destroy', ['equipment' => $entry]) }}"
+                                          method="post">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-alt-danger"
-                                                onclick="return confirm('Are you sure you want to delete this equipment?');">
+                                        <button type="submit" class="btn btn-sm btn-alt-danger">
                                             <i class="fa fa-fw fa-trash-alt"></i>
                                         </button>
                                     </form>

@@ -53,7 +53,7 @@
                             <label for="equipment_id" class="form-label">Equipment<span
                                     class="text-danger">*</span></label>
                             <select
-                                class="form-control js-select2 form-select form-control-alt"
+                                class="form-control js-select2 form-select form-control-alt @error('equipment_id') is-invalid @enderror"
                                 name="equipment_id" id="equipment_id">
                                 <option value="">Select Equipment</option>
                                 @foreach($equipment as $item)
@@ -97,4 +97,7 @@
     <script src="{{ asset('js/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     @vite('resources/js/pages/maintenance-plans.js')
+    <script type="module">
+        One.helpersOnLoad(["jq-select2"]);
+    </script>
 @endsection

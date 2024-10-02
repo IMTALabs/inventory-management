@@ -35,7 +35,7 @@ class EquipmentController extends Controller
             ->when($location, function ($query) use ($location) {
                 $query->where('model', 'like', "%$location%");
             })
-            ->orderBy('id', 'desc')
+            ->orderBy('id', $request->sort_order ?? 'desc')
             ->paginate(5)
             ->withQueryString();
 
@@ -54,24 +54,24 @@ class EquipmentController extends Controller
             'equipment_type' => 'required|string|max:255',
             'serial_number' => 'required|string|unique:equipment,serial_number',
             'equipment_condition' => 'required|string|max:255',
-            'model' => 'nullable|string|max:255',
-            'manufacturer' => 'nullable|string|max:255',
-            'purchase_date' => 'nullable|date',
-            'location' => 'nullable|string|max:255',
-            'status' => 'nullable|string|max:255',
-            'warranty_period' => 'nullable|date',
-            'installation_date' => 'nullable|date',
-            'last_service_date' => 'nullable|date',
-            'next_service_date' => 'nullable|date',
-            'equipment_specifications' => 'nullable|string',
-            'usage_duration' => 'nullable|integer',
-            'power_requirements' => 'nullable|string|max:255',
-            'network_info' => 'nullable|string|max:255',
-            'software_version' => 'nullable|string|max:255',
-            'hardware_version' => 'nullable|string|max:255',
-            'purchase_price' => 'nullable|numeric',
-            'depreciation_value' => 'nullable|numeric',
-            'notes' => 'nullable|string',
+            'model' => 'required|string|max:255',
+            'manufacturer' => 'required|string|max:255',
+            'purchase_date' => 'required|date',
+            'location' => 'required|string|max:255',
+            'status' => 'required|string|max:255',
+            'warranty_period' => 'required|date',
+            'installation_date' => 'required|date',
+            'last_service_date' => 'required|date',
+            'next_service_date' => 'required|date',
+            'equipment_specifications' => 'required|string',
+            'usage_duration' => 'required|integer',
+            'power_requirements' => 'required|string|max:255',
+            'network_info' => 'required|string|max:255',
+            'software_version' => 'required|string|max:255',
+            'hardware_version' => 'required|string|max:255',
+            'purchase_price' => 'required|numeric',
+            'depreciation_value' => 'required|numeric',
+            'notes' => 'required|string',
         ]);
 
         DB::beginTransaction();

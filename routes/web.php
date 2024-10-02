@@ -119,9 +119,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{request}', [RequestController::class, 'show'])->name('requests.show');
         Route::get('/{request}/edit', [RequestController::class, 'edit'])->name('requests.edit');
         Route::put('/{request}', [RequestController::class, 'updateStatus'])->name('requests.update-status');
+        Route::put('/{request}/update', [RequestController::class, 'update'])->name('requests.update');
         Route::delete('/{request}', [RequestController::class, 'destroy'])->name('requests.destroy');
-        Route::put('/{request}/status',
-            [RequestController::class, 'updateStatus'])->name('requests.update-status');
     });
 
     Route::post('/image', [EquipmentController::class, 'image'])->name('images.create');
