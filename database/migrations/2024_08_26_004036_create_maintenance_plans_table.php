@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('maintenance_plans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('equipment_id');
+            $table->foreignId('equipment_id');
             $table->string('plan_name');
             $table->text('description')->nullable();
             $table->string('frequency');
             $table->timestamps();
+
+            $table->foreign('equipment_id')->references('id')->on('equipment');
         });
     }
 

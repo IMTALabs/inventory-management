@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('work_order_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('work_order_id');
+            $table->foreignId('work_order_id');
             $table->string('status')->nullable()->default('pending');
             $table->timestamps();
+
+            $table->foreign('work_order_id')->references('id')->on('work_orders');
         });
     }
 

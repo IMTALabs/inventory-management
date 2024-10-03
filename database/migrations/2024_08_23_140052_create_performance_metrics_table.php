@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('performance_metrics', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('equipment_id');
-            $table->unsignedBigInteger('metric_id');
+            $table->foreignId('equipment_id');
+            $table->foreignId('metric_id');
             $table->float('metric_value', 2)->nullable();
             $table->timestamps();
+
+            $table->foreign('equipment_id')->references('id')->on('equipment');
+            $table->foreign('metric_id')->references('id')->on('metrics');
         });
     }
 

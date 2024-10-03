@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('work_orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('equipment_id');
-            $table->unsignedBigInteger('created_by');
+            $table->foreignId('user_id');
+            $table->foreignId('equipment_id');
+            $table->foreignId('created_by');
             $table->string('status')->default('pending');
             $table->date('due_date')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('equipment_id')->references('id')->on('equipment');
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

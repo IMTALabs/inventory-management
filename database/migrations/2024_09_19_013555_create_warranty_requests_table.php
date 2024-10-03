@@ -16,10 +16,13 @@ return new class extends Migration
             $table->date('request_date')->comment('Date the warranty request was made');
             $table->string('issue_description')->comment('Description of the issue');
             $table->string('status')->default('pending')->comment('Status of the warranty request');
-            $table->bigInteger('equipment_id');
-            $table->bigInteger('warranty_information_id');
+            $table->foreignId('equipment_id');
+            $table->foreignId('warranty_information_id');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('equipment_id')->references('id')->on('equipment');
+            $table->foreign('warranty_information_id')->references('id')->on('warranty_information');
         });
     }
 

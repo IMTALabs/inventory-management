@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->date('log_date')->comment('Date the log was made');
             $table->string('status')->comment('Status of the warranty log');
-            $table->bigInteger('warranty_request_id');
-            $table->bigInteger('updated_by');
+            $table->foreignId('warranty_request_id');
+            $table->foreignId('updated_by');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('warranty_request_id')->references('id')->on('warranty_requests');
+            $table->foreign('updated_by')->references('id')->on('users');
         });
     }
 

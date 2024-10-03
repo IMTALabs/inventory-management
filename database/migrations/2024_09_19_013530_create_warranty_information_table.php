@@ -16,11 +16,13 @@ return new class extends Migration
             $table->string('provider_name')->comment('Name of the warranty provider');
             $table->string('provider_address')->comment('Address of the warranty provider');
             $table->string('contact_info')->comment('Contact information of the warranty provider');
-            $table->bigInteger('equipment_id');
+            $table->foreignId('equipment_id');
             $table->date('warranty_start_date')->comment('Start date of the warranty');
             $table->date('warranty_end_date')->comment('End date of the warranty');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('equipment_id')->references('id')->on('equipment');
         });
     }
 
