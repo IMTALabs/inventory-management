@@ -28,10 +28,16 @@ class RequestController extends Controller
         $entries = WarrantyRequest::query()->when($equipment_name, function ($query) use ($equipment_name) {
             $query->when($equipment_name, function ($query) use ($equipment_name) {
                 $query->whereHas('equipment', function ($query) use ($equipment_name) {
-                    $query->where('equipment_name', 'like', "%$equipment_name%");
+                    $query->where('equipment_name', 'like', "%$equipment_name%")
+                        ->when(isset($request->sort_by) && $request->sort_by == 'equipment_name', function ($query) use ($request) {
+                            $query->orderBy('equipment_name', $request->order_by ?? 'desc');
+                        })->when(isset($request->sort_by) && $request->sort_by == 'warranty_name', function ($query) use ($request) {
+                            $query->whereHas('warrantyInformation', function ($query) use ($request) {
+                                $query->orderBy('warranty_name', $request->order_by ?? 'desc');
+                            });
+                        });
                 });
             });
-
         })
             ->when(isset($from_date) && isset($to_date), function ($query) use ($from_date, $to_date) {
                 $query->whereBetween('request_date', [$from_date, $to_date]);
@@ -40,7 +46,7 @@ class RequestController extends Controller
                 $query->where('status', $status);
             })
             ->with(['equipment', 'warrantyInformation'])
-            ->orderBy('id', 'desc')
+            ->orderBy(isset($request->sort_by) && $request->sort_by == 'status' ? 'status' : 'id', $request->order_by ?? 'desc')
             ->paginate(5)
             ->withQueryString();
         return view('requests.index', compact(['entries', 'equipment_name', 'status', 'from_date', 'to_date']));
@@ -112,6 +118,7 @@ class RequestController extends Controller
         $requestWarranty = WarrantyRequest::with(['equipment', 'warrantyInformation'])->find($id);
         return view('requests.edit', compact(['requestWarranty', 'equipment']));
     }
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -133,6 +140,7 @@ class RequestController extends Controller
             return back()->with('error', 'Request update failed.');
         }
     }
+
     public function destroy($id)
     {
         DB::beginTransaction();

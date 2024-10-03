@@ -30,12 +30,12 @@ class EquipmentController extends Controller
                 $query->where('equipment_type', $type);
             })
             ->when($status, function ($query) use ($status) {
-                $query->where('equipment_type', $status);
+                $query->where('status', $status);
             })
             ->when($location, function ($query) use ($location) {
                 $query->where('model', 'like', "%$location%");
             })
-            ->orderBy('id', $request->sort_order ?? 'desc')
+            ->orderBy($request->sort_by ?? 'id', $request->sort_order ?? 'desc')
             ->paginate(5)
             ->withQueryString();
 

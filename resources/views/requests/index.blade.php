@@ -70,9 +70,9 @@
                             </select>
                         </div>
                         <div class="col-md-12 mt-4">
-                            <label for="condition" class="form-label">Request Date</label>
                             <div class="row">
                                 <div class="col-md-3">
+                                    <label for="condition" class="form-label">From Date Request</label>
                                     <input type="date"
                                            class="form-control form-control-alt @error('request_date') is-invalid @enderror"
                                            name="from_date" id="from_date" value="{{ $from_date }}">
@@ -81,6 +81,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
+                                    <label for="condition" class="form-label">To Date Request</label>
                                     <input type="date"
                                            class="form-control form-control-alt @error('request_date') is-invalid @enderror"
                                            name="to_date" id="to_date" value="{{ $to_date }}">
@@ -88,11 +89,42 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Sort order</label>
+                                    <select class="form-select form-control-alt" name="sort_order">
+                                        <option value="asc" @if(request('sort_order') == 'asc') selected @endif>
+                                            Ascending
+                                        </option>
+                                        <option value="desc"
+                                                @if(!request('sort_order') || request('sort_order') == 'desc') selected @endif>
+                                            Descending
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Sort by</label>
+                                    <select class="form-select form-control-alt" name="sort_by">
+                                        <option value="" @if(request('sort_by') == '') selected @endif>
+                                            Select option
+                                        </option>
+                                        <option value="equipment_name" @if(request('sort_by') == 'equipment_name') selected @endif>
+                                            Equipment Name
+                                        </option>
+                                        <option value="warranty_name"
+                                                @if(request('sort_by') == 'warranty_name') selected @endif>
+                                            Warranty Name
+                                        </option>
+                                        <option value="status"
+                                                @if(request('sort_by') == 'status') selected @endif>
+                                            Status
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12 text-end mt-2">
-                        <a href="{{ route('equipments.index') }}" class="btn btn-warning">
+                        <a href="{{ route('requests.index') }}" class="btn btn-warning">
                             <i class="fa fa-undo"></i> Reset
                         </a>
                         <button type="submit" class="btn btn-dark">

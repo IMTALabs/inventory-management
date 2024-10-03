@@ -26,6 +26,9 @@
                         <li class="breadcrumb-item">
                             <a class="link-fx" href="javascript:void(0)">Invent</a>
                         </li>
+                        <li class="breadcrumb-item">
+                            <a class="link-fx" href="{{ route('requests.index') }}">Warranty Request</a>
+                        </li>
                         <li class="breadcrumb-item" aria-current="page">
                             Create Warranty Request
                         </li>
