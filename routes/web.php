@@ -124,4 +124,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::post('/image', [EquipmentController::class, 'image'])->name('images.create');
+    Route::delete('/image/{id}', [EquipmentController::class, 'deleteImage'])->name('images.delete');
+    Route::delete('/image/{id}/all', [EquipmentController::class, 'deleteAllImage'])->name('images.delete_all');
+
 });
