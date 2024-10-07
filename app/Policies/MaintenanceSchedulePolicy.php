@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\MaintenanceScheduleStatusEnum;
 use App\Enums\RoleEnum;
 use App\Models\MaintenanceSchedule;
 use App\Models\User;
@@ -42,6 +43,13 @@ class MaintenanceSchedulePolicy
      * Determine whether the user can update the model.
      */
     public function update(User $user, MaintenanceSchedule $maintenanceSchedule): bool
+    {
+        return ($user->role === RoleEnum::ADMIN
+                || $user->role === RoleEnum::MANAGER)
+            && $maintenanceSchedule->status === MaintenanceScheduleStatusEnum::PENDING;
+    }
+
+    public function updateStatus(User $user, MaintenanceSchedule $maintenanceSchedule): bool
     {
         return $user->role === RoleEnum::ADMIN
             || $user->role === RoleEnum::MANAGER

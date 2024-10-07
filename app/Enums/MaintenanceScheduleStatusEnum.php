@@ -25,4 +25,9 @@ enum MaintenanceScheduleStatusEnum: string
     {
         return [self::PENDING, self::CONFIRMED];
     }
+
+    public static function canBeCancelled(): array
+    {
+        return [self::PENDING, self::CONFIRMED];
+    }
 }
