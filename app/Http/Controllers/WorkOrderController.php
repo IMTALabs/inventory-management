@@ -171,7 +171,11 @@ class WorkOrderController extends Controller
 
     public function edit(WorkOrder $workOrder)
     {
-        $usersCompact = User::notAdmin()->select(['id', 'name'])->get();
+        $usersCompact = User::notAdmin()->select(['id', 'name'])
+            ->when(Auth::user()->role === RoleEnum::STAFF, function ($query) {
+                $query->where('id', Auth::id());
+            })
+            ->get();
         $equipmentsCompact = Equipment::where('status', EquipmentStatusEnum::AVAILABLE)
             ->orWhere('id', $workOrder->equipment_id)
             ->select(['id', 'equipment_name'])->get();

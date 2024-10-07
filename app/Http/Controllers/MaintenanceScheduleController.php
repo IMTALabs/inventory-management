@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Enums\EquipmentStatusEnum;
 use App\Enums\MaintenancePlanFrequencyEnum;
 use App\Enums\MaintenanceScheduleStatusEnum;
+use App\Enums\RoleEnum;
 use App\Enums\WorkOrderStatusEnum;
 use App\Events\MaintenanceScheduleCompleted;
-use App\Models\Equipment;
 use App\Models\MaintenanceLog;
 use App\Models\MaintenancePlan;
 use App\Models\MaintenanceSchedule;
@@ -56,6 +56,10 @@ class MaintenanceScheduleController extends Controller
 
         $maintenanceScheduleQuery->when($status, function ($query, $status) {
             return $query->where('status', $status);
+        });
+
+        $maintenanceScheduleQuery->when(Auth::user()->role === RoleEnum::MAINTAINER, function ($query) {
+            return $query->where('performed_by', Auth::id());
         });
 
         $maintenanceSchedules = $maintenanceScheduleQuery->latest()->paginate(10)->withQueryString();

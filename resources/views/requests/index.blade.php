@@ -13,7 +13,7 @@
     <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     @vite('resources/js/pages/maintenance-schedules.js')
     <script type="module">
-        One.helpersOnLoad(["jq-select2"]);
+      One.helpersOnLoad(["jq-select2"]);
     </script>
 @endsection
 
@@ -51,7 +51,7 @@
         <div class="block block-rounded">
             <div class="block-content block-content-full">
                 <form action="{{ route('requests.index') }}" method="get">
-                    <div class="row">
+                    <div class="row g-2">
                         <div class="col-md-9">
                             <label for="name" class="form-label">Equipment</label>
                             <input type="text" class="form-control form-control-alt" name="equipment_name"
@@ -69,58 +69,56 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-12 mt-4">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="condition" class="form-label">From Date Request</label>
-                                    <input type="date"
-                                           class="form-control form-control-alt @error('request_date') is-invalid @enderror"
-                                           name="from_date" id="from_date" value="{{ $from_date }}">
-                                    @error('from_date')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="condition" class="form-label">To Date Request</label>
-                                    <input type="date"
-                                           class="form-control form-control-alt @error('request_date') is-invalid @enderror"
-                                           name="to_date" id="to_date" value="{{ $to_date }}">
-                                    @error('to_date')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Sort order</label>
-                                    <select class="form-select form-control-alt" name="sort_order">
-                                        <option value="asc" @if(request('sort_order') == 'asc') selected @endif>
-                                            Ascending
-                                        </option>
-                                        <option value="desc"
-                                                @if(!request('sort_order') || request('sort_order') == 'desc') selected @endif>
-                                            Descending
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Sort by</label>
-                                    <select class="form-select form-control-alt" name="sort_by">
-                                        <option value="" @if(request('sort_by') == '') selected @endif>
-                                            Select option
-                                        </option>
-                                        <option value="equipment_name" @if(request('sort_by') == 'equipment_name') selected @endif>
-                                            Equipment Name
-                                        </option>
-                                        <option value="warranty_name"
-                                                @if(request('sort_by') == 'warranty_name') selected @endif>
-                                            Warranty Name
-                                        </option>
-                                        <option value="status"
-                                                @if(request('sort_by') == 'status') selected @endif>
-                                            Status
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
+
+                        <div class="col-md-3">
+                            <label for="condition" class="form-label">From Date Request</label>
+                            <input type="date"
+                                   class="form-control form-control-alt @error('request_date') is-invalid @enderror"
+                                   name="from_date" id="from_date" value="{{ $from_date }}">
+                            @error('from_date')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-3">
+                            <label for="condition" class="form-label">To Date Request</label>
+                            <input type="date"
+                                   class="form-control form-control-alt @error('request_date') is-invalid @enderror"
+                                   name="to_date" id="to_date" value="{{ $to_date }}">
+                            @error('to_date')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Sort order</label>
+                            <select class="form-select form-control-alt" name="sort_order">
+                                <option value="asc" @if(request('sort_order') == 'asc') selected @endif>
+                                    Ascending
+                                </option>
+                                <option value="desc"
+                                        @if(!request('sort_order') || request('sort_order') == 'desc') selected @endif>
+                                    Descending
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Sort by</label>
+                            <select class="form-select form-control-alt" name="sort_by">
+                                <option value="" @if(request('sort_by') == '') selected @endif>
+                                    Select option
+                                </option>
+                                <option value="equipment_name"
+                                        @if(request('sort_by') == 'equipment_name') selected @endif>
+                                    Equipment Name
+                                </option>
+                                <option value="warranty_name"
+                                        @if(request('sort_by') == 'warranty_name') selected @endif>
+                                    Warranty Name
+                                </option>
+                                <option value="status"
+                                        @if(request('sort_by') == 'status') selected @endif>
+                                    Status
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-12 text-end mt-2">
@@ -219,6 +217,6 @@
     <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     @vite('resources/js/pages/maintenance-plans.js')
     <script type="module">
-        One.helpersOnLoad(["jq-select2"]);
+      One.helpersOnLoad(["jq-select2"]);
     </script>
 @endsection

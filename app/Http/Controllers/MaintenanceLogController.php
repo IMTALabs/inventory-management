@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\MaintenanceScheduleStatusEnum;
+use App\Enums\RoleEnum;
 use App\Models\Equipment;
 use App\Models\MaintenanceLog;
 use App\Models\MaintenancePlan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MaintenanceLogController extends Controller
 {
@@ -53,6 +55,10 @@ class MaintenanceLogController extends Controller
 
         $maintenanceLogQuery->when($request->query('status'), function ($query) use ($request) {
             $query->where('outcome', $request->query('status'));
+        });
+
+        $maintenanceLogQuery->when(Auth::user()->role === RoleEnum::MAINTAINER, function ($query) {
+            $query->where('performed_by', Auth::id());
         });
 
         $maintenanceLogQuery->when($request->query('sort_by'), function ($query) use ($request) {

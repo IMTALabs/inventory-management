@@ -38,86 +38,90 @@
         @include('common.alert')
         <div class="row">
             @if($workOrder->status == \App\Enums\WorkOrderStatusEnum::PENDING)
-                <form class="col-lg-6" method="post"
-                      action="{{ route('work-orders.update-status', $workOrder) }}">
-                    @method('PUT')
-                    @csrf
-                    <input type="hidden" name="status"
-                           value="{{ \App\Enums\WorkOrderStatusEnum::ACTIVE }}">
-                    <a class="block block-rounded block-link-shadow text-center">
-                        <div class="block-content block-content-full">
-                            <div class="fs-2 fw-semibold text-info">
-                                <i class="fa fa-eye"></i>
+                @if(Auth::user()->is_admin)
+                    <form class="col-lg-6" method="post"
+                          action="{{ route('work-orders.update-status', $workOrder) }}">
+                        @method('PUT')
+                        @csrf
+                        <input type="hidden" name="status"
+                               value="{{ \App\Enums\WorkOrderStatusEnum::ACTIVE }}">
+                        <a class="block block-rounded block-link-shadow text-center">
+                            <div class="block-content block-content-full">
+                                <div class="fs-2 fw-semibold text-info">
+                                    <i class="fa fa-eye"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="block-content py-2 bg-body-light">
-                            <button class="btn fw-medium fs-sm text-info mb-0">
-                                Confirm
-                            </button>
-                        </div>
-                    </a>
-                </form>
-            @endif
-            @if($workOrder->status == \App\Enums\WorkOrderStatusEnum::PENDING)
-                <form class="col-lg-6" method="post"
-                      action="{{ route('work-orders.update-status', $workOrder) }}">
-                    @method('PUT')
-                    @csrf
-                    <input type="hidden" name="status"
-                           value="{{ \App\Enums\WorkOrderStatusEnum::CANCELLED }}">
-                    <a class="block block-rounded block-link-shadow text-center">
-                        <div class="block-content block-content-full">
-                            <div class="fs-2 fw-semibold text-danger">
-                                <i class="fa fa-times"></i>
+                            <div class="block-content py-2 bg-body-light">
+                                <button class="btn fw-medium fs-sm text-info mb-0">
+                                    Confirm
+                                </button>
                             </div>
-                        </div>
-                        <div class="block-content py-2 bg-body-light">
-                            <button class="btn fw-medium fs-sm text-danger mb-0">
-                                Cancel
-                            </button>
-                        </div>
-                    </a>
-                </form>
+                        </a>
+                    </form>
+                @endif
+                @if(Auth::user()->is_staff)
+                    <form class="col-lg-6" method="post"
+                          action="{{ route('work-orders.update-status', $workOrder) }}">
+                        @method('PUT')
+                        @csrf
+                        <input type="hidden" name="status"
+                               value="{{ \App\Enums\WorkOrderStatusEnum::CANCELLED }}">
+                        <a class="block block-rounded block-link-shadow text-center">
+                            <div class="block-content block-content-full">
+                                <div class="fs-2 fw-semibold text-danger">
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="block-content py-2 bg-body-light">
+                                <button class="btn fw-medium fs-sm text-danger mb-0">
+                                    Cancel
+                                </button>
+                            </div>
+                        </a>
+                    </form>
+                @endif
             @endif
             @if($workOrder->status == \App\Enums\WorkOrderStatusEnum::ACTIVE)
-                <form class="col-lg-6" method="post"
-                      action="{{ route('maintenance-schedules.update-status', $workOrder) }}">
-                    @method('PUT')
-                    @csrf
-                    <input type="hidden" name="status"
-                           value="{{ \App\Enums\WorkOrderStatusEnum::COMPLETED }}">
-                    <a class="block block-rounded block-link-shadow text-center">
-                        <div class="block-content block-content-full">
-                            <div class="fs-2 fw-semibold text-success">
-                                <i class="fa fa-check"></i>
+                @if(Auth::user()->is_staff)
+                    <form class="col-lg-6" method="post"
+                          action="{{ route('maintenance-schedules.update-status', $workOrder) }}">
+                        @method('PUT')
+                        @csrf
+                        <input type="hidden" name="status"
+                               value="{{ \App\Enums\WorkOrderStatusEnum::COMPLETED }}">
+                        <a class="block block-rounded block-link-shadow text-center">
+                            <div class="block-content block-content-full">
+                                <div class="fs-2 fw-semibold text-success">
+                                    <i class="fa fa-check"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="block-content py-2 bg-body-light">
-                            <button class="btn fw-medium fs-sm text-success mb-0">
-                                Complete
-                            </button>
-                        </div>
-                    </a>
-                </form>
-                <form class="col-lg-6" method="post"
-                      action="{{ route('maintenance-schedules.update-status', $workOrder) }}">
-                    @method('PUT')
-                    @csrf
-                    <input type="hidden" name="status"
-                           value="{{ \App\Enums\WorkOrderStatusEnum::CANCELLED }}">
-                    <a class="block block-rounded block-link-shadow text-center">
-                        <div class="block-content block-content-full">
-                            <div class="fs-2 fw-semibold text-danger">
-                                <i class="fa fa-times"></i>
+                            <div class="block-content py-2 bg-body-light">
+                                <button class="btn fw-medium fs-sm text-success mb-0">
+                                    Complete
+                                </button>
                             </div>
-                        </div>
-                        <div class="block-content py-2 bg-body-light">
-                            <button class="btn fw-medium fs-sm text-danger mb-0">
-                                Cancel
-                            </button>
-                        </div>
-                    </a>
-                </form>
+                        </a>
+                    </form>
+                    <form class="col-lg-6" method="post"
+                          action="{{ route('maintenance-schedules.update-status', $workOrder) }}">
+                        @method('PUT')
+                        @csrf
+                        <input type="hidden" name="status"
+                               value="{{ \App\Enums\WorkOrderStatusEnum::CANCELLED }}">
+                        <a class="block block-rounded block-link-shadow text-center">
+                            <div class="block-content block-content-full">
+                                <div class="fs-2 fw-semibold text-danger">
+                                    <i class="fa fa-times"></i>
+                                </div>
+                            </div>
+                            <div class="block-content py-2 bg-body-light">
+                                <button class="btn fw-medium fs-sm text-danger mb-0">
+                                    Cancel
+                                </button>
+                            </div>
+                        </a>
+                    </form>
+                @endif
             @endif
         </div>
         <div class="block block-rounded">

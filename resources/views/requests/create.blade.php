@@ -82,7 +82,7 @@
                                     class="text-danger">*</span></label>
                             <textarea
                                 class="form-control form-control-alt @error('issue_description') is-invalid @enderror"
-                                name="issue_description"
+                                name="issue_description" rows="5" placeholder="..."
                                 id="issue_description">{{ old('issue_description') }}</textarea>
                             @error('issue_description')
                             <div class="invalid-feedback">{{ $message }}</div>

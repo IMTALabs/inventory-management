@@ -13,6 +13,9 @@ use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkOrderController;
 use App\Models\Equipment;
+use App\Models\MaintenanceLog;
+use App\Models\MaintenancePlan;
+use App\Models\MaintenanceSchedule;
 use App\Models\User;
 use App\Models\WorkOrder;
 use Illuminate\Support\Facades\Route;
@@ -70,36 +73,52 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('/maintenance-plans')->group(function () {
-        Route::get('/', [MaintenancePlanController::class, 'index'])->name('maintenance-plans.index');
-        Route::get('/create', [MaintenancePlanController::class, 'create'])->name('maintenance-plans.create');
-        Route::post('/', [MaintenancePlanController::class, 'store'])->name('maintenance-plans.store');
-        Route::get('/{maintenancePlan}', [MaintenancePlanController::class, 'show'])->name('maintenance-plans.show');
+        Route::get('/', [MaintenancePlanController::class, 'index'])->name('maintenance-plans.index')
+            ->can('viewAny', MaintenancePlan::class);
+        Route::get('/create', [MaintenancePlanController::class, 'create'])->name('maintenance-plans.create')
+            ->can('create', MaintenancePlan::class);
+        Route::post('/', [MaintenancePlanController::class, 'store'])->name('maintenance-plans.store')
+            ->can('create', MaintenancePlan::class);
+        Route::get('/{maintenancePlan}', [MaintenancePlanController::class, 'show'])->name('maintenance-plans.show')
+            ->can('view', 'maintenancePlan');
         Route::get('/{maintenancePlan}/edit',
-            [MaintenancePlanController::class, 'edit'])->name('maintenance-plans.edit');
+            [MaintenancePlanController::class, 'edit'])->name('maintenance-plans.edit')
+            ->can('update', 'maintenancePlan');
         Route::put('/{maintenancePlan}',
-            [MaintenancePlanController::class, 'update'])->name('maintenance-plans.update');
+            [MaintenancePlanController::class, 'update'])->name('maintenance-plans.update')
+            ->can('update', 'maintenancePlan');
         Route::delete('/{maintenancePlan}',
-            [MaintenancePlanController::class, 'destroy'])->name('maintenance-plans.destroy');
+            [MaintenancePlanController::class, 'destroy'])->name('maintenance-plans.destroy')
+            ->can('delete', 'maintenancePlan');
     });
 
     Route::prefix('/maintenance-schedules')->group(function () {
-        Route::get('/', [MaintenanceScheduleController::class, 'index'])->name('maintenance-schedules.index');
-        Route::get('/create', [MaintenanceScheduleController::class, 'create'])->name('maintenance-schedules.create');
-        Route::post('/', [MaintenanceScheduleController::class, 'store'])->name('maintenance-schedules.store');
+        Route::get('/', [MaintenanceScheduleController::class, 'index'])->name('maintenance-schedules.index')
+            ->can('viewAny', MaintenanceSchedule::class);
+        Route::get('/create', [MaintenanceScheduleController::class, 'create'])->name('maintenance-schedules.create')
+            ->can('create', MaintenanceSchedule::class);
+        Route::post('/', [MaintenanceScheduleController::class, 'store'])->name('maintenance-schedules.store')
+            ->can('create', MaintenanceSchedule::class);
         Route::get('/{maintenanceSchedule}',
-            [MaintenanceScheduleController::class, 'show'])->name('maintenance-schedules.show');
+            [MaintenanceScheduleController::class, 'show'])->name('maintenance-schedules.show')
+            ->can('view', 'maintenanceSchedule');
         Route::get('/{maintenanceSchedule}/edit',
-            [MaintenanceScheduleController::class, 'edit'])->name('maintenance-schedules.edit');
+            [MaintenanceScheduleController::class, 'edit'])->name('maintenance-schedules.edit')
+            ->can('update', 'maintenanceSchedule');
         Route::put('/{maintenanceSchedule}',
-            [MaintenanceScheduleController::class, 'update'])->name('maintenance-schedules.update');
+            [MaintenanceScheduleController::class, 'update'])->name('maintenance-schedules.update')
+            ->can('update', 'maintenanceSchedule');
         Route::delete('/{maintenanceSchedule}',
-            [MaintenanceScheduleController::class, 'destroy'])->name('maintenance-schedules.destroy');
+            [MaintenanceScheduleController::class, 'destroy'])->name('maintenance-schedules.destroy')
+            ->can('delete', 'maintenanceSchedule');
         Route::put('/{maintenanceSchedule}/status',
-            [MaintenanceScheduleController::class, 'updateStatus'])->name('maintenance-schedules.update-status');
+            [MaintenanceScheduleController::class, 'updateStatus'])->name('maintenance-schedules.update-status')
+            ->can('update', 'maintenanceSchedule');
     });
 
     Route::prefix('maintenance-logs')->group(function () {
-        Route::get('/', [MaintenanceLogController::class, 'index'])->name('maintenance-logs.index');
+        Route::get('/', [MaintenanceLogController::class, 'index'])->name('maintenance-logs.index')
+            ->can('viewAny', MaintenanceLog::class);
     });
 
     Route::prefix('/work-orders')->group(function () {

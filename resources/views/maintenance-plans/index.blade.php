@@ -174,22 +174,24 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('maintenance-plans.edit', ['maintenancePlan' => $plan]) }}">
-                                        <button type="button" class="btn btn-sm btn-alt-warning">
-                                            <i class="fa fa-fw fa-pencil-alt"></i>
-                                        </button>
-                                    </a>
-                                    <form class="form-delete"
-                                          action="{{ route('maintenance-plans.destroy', ['maintenancePlan' => $plan]) }}"
-                                          method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-alt-danger">
-                                            <i class="fa fa-fw fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                                @can('update', $plan)
+                                    <div class="d-flex justify-content-center gap-1">
+                                        <a href="{{ route('maintenance-plans.edit', ['maintenancePlan' => $plan]) }}">
+                                            <button type="button" class="btn btn-sm btn-alt-warning">
+                                                <i class="fa fa-fw fa-pencil-alt"></i>
+                                            </button>
+                                        </a>
+                                        <form class="form-delete"
+                                              action="{{ route('maintenance-plans.destroy', ['maintenancePlan' => $plan]) }}"
+                                              method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-alt-danger">
+                                                <i class="fa fa-fw fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

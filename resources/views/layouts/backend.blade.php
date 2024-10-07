@@ -259,12 +259,14 @@
                                                     <span class="nav-main-link-name">List</span>
                                                 </a>
                                             </li>
-                                            <li class="nav-main-item">
-                                                <a class="nav-main-link{{ request()->routeIs('maintenance-plans.create') ? ' active' : '' }}"
-                                                   href="{{ route('maintenance-plans.create') }}">
-                                                    <span class="nav-main-link-name">Create</span>
-                                                </a>
-                                            </li>
+                                            @if(Auth::user()->is_admin)
+                                                <li class="nav-main-item">
+                                                    <a class="nav-main-link{{ request()->routeIs('maintenance-plans.create') ? ' active' : '' }}"
+                                                       href="{{ route('maintenance-plans.create') }}">
+                                                        <span class="nav-main-link-name">Create</span>
+                                                    </a>
+                                                </li>
+                                            @endif
                                         </ul>
                                     </li>
                                     <li class="nav-main-item{{ request()->routeIs('maintenance-schedules.*') ? ' open' : '' }}">
@@ -279,12 +281,14 @@
                                                     <span class="nav-main-link-name">List</span>
                                                 </a>
                                             </li>
-                                            <li class="nav-main-item">
-                                                <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.create') ? ' active' : '' }}"
-                                                   href="{{ route('maintenance-schedules.create') }}">
-                                                    <span class="nav-main-link-name">Create</span>
-                                                </a>
-                                            </li>
+                                            @if(Auth::user()->is_admin)
+                                                <li class="nav-main-item">
+                                                    <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.create') ? ' active' : '' }}"
+                                                       href="{{ route('maintenance-schedules.create') }}">
+                                                        <span class="nav-main-link-name">Create</span>
+                                                    </a>
+                                                </li>
+                                            @endif
                                         </ul>
                                     </li>
                                     <li class="nav-main-item">
