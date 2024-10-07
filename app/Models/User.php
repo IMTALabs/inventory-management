@@ -84,6 +84,31 @@ class User extends Authenticatable implements CanResetPassword
         );
     }
 
+    protected function isManager(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->role === RoleEnum::ADMIN || $this->role === RoleEnum::MANAGER,
+        );
+    }
+
+    protected function isMaintainer(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->role === RoleEnum::ADMIN
+                || $this->role === RoleEnum::MANAGER
+                || $this->role === RoleEnum::MAINTAINER,
+        );
+    }
+
+    protected function isStaff(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->role === RoleEnum::ADMIN
+                || $this->role === RoleEnum::MANAGER
+                || $this->role === RoleEnum::STAFF,
+        );
+    }
+
     public function scopeMaintainers($query): void
     {
         $query->where('role', RoleEnum::MAINTAINER);

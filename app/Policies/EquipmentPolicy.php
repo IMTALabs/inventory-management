@@ -14,9 +14,13 @@ class EquipmentPolicy
      */
     public function viewAny(User $user): Response
     {
-        return $user->role === RoleEnum::ADMIN
-            ? Response::allow()
-            : Response::deny('You are not authorized to view equipment.');
+        return
+            $user->role === RoleEnum::ADMIN
+            || $user->role === RoleEnum::MANAGER
+            || $user->role === RoleEnum::MAINTAINER
+            || $user->role === RoleEnum::STAFF
+                ? Response::allow()
+                : Response::deny('You are not authorized to view equipment.');
     }
 
     /**
@@ -24,9 +28,13 @@ class EquipmentPolicy
      */
     public function view(User $user, Equipment $equipment): Response
     {
-        return $user->role === RoleEnum::ADMIN
-            ? Response::allow()
-            : Response::deny('You are not authorized to view this equipment.');
+        return
+            $user->role === RoleEnum::ADMIN
+            || $user->role === RoleEnum::MANAGER
+            || $user->role === RoleEnum::MAINTAINER
+            || $user->role === RoleEnum::STAFF
+                ? Response::allow()
+                : Response::deny('You are not authorized to view this equipment.');
     }
 
     /**
@@ -34,9 +42,11 @@ class EquipmentPolicy
      */
     public function create(User $user): Response
     {
-        return $user->role === RoleEnum::ADMIN
-            ? Response::allow()
-            : Response::deny('You are not authorized to create equipment.');
+        return
+            $user->role === RoleEnum::ADMIN
+            || $user->role === RoleEnum::MANAGER
+                ? Response::allow()
+                : Response::deny('You are not authorized to create equipment.');
     }
 
     /**
@@ -44,9 +54,11 @@ class EquipmentPolicy
      */
     public function update(User $user, Equipment $equipment): Response
     {
-        return $user->role === RoleEnum::ADMIN
-            ? Response::allow()
-            : Response::deny('You are not authorized to update this equipment.');
+        return
+            $user->role === RoleEnum::ADMIN
+            || $user->role === RoleEnum::MANAGER
+                ? Response::allow()
+                : Response::deny('You are not authorized to update this equipment.');
     }
 
     /**
@@ -54,9 +66,11 @@ class EquipmentPolicy
      */
     public function delete(User $user, Equipment $equipment): Response
     {
-        return $user->role === RoleEnum::ADMIN
-            ? Response::allow()
-            : Response::deny('You are not authorized to delete this equipment.');
+        return
+            $user->role === RoleEnum::ADMIN
+            || $user->role === RoleEnum::MANAGER
+                ? Response::allow()
+                : Response::deny('You are not authorized to delete this equipment.');
     }
 
     /**
@@ -64,9 +78,11 @@ class EquipmentPolicy
      */
     public function restore(User $user, Equipment $equipment): Response
     {
-        return $user->role === RoleEnum::ADMIN
-            ? Response::allow()
-            : Response::deny('You are not authorized to restore this equipment.');
+        return
+            $user->role === RoleEnum::ADMIN
+            || $user->role === RoleEnum::MANAGER
+                ? Response::allow()
+                : Response::deny('You are not authorized to restore this equipment.');
     }
 
     /**
@@ -74,8 +90,10 @@ class EquipmentPolicy
      */
     public function forceDelete(User $user, Equipment $equipment): Response
     {
-        return $user->role === RoleEnum::ADMIN
-            ? Response::allow()
-            : Response::deny('You are not authorized to permanently delete this equipment.');
+        return
+            $user->role === RoleEnum::ADMIN
+            || $user->role === RoleEnum::MANAGER
+                ? Response::allow()
+                : Response::deny('You are not authorized to permanently delete this equipment.');
     }
 }

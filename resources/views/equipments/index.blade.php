@@ -13,7 +13,7 @@
     <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     @vite('resources/js/pages/maintenance-schedules.js')
     <script type="module">
-        One.helpersOnLoad(["jq-select2"]);
+      One.helpersOnLoad(["jq-select2"]);
     </script>
 @endsection
 
@@ -51,7 +51,7 @@
         <div class="block block-rounded">
             <div class="block-content block-content-full">
                 <form action="{{ route('equipments.index') }}" method="get">
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-6">
                             <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control form-control-alt" name="name" placeholder="Name"
@@ -138,16 +138,17 @@
         <div class="block block-rounded">
             <div class="block-header block-header-default">
                 <h3 class="block-title">All Equipments</h3>
-                <div class="block-options">
-                    <a href="{{route('equipments.create')}}">
-                        <button type="button" class="btn btn-alt-primary btn-sm">
-                            <i class="si si-plus"></i> Add Equipment
-                        </button>
-                    </a>
-                </div>
+                @can('create', \App\Models\Equipment::class)
+                    <div class="block-options">
+                        <a href="{{route('equipments.create')}}">
+                            <button type="button" class="btn btn-alt-primary btn-sm">
+                                <i class="si si-plus"></i> Add Equipment
+                            </button>
+                        </a>
+                    </div>
+                @endcan
             </div>
             <div class="block-content block-content-full">
-                <!-- DataTables init on table by adding .js-dataTable-full class, functionality is initialized in js/pages/tables_datatables.js -->
                 <table class="table table-striped table-vcenter fs-sm">
                     <thead>
                     <tr>
@@ -157,7 +158,6 @@
                         <th class="text-center">Serial Number</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Condition</th>
-                        {{--                        <th>Location</th>--}}
                         <th class="text-center">Actions</th>
                     </tr>
                     </thead>
@@ -205,24 +205,25 @@
                                     <i class="fa fa-question-circle text-muted"></i>
                                 @endif
                             </td>
-                            {{--                            <td>--}}
-                            {{--                                {{ $entry->location }}--}}
-                            {{--                            </td>--}}
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-1">
-                                    <a href="{{ route('equipments.edit', ['equipment' => $entry]) }}"
-                                       class="btn btn-sm btn-alt-warning">
-                                        <i class="fa fa-fw fa-pencil-alt"></i>
-                                    </a>
-                                    <form class="form-delete"
-                                          action="{{ route('equipments.destroy', ['equipment' => $entry]) }}"
-                                          method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-alt-danger">
-                                            <i class="fa fa-fw fa-trash-alt"></i>
-                                        </button>
-                                    </form>
+                                    @can('edit', $entry)
+                                        <a href="{{ route('equipments.edit', ['equipment' => $entry]) }}"
+                                           class="btn btn-sm btn-alt-warning">
+                                            <i class="fa fa-fw fa-pencil-alt"></i>
+                                        </a>
+                                    @endcan
+                                    @can('delete', $entry)
+                                        <form class="form-delete"
+                                              action="{{ route('equipments.destroy', ['equipment' => $entry]) }}"
+                                              method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-alt-danger">
+                                                <i class="fa fa-fw fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>
@@ -244,6 +245,6 @@
     <script src="{{ asset('js/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     @vite('resources/js/pages/maintenance-plans.js')
     <script type="module">
-        One.helpersOnLoad(["jq-select2"]);
+      One.helpersOnLoad(["jq-select2"]);
     </script>
 @endsection

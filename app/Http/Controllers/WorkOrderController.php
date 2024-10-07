@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\EquipmentStatusEnum;
+use App\Enums\RoleEnum;
 use App\Enums\WorkOrderStatusEnum;
 use App\Models\Equipment;
 use App\Models\User;
@@ -38,6 +39,10 @@ class WorkOrderController extends Controller
             $query->where('status', $request->query('status'));
         });
 
+        if (Auth::user()->role === RoleEnum::STAFF) {
+            $workOrderQuery->where('user_id', Auth::id());
+        }
+
         $workOrderQuery->when($request->query('sort_by'), function ($query) use ($request) {
             $query->orderBy($request->query('sort_by'), $request->query('sort_order', 'desc'));
         }, function ($query) {
@@ -47,7 +52,11 @@ class WorkOrderController extends Controller
         $workOrders = $workOrderQuery->paginate(10)->onEachSide(0);
 
         $equipmentsCompact = Equipment::select(['id', 'equipment_name'])->get();
-        $usersCompact = User::select(['id', 'name'])->get();
+        $usersCompact = User::select(['id', 'name'])
+            ->when(Auth::user()->role === RoleEnum::STAFF, function ($query) {
+                $query->where('id', Auth::id());
+            })
+            ->get();
 
         return view('work-orders.index', compact(
             'workOrders',
@@ -58,7 +67,11 @@ class WorkOrderController extends Controller
 
     public function create()
     {
-        $usersCompact = User::notAdmin()->select(['id', 'name'])->get();
+        $usersCompact = User::notAdmin()->select(['id', 'name'])
+            ->when(Auth::user()->role === RoleEnum::STAFF, function ($query) {
+                $query->where('id', Auth::id());
+            })
+            ->get();
         $equipmentsCompact = Equipment::available()->select(['id', 'equipment_name'])->get();
 
         return view('work-orders.create', compact(

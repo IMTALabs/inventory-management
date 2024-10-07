@@ -164,49 +164,54 @@
                                 <span class="nav-main-link-name">Equipment</span>
                             </a>
                             <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('equipments.index') ? ' active' : '' }}"
-                                       href="{{ route('equipments.index') }}">
-                                        <span class="nav-main-link-name">List</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('equipments.create') ? ' active' : '' }}"
-                                       href="{{ route('equipments.create') }}">
-                                        <span class="nav-main-link-name">Create</span>
-                                    </a>
-                                </li>
-
+                                @can('viewAny', \App\Models\Equipment::class)
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('equipments.index') ? ' active' : '' }}"
+                                           href="{{ route('equipments.index') }}">
+                                            <span class="nav-main-link-name">List</span>
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('create', \App\Models\Equipment::class)
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('equipments.create') ? ' active' : '' }}"
+                                           href="{{ route('equipments.create') }}">
+                                            <span class="nav-main-link-name">Create</span>
+                                        </a>
+                                    </li>
+                                @endcan
                             </ul>
                         </li>
-                        <li class="nav-main-item{{ request()->routeIs('metrics.*') || request()->routeIs('performance.*') || request()->routeIs('monitor.*') ? ' open' : '' }}">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
-                               aria-haspopup="true"
-                               aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon si si-bar-chart"></i>
-                                <span class="nav-main-link-name">Equipment Monitor</span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('monitor.show') ? ' active' : '' }}"
-                                       href="{{ route('monitor.show') }}">
-                                        <span class="nav-main-link-name">Monitor</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('performance.history') ? ' active' : '' }}"
-                                       href="{{ route('performance.history') }}">
-                                        <span class="nav-main-link-name">Performance History</span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('metrics.index') ? ' active' : '' }}"
-                                       href="{{ route('metrics.index') }}">
-                                        <span class="nav-main-link-name">Metrics</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if(Auth::user()->is_manager)
+                            <li class="nav-main-item{{ request()->routeIs('metrics.*') || request()->routeIs('performance.*') || request()->routeIs('monitor.*') ? ' open' : '' }}">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                                   aria-haspopup="true"
+                                   aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon si si-bar-chart"></i>
+                                    <span class="nav-main-link-name">Equipment Monitor</span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('monitor.show') ? ' active' : '' }}"
+                                           href="{{ route('monitor.show') }}">
+                                            <span class="nav-main-link-name">Monitor</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('performance.history') ? ' active' : '' }}"
+                                           href="{{ route('performance.history') }}">
+                                            <span class="nav-main-link-name">Performance History</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('metrics.index') ? ' active' : '' }}"
+                                           href="{{ route('metrics.index') }}">
+                                            <span class="nav-main-link-name">Metrics</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
                         @can('viewAny', \App\Models\User::class)
                             <li class="nav-main-item{{ request()->routeIs('users.*') ? ' open' : '' }}">
                                 <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
@@ -231,122 +236,128 @@
                                 </ul>
                             </li>
                         @endcan
-                        <li class="nav-main-item{{ request()->routeIs('maintenance-*') ? ' open' : '' }}">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
-                               aria-haspopup="true"
-                               aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon si si-wrench"></i>
-                                <span class="nav-main-link-name">
-                                    Maintenance
-                                </span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item{{ request()->routeIs('maintenance-plans.*') ? ' open' : '' }}">
-                                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
-                                       aria-haspopup="true" aria-expanded="false" href="#">
-                                        <span class="nav-main-link-name">Maintenance Plans</span>
-                                    </a>
-                                    <ul class="nav-main-submenu">
-                                        <li class="nav-main-item">
-                                            <a class="nav-main-link{{ request()->routeIs('maintenance-plans.index') ? ' active' : '' }}"
-                                               href="{{ route('maintenance-plans.index') }}">
-                                                <span class="nav-main-link-name">List</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-main-item">
-                                            <a class="nav-main-link{{ request()->routeIs('maintenance-plans.create') ? ' active' : '' }}"
-                                               href="{{ route('maintenance-plans.create') }}">
-                                                <span class="nav-main-link-name">Create</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-main-item{{ request()->routeIs('maintenance-schedules.*') ? ' open' : '' }}">
-                                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
-                                       aria-haspopup="true" aria-expanded="false" href="#">
-                                        <span class="nav-main-link-name">Maintenance Schedules</span>
-                                    </a>
-                                    <ul class="nav-main-submenu">
-                                        <li class="nav-main-item">
-                                            <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.index') ? ' active' : '' }}"
-                                               href="{{ route('maintenance-schedules.index') }}">
-                                                <span class="nav-main-link-name">List</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-main-item">
-                                            <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.create') ? ' active' : '' }}"
-                                               href="{{ route('maintenance-schedules.create') }}">
-                                                <span class="nav-main-link-name">Create</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('maintenance-logs.index') ? ' active' : '' }}"
-                                       href="{{ route('maintenance-logs.index') }}">
-                                        <span class="nav-main-link-name">
-                                            Maintenance Logs
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-main-item{{ request()->routeIs('work-orders.*') ? ' open' : '' }}">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
-                               aria-haspopup="true"
-                               aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon si si-folder-alt"></i>
-                                <span class="nav-main-link-name">
-                                    Work Orders
-                                </span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('work-orders.index') ? ' active' : '' }}"
-                                       href="{{ route('work-orders.index') }}">
-                                        <span class="nav-main-link-name">
-                                            List
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('work-orders.create') ? ' active' : '' }}"
-                                       href="{{ route('work-orders.create') }}">
-                                        <span class="nav-main-link-name">
-                                            Create
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-main-item{{ request()->routeIs('requests.*') ? ' open' : '' }}">
-                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
-                               aria-haspopup="true"
-                               aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon si si-equalizer"></i>
-                                <span class="nav-main-link-name">
-                                    Warranty Requests
-                                </span>
-                            </a>
-                            <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('requests.index') ? ' active' : '' }}"
-                                       href="{{ route('requests.index') }}">
-                                        <span class="nav-main-link-name">
-                                            List
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="nav-main-item">
-                                    <a class="nav-main-link{{ request()->routeIs('requests.create') ? ' active' : '' }}"
-                                       href="{{ route('requests.create') }}">
-                                        <span class="nav-main-link-name">
-                                            Create
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if(Auth::user()->is_maintainer)
+                            <li class="nav-main-item{{ request()->routeIs('maintenance-*') ? ' open' : '' }}">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                                   aria-haspopup="true"
+                                   aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon si si-wrench"></i>
+                                    <span class="nav-main-link-name">
+                                        Maintenance
+                                    </span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item{{ request()->routeIs('maintenance-plans.*') ? ' open' : '' }}">
+                                        <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                                           aria-haspopup="true" aria-expanded="false" href="#">
+                                            <span class="nav-main-link-name">Maintenance Plans</span>
+                                        </a>
+                                        <ul class="nav-main-submenu">
+                                            <li class="nav-main-item">
+                                                <a class="nav-main-link{{ request()->routeIs('maintenance-plans.index') ? ' active' : '' }}"
+                                                   href="{{ route('maintenance-plans.index') }}">
+                                                    <span class="nav-main-link-name">List</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-main-item">
+                                                <a class="nav-main-link{{ request()->routeIs('maintenance-plans.create') ? ' active' : '' }}"
+                                                   href="{{ route('maintenance-plans.create') }}">
+                                                    <span class="nav-main-link-name">Create</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-main-item{{ request()->routeIs('maintenance-schedules.*') ? ' open' : '' }}">
+                                        <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                                           aria-haspopup="true" aria-expanded="false" href="#">
+                                            <span class="nav-main-link-name">Maintenance Schedules</span>
+                                        </a>
+                                        <ul class="nav-main-submenu">
+                                            <li class="nav-main-item">
+                                                <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.index') ? ' active' : '' }}"
+                                                   href="{{ route('maintenance-schedules.index') }}">
+                                                    <span class="nav-main-link-name">List</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-main-item">
+                                                <a class="nav-main-link{{ request()->routeIs('maintenance-schedules.create') ? ' active' : '' }}"
+                                                   href="{{ route('maintenance-schedules.create') }}">
+                                                    <span class="nav-main-link-name">Create</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('maintenance-logs.index') ? ' active' : '' }}"
+                                           href="{{ route('maintenance-logs.index') }}">
+                                            <span class="nav-main-link-name">
+                                                Maintenance Logs
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+                        @if(Auth::user()->is_staff)
+                            <li class="nav-main-item{{ request()->routeIs('work-orders.*') ? ' open' : '' }}">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                                   aria-haspopup="true"
+                                   aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon si si-folder-alt"></i>
+                                    <span class="nav-main-link-name">
+                                        Work Orders
+                                    </span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('work-orders.index') ? ' active' : '' }}"
+                                           href="{{ route('work-orders.index') }}">
+                                            <span class="nav-main-link-name">
+                                                List
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('work-orders.create') ? ' active' : '' }}"
+                                           href="{{ route('work-orders.create') }}">
+                                            <span class="nav-main-link-name">
+                                                Create
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+                        @if(Auth::user()->is_staff)
+                            <li class="nav-main-item{{ request()->routeIs('requests.*') ? ' open' : '' }}">
+                                <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+                                   aria-haspopup="true"
+                                   aria-expanded="true" href="#">
+                                    <i class="nav-main-link-icon si si-equalizer"></i>
+                                    <span class="nav-main-link-name">
+                                        Warranty Requests
+                                    </span>
+                                </a>
+                                <ul class="nav-main-submenu">
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('requests.index') ? ' active' : '' }}"
+                                           href="{{ route('requests.index') }}">
+                                            <span class="nav-main-link-name">
+                                                List
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-main-item">
+                                        <a class="nav-main-link{{ request()->routeIs('requests.create') ? ' active' : '' }}"
+                                           href="{{ route('requests.create') }}">
+                                            <span class="nav-main-link-name">
+                                                Create
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <!-- END Side Navigation -->
@@ -368,6 +379,9 @@
                         <i class="fa fa-fw fa-bars"></i>
                     </button>
                     <!-- END Toggle Sidebar -->
+                    <span class="badge text-uppercase {{ role_badge_class(Auth::user()->role) }}">
+                        {{ strtoupper(Auth::user()->role->value) }}
+                    </span>
                 </div>
                 <!-- END Left Section -->
 

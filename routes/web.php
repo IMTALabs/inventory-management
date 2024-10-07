@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkOrderController;
 use App\Models\Equipment;
 use App\Models\User;
+use App\Models\WorkOrder;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -60,7 +61,7 @@ Route::middleware('auth')->group(function () {
             Equipment::class);
         Route::get('/{equipment}', [EquipmentController::class, 'show'])->name('equipments.show')->can('view',
             'equipment');
-        Route::get('/{equipment}/edit', [EquipmentController::class, 'edit'])->name('equipments.edit')->can('view',
+        Route::get('/{equipment}/edit', [EquipmentController::class, 'edit'])->name('equipments.edit')->can('update',
             'equipment');
         Route::put('/{equipment}', [EquipmentController::class, 'update'])->name('equipments.update')->can('update',
             'equipment');
@@ -102,16 +103,25 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('/work-orders')->group(function () {
-        Route::get('/', [WorkOrderController::class, 'index'])->name('work-orders.index');
-        Route::get('/create', [WorkOrderController::class, 'create'])->name('work-orders.create');
-        Route::post('/', [WorkOrderController::class, 'store'])->name('work-orders.store');
-        Route::get('/{workOrder}', [WorkOrderController::class, 'show'])->name('work-orders.show');
-        Route::get('/{workOrder}/edit', [WorkOrderController::class, 'edit'])->name('work-orders.edit');
-        Route::put('/{workOrder}', [WorkOrderController::class, 'update'])->name('work-orders.update');
-        Route::delete('/{workOrder}', [WorkOrderController::class, 'destroy'])->name('work-orders.destroy');
+        Route::get('/', [WorkOrderController::class, 'index'])->name('work-orders.index')
+            ->can('viewAny', WorkOrder::class);
+        Route::get('/create', [WorkOrderController::class, 'create'])->name('work-orders.create')
+            ->can('create', WorkOrder::class);
+        Route::post('/', [WorkOrderController::class, 'store'])->name('work-orders.store')
+            ->can('create', WorkOrder::class);
+        Route::get('/{workOrder}', [WorkOrderController::class, 'show'])->name('work-orders.show')
+            ->can('view', 'workOrder');
+        Route::get('/{workOrder}/edit', [WorkOrderController::class, 'edit'])->name('work-orders.edit')
+            ->can('update', 'workOrder');
+        Route::put('/{workOrder}', [WorkOrderController::class, 'update'])->name('work-orders.update')
+            ->can('update', 'workOrder');
+        Route::delete('/{workOrder}', [WorkOrderController::class, 'destroy'])->name('work-orders.destroy')
+            ->can('delete', 'workOrder');
         Route::put('/{workOrder}/update-status',
-            [WorkOrderController::class, 'updateStatus'])->name('work-orders.update-status');
+            [WorkOrderController::class, 'updateStatus'])->name('work-orders.update-status')
+            ->can('update', 'workOrder');
     });
+
     Route::prefix('warranty-requests')->group(function () {
         Route::get('/', [RequestController::class, 'index'])->name('requests.index');
         Route::get('/create', [RequestController::class, 'create'])->name('requests.create');
