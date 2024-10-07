@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\EquipmentTypeEnum;
 use App\Models\Equipment;
 use App\Models\Image;
 use App\Models\WarrantyInformation;
@@ -30,12 +29,12 @@ class EquipmentController extends Controller
                 $query->where('equipment_type', $type);
             })
             ->when($status, function ($query) use ($status) {
-                $query->where('equipment_type', $status);
+                $query->where('status', $status);
             })
             ->when($location, function ($query) use ($location) {
                 $query->where('model', 'like', "%$location%");
             })
-            ->orderBy('id', $request->sort_order ?? 'desc')
+            ->orderBy($request->sort_by ?? 'id', $request->sort_order ?? 'desc')
             ->paginate(5)
             ->withQueryString();
 
@@ -209,5 +208,28 @@ class EquipmentController extends Controller
             'imageable_type' => Equipment::class,
         ]);
         return response()->json(['image_path' => $image->id]);
+    }
+
+    public function deleteImage(Request $request, int $id)
+    {
+        try {
+            Image::find($id)->delete();
+            return back()->with('status', 'Image deleted successfully');
+        } catch (\Exception $e) {
+//            $debug = de($request->debug)  $e->getMessage();
+            return response()->json(['error' => 'An error occurred while deleting the image' . $e->getMessage()], 500);
+        }
+
+    }
+
+    public function deleteAllImage($id)
+    {
+        try {
+            Image::where('imageable_type', Equipment::class)->where('imageable_id', $id)->delete();
+            return back()->with('status', 'All image deleted successfully');
+        } catch (\Exception $e) {
+//            $debug = de($request->debug)  $e->getMessage();
+            return response()->json(['error' => 'An error occurred while deleting the image' . $e->getMessage()], 500);
+        }
     }
 }

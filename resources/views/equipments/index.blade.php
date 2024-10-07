@@ -27,7 +27,7 @@
                         Equipment
                     </h1>
                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
-                        List
+                        Update
                     </h2>
                 </div>
                 <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
@@ -38,6 +38,7 @@
                         <li class="breadcrumb-item" aria-current="page">
                             List Equipment
                         </li>
+                        <li class="breadcrumb-item" aria-current="page">Update Equipment</li>
                     </ol>
                 </nav>
             </div>
@@ -97,6 +98,25 @@
                                 <option value="desc"
                                         @if(!request('sort_order') || request('sort_order') == 'desc') selected @endif>
                                     Descending
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mt-2">
+                            <label class="form-label">Sort by</label>
+                            <select class="form-select form-control-alt" name="sort_by">
+                                <option value="" @if(request('sort_by') == '') selected @endif>
+                                    Select option
+                                </option>
+                                <option value="equipment_name" @if(request('sort_by') == 'equipment_name') selected @endif>
+                                    Name
+                                </option>
+                                <option value="equipment_type"
+                                        @if(request('sort_by') == 'equipment_type') selected @endif>
+                                    Type
+                                </option>
+                                <option value="status"
+                                        @if(request('sort_by') == 'status') selected @endif>
+                                    Status
                                 </option>
                             </select>
                         </div>

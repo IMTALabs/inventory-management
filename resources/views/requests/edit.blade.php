@@ -35,6 +35,9 @@
                         <li class="breadcrumb-item" aria-current="page">
                             <a class="link-fx" href="{{ route('requests.index') }}">Warranty Request</a>
                         </li>
+                        <li class="breadcrumb-item">
+                            <a class="link-fx" href="{{ route('requests.index') }}">Warranty Request</a>
+                        </li>
                         <li class="breadcrumb-item" aria-current="page">
                             Update
                         </li>
