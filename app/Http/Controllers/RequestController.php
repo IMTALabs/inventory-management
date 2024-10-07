@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\EquipmentStatusEnum;
 use App\Enums\MaintenanceScheduleStatusEnum;
+use App\Enums\WorkOrderStatusEnum;
 use App\Models\Equipment;
 use App\Models\WarrantyRequest;
+use App\Models\WorkOrder;
 use App\Trait\RequestLogWarrantyTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -63,7 +65,7 @@ class RequestController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'request_date' => 'required|date',
+
             'issue_description' => 'required|string',
             'equipment_id' => 'required|exists:equipment,id',
         ]);
@@ -72,6 +74,8 @@ class RequestController extends Controller
         $request->merge([
             'warranty_information_id' => $warrantyInformation,
             'status' => 'pending',
+            'created_by' => auth()->id(),
+            'request_date' => now(),
         ]);
         $warrantyRequest = WarrantyRequest::create($request->all());
         $this->logWarrantyRequest($warrantyRequest);
@@ -89,25 +93,78 @@ class RequestController extends Controller
         $request->validate([
             'status' => 'required',
         ]);
+
         DB::beginTransaction();
         try {
             $warrantyRequest = WarrantyRequest::find($id);
-            $warrantyRequest->update($request->only('status'));
-            $equipmentRequest = match ($request->status) {
-                MaintenanceScheduleStatusEnum::CONFIRMED->value => EquipmentStatusEnum::UNDER_REPAIR->value,
-                MaintenanceScheduleStatusEnum::COMPLETED->value => EquipmentStatusEnum::AVAILABLE->value,
-                MaintenanceScheduleStatusEnum::CANCELLED->value => EquipmentStatusEnum::INACTIVE->value,
-            };
-            $warrantyRequest->equipment->update(['status' => $equipmentRequest]);
+            $status = $request->input('status');
+            $data = ['status' => $status];
+
+            if ($status == MaintenanceScheduleStatusEnum::CONFIRMED->value) {
+                $data['request_date'] = now();
+            }
+
+            $warrantyRequest->update($data);
+
+            $equipmentStatus = $this->determineEquipmentStatus($warrantyRequest, $status);
+
+            if ($equipmentStatus) {
+                $warrantyRequest->equipment->update(['status' => $equipmentStatus]);
+            }
+
             $this->logWarrantyRequest($warrantyRequest);
             DB::commit();
             return back()->with('status', 'Request status updated successfully.');
-
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return back()->with('error', 'Request status update failed.');
         }
+    }
+
+    private function determineEquipmentStatus($warrantyRequest, $status)
+    {
+        $equipmentStatus = null;
+
+        switch ($status) {
+            case MaintenanceScheduleStatusEnum::CONFIRMED->value:
+                $equipmentStatus = EquipmentStatusEnum::UNDER_REPAIR->value;
+                $this->archiveWorkOrder($warrantyRequest->equipment_id, WorkOrderStatusEnum::ACTIVE->value);
+                break;
+
+            case MaintenanceScheduleStatusEnum::COMPLETED->value:
+                $workOrder = $this->checkWorkOrderArchived($warrantyRequest->equipment_id, WorkOrderStatusEnum::ARCHIVED->value);
+                if ($workOrder) {
+                    $equipmentStatus = $workOrder->due_date > now() ? EquipmentStatusEnum::AVAILABLE->value : EquipmentStatusEnum::IN_USE->value;
+                } else {
+                    $equipmentStatus = EquipmentStatusEnum::AVAILABLE->value;
+                }
+                break;
+            case MaintenanceScheduleStatusEnum::CANCELLED->value:
+                $workOrder = $this->checkWorkOrderArchived($warrantyRequest->equipment_id, WorkOrderStatusEnum::ARCHIVED->value);
+                if ($workOrder) {
+                    $equipmentStatus = $workOrder->due_date > now() ? EquipmentStatusEnum::AVAILABLE->value : EquipmentStatusEnum::IN_USE->value;
+                } else {
+                    $equipmentStatus = EquipmentStatusEnum::INACTIVE->value;
+                }
+                break;
+        }
+
+        return $equipmentStatus;
+    }
+
+    private function archiveWorkOrder($equipmentId, $status)
+    {
+        $workOrder = $this->checkWorkOrderArchived($equipmentId, $status);
+        if ($workOrder) {
+            $workOrder->update(['status' => WorkOrderStatusEnum::ARCHIVED->value]);
+        }
+    }
+
+    private function checkWorkOrderArchived($equipmentId, $status)
+    {
+        return WorkOrder::where('equipment_id', $equipmentId)
+            ->where('status', $status)
+            ->first();
     }
 
     public function edit($id)

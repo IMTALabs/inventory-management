@@ -167,8 +167,7 @@ class EquipmentController extends Controller
                     'warranty_end_date'
                 ])
             );
-            if ($request->use_old_image !== 'on' && trim($request->additional_data) != "") {
-                $equipment->images()->delete();
+            if (trim($request->additional_data) != "") {
                 $additionalData = json_decode($request->additional_data, true);
                 Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
             }
