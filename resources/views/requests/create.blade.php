@@ -41,7 +41,7 @@
     <div class="content">
         <div class="block block-rounded">
             <div class="block-header block-header-default">
-                <h3 class="block-title">Create Equipment</h3>
+                <h3 class="block-title">Create Request</h3>
                 <div class="block-options">
                     <button type="submit" form="create" class="btn btn-alt-success btn-sm">
                         <i class="fa fa-check"></i> Submit
@@ -52,7 +52,7 @@
                 <form id="create" action="{{ route('requests.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label for="equipment_id" class="form-label">Equipment<span
                                     class="text-danger">*</span></label>
                             <select
@@ -68,15 +68,15 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-md-6">
-                            <label for="request_date" class="form-label">Request Date<span class="text-danger">*</span></label>
-                            <input type="date"
-                                   class="form-control form-control-alt @error('request_date') is-invalid @enderror"
-                                   name="request_date" id="request_date" value="{{ old('request_date') }}">
-                            @error('request_date')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+{{--                        <div class="col-md-6">--}}
+{{--                            <label for="request_date" class="form-label">Request Date<span class="text-danger">*</span></label>--}}
+{{--                            <input type="date"--}}
+{{--                                   class="form-control form-control-alt @error('request_date') is-invalid @enderror"--}}
+{{--                                   name="request_date" id="request_date" value="{{ old('request_date') }}">--}}
+{{--                            @error('request_date')--}}
+{{--                            <div class="invalid-feedback">{{ $message }}</div>--}}
+{{--                            @enderror--}}
+{{--                        </div>--}}
                         <div class="col-md-12 mt-4">
                             <label for="issue_description" class="form-label">Issue Description<span
                                     class="text-danger">*</span></label>

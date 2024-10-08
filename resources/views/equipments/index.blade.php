@@ -207,7 +207,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-1">
-                                    @can('edit', $entry)
+                                    @can('update', $entry)
                                         <a href="{{ route('equipments.edit', ['equipment' => $entry]) }}"
                                            class="btn btn-sm btn-alt-warning">
                                             <i class="fa fa-fw fa-pencil-alt"></i>

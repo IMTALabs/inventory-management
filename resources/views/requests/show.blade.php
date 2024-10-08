@@ -50,7 +50,7 @@
         @include('common.alert')
         <div class="row">
             @if($requestWarranty->status == \App\Enums\MaintenanceScheduleStatusEnum::PENDING)
-                <form class="col-lg-12" method="post"
+                <form class="col-lg-6" method="post"
                       action="{{ route('requests.update-status', $requestWarranty) }}">
                     @method('PUT')
                     @csrf
@@ -65,6 +65,25 @@
                         <div class="block-content py-2 bg-body-light">
                             <button class="btn fw-medium fs-sm text-info mb-0">
                                 Confirm
+                            </button>
+                        </div>
+                    </a>
+                </form>
+                <form class="col-lg-6" method="post"
+                      action="{{ route('requests.update-status', $requestWarranty) }}">
+                    @method('PUT')
+                    @csrf
+                    <input type="hidden" name="status"
+                           value="{{ \App\Enums\MaintenanceScheduleStatusEnum::CANCELLED }}">
+                    <a class="block block-rounded block-link-shadow text-center">
+                        <div class="block-content block-content-full">
+                            <div class="fs-2 fw-semibold text-danger">
+                                <i class="fa fa-times"></i>
+                            </div>
+                        </div>
+                        <div class="block-content py-2 bg-body-light">
+                            <button class="btn fw-medium fs-sm text-danger mb-0">
+                                Cancel
                             </button>
                         </div>
                     </a>

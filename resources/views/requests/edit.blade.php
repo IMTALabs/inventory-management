@@ -79,7 +79,7 @@
                             <label class="form-label">Equiment Name<span class="text-danger">*</span></label>
                             <select
                                 class="form-control js-select2 form-select form-control-alt @error('equipment_id') is-invalid @enderror"
-                                name="equipment_id" id="equipment_id" disabled>
+                                name="equipment_id" id="equipment_id">
                                 <option value="">Select Equipment</option>
                                 @foreach($equipment as $item)
                                     <option

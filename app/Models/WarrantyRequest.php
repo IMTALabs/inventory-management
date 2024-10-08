@@ -18,6 +18,7 @@ class WarrantyRequest extends Model
         'status',
         'equipment_id',
         'warranty_information_id',
+        'created_by'
     ];
 
     protected $casts = [
@@ -33,5 +34,10 @@ class WarrantyRequest extends Model
     public function warrantyInformation(): BelongsTo
     {
         return $this->belongsTo(WarrantyInformation::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }
