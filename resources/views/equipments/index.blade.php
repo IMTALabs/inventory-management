@@ -54,13 +54,13 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control form-control-alt" name="name" placeholder="Name"
+                            <input type="text" class="form-control form-control-alt" name="name" placeholder="..."
                                    value="{{ $name }}" id="name">
                         </div>
                         <div class="col-md-3">
                             <label for="type" class="form-label">Type</label>
-                            <select class="form-control js-select2 form-select form-control-alt" name="type" id="type">
-                                <option value="">Select Type</option>
+                            <select class="form-control form-select form-control-alt" name="type" id="type">
+                                <option value="">...</option>
                                 @foreach(\App\Enums\EquipmentTypeEnum::cases() as $key => $value)
                                     <option value="{{ $value }}"
                                             @if($type == $value->value) selected @endif>{{ $value->value }}</option>
@@ -69,45 +69,34 @@
                         </div>
                         <div class="col-md-3">
                             <label for="status" class="form-label">Status</label>
-                            <select class="form-control js-select2 form-select form-control-alt" name="status"
+                            <select class="form-control form-select form-control-alt" name="status"
                                     id="status">
-                                <option value="">Select Status</option>
+                                <option value="">...</option>
                                 @foreach(\App\Enums\EquipmentStatusEnum::cases() as $key => $value)
                                     <option value="{{ $value }}"
                                             @if($status == $value->value) selected @endif>{{ $value->value }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3 mt-2">
+                        <div class="col-md-4 mt-2">
                             <label for="condition" class="form-label">Condition</label>
-                            <select class="form-control js-select2 form-select form-control-alt" name="condition"
+                            <select class="form-control form-select form-control-alt" name="condition"
                                     id="condition">
-                                <option value="">Select Condition</option>
+                                <option value="">...</option>
                                 @foreach(\App\Enums\EquipmentConditionEnum::cases() as $key => $value)
                                     <option value="{{ $value }}"
                                             @if($condition == $value) selected @endif>{{ $value }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3 mt-2">
-                            <label class="form-label">Sort order</label>
-                            <select class="form-select form-control-alt" name="sort_order">
-                                <option value="asc" @if(request('sort_order') == 'asc') selected @endif>
-                                    Ascending
-                                </option>
-                                <option value="desc"
-                                        @if(!request('sort_order') || request('sort_order') == 'desc') selected @endif>
-                                    Descending
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 mt-2">
+                        <div class="col-md-4 mt-2">
                             <label class="form-label">Sort by</label>
                             <select class="form-select form-control-alt" name="sort_by">
                                 <option value="" @if(request('sort_by') == '') selected @endif>
-                                    Select option
+                                    Default
                                 </option>
-                                <option value="equipment_name" @if(request('sort_by') == 'equipment_name') selected @endif>
+                                <option value="equipment_name"
+                                        @if(request('sort_by') == 'equipment_name') selected @endif>
                                     Name
                                 </option>
                                 <option value="equipment_type"
@@ -117,6 +106,18 @@
                                 <option value="status"
                                         @if(request('sort_by') == 'status') selected @endif>
                                     Status
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mt-2">
+                            <label class="form-label">Sort order</label>
+                            <select class="form-select form-control-alt" name="sort_order">
+                                <option value="asc" @if(request('sort_order') == 'asc') selected @endif>
+                                    Ascending
+                                </option>
+                                <option value="desc"
+                                        @if(!request('sort_order') || request('sort_order') == 'desc') selected @endif>
+                                    Descending
                                 </option>
                             </select>
                         </div>
@@ -163,6 +164,11 @@
                     </thead>
                     <tbody>
                     @foreach ($entries as $i => $entry)
+                        @php
+                            /**
+                             * @var \App\Models\Equipment $entry
+                             */
+                        @endphp
                         <tr>
                             <td class="text-center">{{ $i + 1 }}</td>
 
@@ -173,7 +179,9 @@
                                 {{ $entry->equipment_type }}
                             </td>
                             <td class="text-center barcode" title="{{ $entry->serial_number }}">
-                                {!! DNS1D::getBarcodeHTML($entry->serial_number, 'C128') !!}
+                                <span class="badge bg-secondary text-white">
+                                    {{ $entry->serial_number }}
+                                </span>
                             </td>
                             <td class="text-center" title="{{ $entry->status }}">
                                 @if($entry->status->value == 'Available')
@@ -193,20 +201,17 @@
                                 @endif
                             </td>
                             <td class="text-center" title="{{ $entry->equipment_condition }}">
-                                @if($entry->equipment_condition === 'Good')
-                                    <i class="fa fa-check-circle text-success"></i>
-                                @elseif($entry->equipment_condition === 'Fair')
-                                    <i class="fa fa-exclamation-circle text-warning"></i>
-                                @elseif($entry->equipment_condition === 'Poor')
-                                    <i class="fa fa-times-circle text-danger"></i>
-                                @elseif($entry->equipment_condition === 'Excellent')
-                                    <i class="fa fa-star text-primary"></i>
-                                @else
-                                    <i class="fa fa-question-circle text-muted"></i>
-                                @endif
+                                <span @class(['badge', $entry->equipment_condition->getBadgeClass()])>
+                                    {{ $entry->equipment_condition }}
+                                </span>
                             </td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-1">
+                                    <a href="{{ route('equipments.show', ['equipment' => $entry]) }}">
+                                        <button type="button" class="btn btn-sm btn-alt-info">
+                                            <i class="fa fa-fw fa-eye"></i>
+                                        </button>
+                                    </a>
                                     @can('update', $entry)
                                         <a href="{{ route('equipments.edit', ['equipment' => $entry]) }}"
                                            class="btn btn-sm btn-alt-warning">

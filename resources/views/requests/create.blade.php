@@ -68,15 +68,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-{{--                        <div class="col-md-6">--}}
-{{--                            <label for="request_date" class="form-label">Request Date<span class="text-danger">*</span></label>--}}
-{{--                            <input type="date"--}}
-{{--                                   class="form-control form-control-alt @error('request_date') is-invalid @enderror"--}}
-{{--                                   name="request_date" id="request_date" value="{{ old('request_date') }}">--}}
-{{--                            @error('request_date')--}}
-{{--                            <div class="invalid-feedback">{{ $message }}</div>--}}
-{{--                            @enderror--}}
-{{--                        </div>--}}
                         <div class="col-md-12 mt-4">
                             <label for="issue_description" class="form-label">Issue Description<span
                                     class="text-danger">*</span></label>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EquipmentConditionEnum;
 use App\Enums\EquipmentStatusEnum;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -78,6 +79,7 @@ class Equipment extends Model
         'depreciation_value' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'equipment_condition' => EquipmentConditionEnum::class,
     ];
 
     public function images(): MorphMany
