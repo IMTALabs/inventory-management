@@ -167,7 +167,7 @@
                                         {{ $i + 1 }}
                                     </td>
                                     <td class="fw-semibold">
-                                        <a href="{{ route('equipments.edit', ['equipment' => $order->equipment]) }}">
+                                        <a href="{{ route('equipments.show', ['equipment' => $order->equipment]) }}">
                                             [E-{{ str_pad($order->equipment->id, 4, '0', STR_PAD_LEFT) }}]
                                             {{ $order->equipment->equipment_name }}
                                         </a>

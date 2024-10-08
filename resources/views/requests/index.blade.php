@@ -186,15 +186,17 @@
                                                 <i class="fa fa-fw fa-pencil-alt"></i>
                                             </button>
                                         </a>
-                                        <form class="form-delete"
-                                              action="{{ route('requests.destroy', ['request' => $value]) }}"
-                                              method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-alt-danger">
-                                                <i class="fa fa-fw fa-trash-alt"></i>
-                                            </button>
-                                        </form>
+                                        @can('delete', $value)
+                                            <form class="form-delete"
+                                                  action="{{ route('requests.destroy', ['request' => $value]) }}"
+                                                  method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-alt-danger">
+                                                    <i class="fa fa-fw fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
                                     @endif
                                 </div>
                             </td>
