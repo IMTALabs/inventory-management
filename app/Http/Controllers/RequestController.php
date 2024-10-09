@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Enums\EquipmentStatusEnum;
 use App\Enums\MaintenanceScheduleStatusEnum;
+use App\Enums\RoleEnum;
 use App\Enums\WorkOrderStatusEnum;
 use App\Models\Equipment;
 use App\Models\WarrantyRequest;
 use App\Models\WorkOrder;
 use App\Trait\RequestLogWarrantyTrait;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class RequestController extends Controller
 {
-    use RequestLogWarrantyTrait;
+    use RequestLogWarrantyTrait, AuthorizesRequests;
 
     public function index(Request $request)
     {
@@ -47,6 +49,9 @@ class RequestController extends Controller
             ->when(isset($status), function ($query) use ($status) {
                 $query->where('status', $status);
             })
+            ->when(auth()->user()->role === RoleEnum::STAFF, function ($query) {
+                $query->where('created_by', auth()->id());
+            })
             ->with(['equipment', 'warrantyInformation'])
             ->orderBy(isset($request->sort_by) && $request->sort_by == 'status' ? 'status' : 'id', $request->order_by ?? 'desc')
             ->paginate(5)
@@ -58,7 +63,11 @@ class RequestController extends Controller
     {
         $equipment = Equipment::whereHas('warrantyInformation', function ($query) {
             $query->whereNotNull('id');
-        })->get();
+        })
+            ->whereHas('workOrders', function ($query) {
+                $query->where('status', WorkOrderStatusEnum::ACTIVE->value)->where('created_by', auth()->id());
+            })
+            ->get();
         return view('requests.create', compact('equipment'));
     }
 
@@ -82,21 +91,21 @@ class RequestController extends Controller
         return redirect()->route('requests.index');
     }
 
-    public function show($id)
+    public function show(WarrantyRequest $request)
     {
-        $requestWarranty = WarrantyRequest::with(['equipment', 'warrantyInformation'])->find($id);
-        return view('requests.show', compact('requestWarranty'));
+        $request->load(['equipment', 'warrantyInformation']);
+        return view('requests.show' )->with('requestWarranty', $request);
     }
 
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, WarrantyRequest $warrantyRequest)
     {
         $request->validate([
             'status' => 'required',
         ]);
 
+        $this->authorize('update', $warrantyRequest);
         DB::beginTransaction();
         try {
-            $warrantyRequest = WarrantyRequest::find($id);
             $status = $request->input('status');
             $data = ['status' => $status];
 
@@ -104,29 +113,30 @@ class RequestController extends Controller
                 $data['request_date'] = now();
             }
 
-            $warrantyRequest->update($data);
-
             $equipmentStatus = $this->determineEquipmentStatus($warrantyRequest, $status);
 
             if ($equipmentStatus) {
                 $warrantyRequest->equipment->update(['status' => $equipmentStatus]);
             }
+            $warrantyRequest->update($data);
 
             $this->logWarrantyRequest($warrantyRequest);
             DB::commit();
             return back()->with('status', 'Request status updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return back()->with('error', 'Request status update failed.');
         }
     }
 
-    private function determineEquipmentStatus($warrantyRequest, $status)
+    private function determineEquipmentStatus(WarrantyRequest $warrantyRequest, $status)
     {
         $equipmentStatus = null;
 
         switch ($status) {
             case MaintenanceScheduleStatusEnum::CONFIRMED->value:
+                $this->authorize('confirm', $warrantyRequest);
                 $equipmentStatus = EquipmentStatusEnum::UNDER_REPAIR->value;
                 $this->archiveWorkOrder($warrantyRequest->equipment_id, WorkOrderStatusEnum::ACTIVE->value);
                 break;
@@ -140,6 +150,7 @@ class RequestController extends Controller
                 }
                 break;
             case MaintenanceScheduleStatusEnum::CANCELLED->value:
+                $this->authorize('cancel', $warrantyRequest);
                 $workOrder = $this->checkWorkOrderArchived($warrantyRequest->equipment_id, WorkOrderStatusEnum::ARCHIVED->value);
                 if ($workOrder) {
                     $equipmentStatus = $workOrder->due_date > now() ? EquipmentStatusEnum::AVAILABLE->value : EquipmentStatusEnum::IN_USE->value;

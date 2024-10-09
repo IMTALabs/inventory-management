@@ -17,6 +17,7 @@ use App\Models\MaintenanceLog;
 use App\Models\MaintenancePlan;
 use App\Models\MaintenanceSchedule;
 use App\Models\User;
+use App\Models\WarrantyRequest;
 use App\Models\WorkOrder;
 use Illuminate\Support\Facades\Route;
 
@@ -142,14 +143,14 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('warranty-requests')->group(function () {
-        Route::get('/', [RequestController::class, 'index'])->name('requests.index');
-        Route::get('/create', [RequestController::class, 'create'])->name('requests.create');
-        Route::post('/', [RequestController::class, 'store'])->name('requests.store');
-        Route::get('/{request}', [RequestController::class, 'show'])->name('requests.show');
-        Route::get('/{request}/edit', [RequestController::class, 'edit'])->name('requests.edit');
-        Route::put('/{request}', [RequestController::class, 'updateStatus'])->name('requests.update-status');
-        Route::put('/{request}/update', [RequestController::class, 'update'])->name('requests.update');
-        Route::delete('/{request}', [RequestController::class, 'destroy'])->name('requests.destroy');
+        Route::get('/', [RequestController::class, 'index'])->name('requests.index')->can('viewAny', WarrantyRequest::class);
+        Route::get('/create', [RequestController::class, 'create'])->name('requests.create')->can('create', WarrantyRequest::class);
+        Route::post('/', [RequestController::class, 'store'])->name('requests.store')->can('create', WarrantyRequest::class);
+        Route::get('/{request}', [RequestController::class, 'show'])->name('requests.show')->can('view', 'request');
+        Route::get('/{request}/edit', [RequestController::class, 'edit'])->name('requests.edit')->can('update', 'request');
+        Route::put('/{warrantyRequest}', [RequestController::class, 'updateStatus'])->name('requests.update-status')->can('update', 'warrantyRequest');
+        Route::put('/{request}/update', [RequestController::class, 'update'])->name('requests.update')->can('update', 'request');
+        Route::delete('/{request}', [RequestController::class, 'destroy'])->name('requests.destroy')->can('delete', 'request');
     });
 
     Route::post('/image', [EquipmentController::class, 'image'])->name('images.create');
