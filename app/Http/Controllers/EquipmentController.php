@@ -35,7 +35,7 @@ class EquipmentController extends Controller
                 $query->where('model', 'like', "%$location%");
             })
             ->orderBy($request->sort_by ?? 'id', $request->sort_order ?? 'desc')
-            ->paginate(5)
+            ->paginate(10)
             ->withQueryString();
 
         return view('equipments.index', compact(['entries', 'name', 'type', 'status', 'location', 'condition']));

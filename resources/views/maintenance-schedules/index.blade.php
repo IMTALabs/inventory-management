@@ -200,20 +200,22 @@
                                         </button>
                                     </a>
                                     @if($schedule->status == \App\Enums\MaintenanceScheduleStatusEnum::PENDING)
-                                        <a href="{{ route('maintenance-schedules.edit', ['maintenanceSchedule' => $schedule]) }}">
-                                            <button type="button" class="btn btn-sm btn-alt-warning">
-                                                <i class="fa fa-fw fa-pencil-alt"></i>
-                                            </button>
-                                        </a>
-                                        <form class="form-delete"
-                                              action="{{ route('maintenance-schedules.destroy', ['maintenanceSchedule' => $schedule]) }}"
-                                              method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-alt-danger">
-                                                <i class="fa fa-fw fa-trash-alt"></i>
-                                            </button>
-                                        </form>
+                                        @if(Auth::user()->is_manager)
+                                            <a href="{{ route('maintenance-schedules.edit', ['maintenanceSchedule' => $schedule]) }}">
+                                                <button type="button" class="btn btn-sm btn-alt-warning">
+                                                    <i class="fa fa-fw fa-pencil-alt"></i>
+                                                </button>
+                                            </a>
+                                            <form class="form-delete"
+                                                  action="{{ route('maintenance-schedules.destroy', ['maintenanceSchedule' => $schedule]) }}"
+                                                  method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-alt-danger">
+                                                    <i class="fa fa-fw fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     @endif
                                 </div>
                             </td>

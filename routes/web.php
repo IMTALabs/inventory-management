@@ -113,7 +113,7 @@ Route::middleware('auth')->group(function () {
             ->can('delete', 'maintenanceSchedule');
         Route::put('/{maintenanceSchedule}/status',
             [MaintenanceScheduleController::class, 'updateStatus'])->name('maintenance-schedules.update-status')
-            ->can('update', 'maintenanceSchedule');
+            ->can('updateStatus', 'maintenanceSchedule');
     });
 
     Route::prefix('maintenance-logs')->group(function () {

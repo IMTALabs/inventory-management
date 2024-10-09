@@ -51,7 +51,7 @@
         @include('common.alert')
         <div class="row">
             @if($maintenanceSchedule->status == \App\Enums\MaintenanceScheduleStatusEnum::PENDING)
-                <form class="col-lg-12" method="post"
+                <form class="col-lg-6" method="post"
                       action="{{ route('maintenance-schedules.update-status', $maintenanceSchedule) }}">
                     @method('PUT')
                     @csrf
@@ -91,6 +91,8 @@
                         </div>
                     </a>
                 </form>
+            @endif
+            @if(in_array($maintenanceSchedule->status, \App\Enums\MaintenanceScheduleStatusEnum::canBeCancelled()))
                 <form class="col-lg-6" method="post"
                       action="{{ route('maintenance-schedules.update-status', $maintenanceSchedule) }}">
                     @method('PUT')
@@ -121,7 +123,10 @@
                         {{ strtoupper($maintenanceSchedule->status->value) }}
                     </span>
                 </h3>
-                @if($maintenanceSchedule->status == \App\Enums\MaintenanceScheduleStatusEnum::PENDING)
+                @if(
+                    $maintenanceSchedule->status == \App\Enums\MaintenanceScheduleStatusEnum::PENDING
+                    && Auth::user()->can('update', $maintenanceSchedule)
+                )
                     <div class="block-options">
                         <a href="{{ route('maintenance-schedules.edit', $maintenanceSchedule) }}"
                            class="btn btn-alt-warning btn-sm">

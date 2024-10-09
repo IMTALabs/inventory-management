@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\MaintenanceScheduleStatusEnum;
 use App\Enums\RoleEnum;
-use App\Models\Equipment;
 use App\Models\MaintenanceLog;
-use App\Models\MaintenancePlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

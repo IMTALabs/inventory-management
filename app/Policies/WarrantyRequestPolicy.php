@@ -51,6 +51,21 @@ class WarrantyRequestPolicy
                 || $user->role === RoleEnum::STAFF);
     }
 
+    public function cancel(User $user, WarrantyRequest $warrantyRequest): bool
+    {
+        return $warrantyRequest->status === MaintenanceScheduleStatusEnum::PENDING
+            && ($user->role === RoleEnum::ADMIN
+                || $user->role === RoleEnum::MANAGER
+                || $user->role === RoleEnum::STAFF);
+    }
+
+    public function confirm(User $user, WarrantyRequest $warrantyRequest): bool
+    {
+        return $warrantyRequest->status === MaintenanceScheduleStatusEnum::PENDING
+            && ($user->role === RoleEnum::ADMIN
+                || $user->role === RoleEnum::MANAGER);
+    }
+
     /**
      * Determine whether the user can delete the model.
      */
@@ -58,8 +73,7 @@ class WarrantyRequestPolicy
     {
         return $warrantyRequest->status === MaintenanceScheduleStatusEnum::PENDING
             && ($user->role === RoleEnum::ADMIN
-                || $user->role === RoleEnum::MANAGER
-                || $user->role === RoleEnum::STAFF);
+                || $user->role === RoleEnum::MANAGER);
     }
 
     /**
