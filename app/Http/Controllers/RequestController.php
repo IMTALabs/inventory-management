@@ -65,7 +65,7 @@ class RequestController extends Controller
             $query->whereNotNull('id');
         })
             ->whereHas('workOrders', function ($query) {
-                $query->where('status', WorkOrderStatusEnum::ACTIVE->value)->where('created_by', auth()->id());
+                $query->where('status', WorkOrderStatusEnum::ACTIVE->value)->where('user_id', auth()->id());
             })
             ->get();
         return view('requests.create', compact('equipment'));
@@ -103,7 +103,6 @@ class RequestController extends Controller
             'status' => 'required',
         ]);
 
-        $this->authorize('update', $warrantyRequest);
         DB::beginTransaction();
         try {
             $status = $request->input('status');
@@ -125,7 +124,6 @@ class RequestController extends Controller
             return back()->with('status', 'Request status updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return back()->with('error', 'Request status update failed.');
         }
     }
@@ -136,7 +134,6 @@ class RequestController extends Controller
 
         switch ($status) {
             case MaintenanceScheduleStatusEnum::CONFIRMED->value:
-                $this->authorize('confirm', $warrantyRequest);
                 $equipmentStatus = EquipmentStatusEnum::UNDER_REPAIR->value;
                 $this->archiveWorkOrder($warrantyRequest->equipment_id, WorkOrderStatusEnum::ACTIVE->value);
                 break;
@@ -150,7 +147,6 @@ class RequestController extends Controller
                 }
                 break;
             case MaintenanceScheduleStatusEnum::CANCELLED->value:
-                $this->authorize('cancel', $warrantyRequest);
                 $workOrder = $this->checkWorkOrderArchived($warrantyRequest->equipment_id, WorkOrderStatusEnum::ARCHIVED->value);
                 if ($workOrder) {
                     $equipmentStatus = $workOrder->due_date > now() ? EquipmentStatusEnum::AVAILABLE->value : EquipmentStatusEnum::IN_USE->value;
