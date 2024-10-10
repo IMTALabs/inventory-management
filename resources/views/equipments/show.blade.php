@@ -21,6 +21,9 @@
                         <li class="breadcrumb-item">
                             <a class="link-fx" href="javascript:void(0)">Dashboard</a>
                         </li>
+                        <li class="breadcrumb-item">
+                            <a class="link-fx" href="{{ route('equipments.index') }}">Equipment</a>
+                        </li>
                         <li class="breadcrumb-item" aria-current="page">Show Equipment Details</li>
                     </ol>
                 </nav>

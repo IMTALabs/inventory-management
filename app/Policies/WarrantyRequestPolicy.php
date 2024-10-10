@@ -6,7 +6,6 @@ use App\Enums\MaintenanceScheduleStatusEnum;
 use App\Enums\RoleEnum;
 use App\Models\User;
 use App\Models\WarrantyRequest;
-use Illuminate\Auth\Access\Response;
 
 class WarrantyRequestPolicy
 {
@@ -27,7 +26,8 @@ class WarrantyRequestPolicy
     {
         return $user->role === RoleEnum::ADMIN
             || $user->role === RoleEnum::MANAGER
-            || $user->role === RoleEnum::STAFF;
+            || ($user->role === RoleEnum::STAFF
+                && $warrantyRequest->created_by === $user->id);
     }
 
     /**
@@ -45,18 +45,20 @@ class WarrantyRequestPolicy
      */
     public function update(User $user, WarrantyRequest $warrantyRequest): bool
     {
-        return $warrantyRequest->status === MaintenanceScheduleStatusEnum::PENDING
-            && ($user->role === RoleEnum::ADMIN
-                || $user->role === RoleEnum::MANAGER
-                || $user->role === RoleEnum::STAFF);
+        return $user->role === RoleEnum::ADMIN
+            || $user->role === RoleEnum::MANAGER
+            || ($user->role === RoleEnum::STAFF
+                && $warrantyRequest->created_by === $user->id);
     }
 
     public function cancel(User $user, WarrantyRequest $warrantyRequest): bool
     {
-        return $warrantyRequest->status === MaintenanceScheduleStatusEnum::PENDING
+        return ($warrantyRequest->status === MaintenanceScheduleStatusEnum::PENDING
+                || $warrantyRequest->status === MaintenanceScheduleStatusEnum::CONFIRMED)
             && ($user->role === RoleEnum::ADMIN
                 || $user->role === RoleEnum::MANAGER
-                || $user->role === RoleEnum::STAFF);
+                || ($user->role === RoleEnum::STAFF
+                    && $warrantyRequest->created_by === $user->id));
     }
 
     public function confirm(User $user, WarrantyRequest $warrantyRequest): bool
