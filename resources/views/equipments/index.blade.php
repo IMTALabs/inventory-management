@@ -38,7 +38,7 @@
                         <li class="breadcrumb-item">
                             <a class="link-fx" href="{{ route('equipments.index') }}">Equipment</a>
                         </li>
-                        <li class="breadcrumb-item" aria-current="page">List Equipment</li>
+                        <li class="breadcrumb-item" aria-current="page">List</li>
                     </ol>
                 </nav>
             </div>

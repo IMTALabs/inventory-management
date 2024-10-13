@@ -396,7 +396,7 @@
                             @enderror
                         </div>
                         <div class="col-6">
-                            <label for="warranty_start_date" class="form-label">Warranty End Date<span
+                            <label for="warranty_start_date" class="form-label">Warranty Start Date<span
                                     class="text-danger">*</span></label>
                             <input type="date" form="create"
                                    class="form-control form-control-alt @error('warranty_start_date') is-invalid @enderror"
