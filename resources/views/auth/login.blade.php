@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="row mb-4">
                                         <div class="col-md-6 col-xl-5">
-                                            <button type="submit" class="btn w-100 btn-alt-primary">
+                                            <button type="submit" class="btn w-100 btn-alt-primary" data-pan="login">
                                                 <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50"></i> Sign In
                                             </button>
                                         </div>

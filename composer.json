@@ -12,7 +12,8 @@
         "inspector-apm/inspector-laravel": "^4.9",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
-        "milon/barcode": "^11.0"
+        "milon/barcode": "^11.0",
+        "panphp/pan": "^0.1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",

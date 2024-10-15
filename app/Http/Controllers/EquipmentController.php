@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\WorkOrderStatusEnum;
 use App\Models\Equipment;
 use App\Models\Image;
 use App\Models\WarrantyInformation;
@@ -76,7 +77,6 @@ class EquipmentController extends Controller
         DB::beginTransaction();
         try {
             $equipment = Equipment::create($request->all());
-//            "3,4"
             if (trim($request->additional_data) != "") {
                 $additionalData = json_decode($request->additional_data, true);
                 Image::whereIn('id', $additionalData)->update(['imageable_id' => $equipment->id]);
@@ -85,13 +85,19 @@ class EquipmentController extends Controller
             return view('equipments.show', ['equipment' => $equipment]);
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return back()->with('error', 'An error occurred while creating the equipment');
         }
     }
 
     public function show(Equipment $equipment)
     {
+        $equipment->load([
+            'workOrders' => function ($query) {
+                $query->where('status', WorkOrderStatusEnum::ACTIVE);
+            },
+            'workOrders.user',
+        ]);
+
         return view('equipments.show', compact('equipment'));
     }
 
@@ -164,7 +170,7 @@ class EquipmentController extends Controller
                     'provider_address',
                     'contact_info',
                     'warranty_start_date',
-                    'warranty_end_date'
+                    'warranty_end_date',
                 ])
             );
             if (trim($request->additional_data) != "") {
@@ -173,7 +179,8 @@ class EquipmentController extends Controller
             }
 
             DB::commit();
-            return to_route('equipments.edit', ['equipment' => $equipment])->with('status', 'Equipment updated successfully');
+            return to_route('equipments.edit', ['equipment' => $equipment])->with('status',
+                'Equipment updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
