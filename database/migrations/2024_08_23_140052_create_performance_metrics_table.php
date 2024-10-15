@@ -18,8 +18,8 @@ return new class extends Migration
             $table->float('metric_value', 2)->nullable();
             $table->timestamps();
 
-            $table->foreign('equipment_id')->references('id')->on('equipment');
-            $table->foreign('metric_id')->references('id')->on('metrics');
+            $table->foreign('equipment_id')->references('id')->on('equipment')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('metric_id')->references('id')->on('metrics')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
